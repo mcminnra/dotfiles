@@ -1,0 +1,28 @@
+"
+" vimrc
+" Ryder McMinn
+"
+
+" Sets
+set number						" set line numbers
+set cursorline					" set cursorline
+set showmode                    " always show what mode we're currently editing in
+set nowrap                      " don't wrap lines
+set visualbell					" blink bell instead of sound
+set encoding=utf-8				" Encoding
+set virtualedit=onemore
+set tabstop=4                   " a tab is four spaces
+set expandtab     				" don't use actual tab character (ctrl-v)
+set autoindent    				" turns it on
+set smartindent   				" does the right thing (mostly) in programs
+set ruler                       " show the cursor position all the time
+set showcmd                     " display incomplete commands
+
+filetype indent on
+
+syntax on                       " Turn on syntax highlighting
+
+" Key remaps
+nnoremap $ $l
+imap ;; <esc>					" Easy escaping to normal model
+
