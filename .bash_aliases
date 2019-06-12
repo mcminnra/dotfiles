@@ -22,6 +22,7 @@ alias home='cd ~'
 alias projects='cd ~/Projects'
 
 # Extensions
+alias vim='vim -g'
 alias ll='ls -AlhGrti'
 alias lsa='ls -a'
 alias ..='cd ..'

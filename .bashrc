@@ -41,15 +41,15 @@ if [ ${UID} -eq 0 ]; then
     ROOT="${RED}"
 fi
 
+# Prompt
 export PROMPT_COMMAND='q="- $(date +%T)"; while [[ ${#q} -lt $COLUMNS ]]; do q="${q:0:1}$q"; done; echo -e "\033[0;90m$q\033[0;37m";'
 export PS1="${WHITE}[ \[${LIGHTGREEN}\]\u ${NC}@ ${GREEN}\h${LIGHTBLUE} \W${NC}]${ROOT} \$ ${NC}"
+
+# Defaults
 export EDITOR="vim"
 # export TERMINAL="terminator"
 export TERM=xterm-256color
 # export MONITOR="eDP1"
-
-# Home Defs
-export AIRFLOW_HOME="~/airflow"
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then

@@ -3,6 +3,31 @@
 " Ryder McMinn
 "
 
+" Plugins
+"Vundle Setup
+set nocompatible       
+filetype off   
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin('~/.vim/plugins')
+
+" let Vundle manage Vundle
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugins List
+Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-vinegar'
+Plugin 'chriskempson/base16-vim'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
+
+" Vundle End
+call vundle#end()           
+filetype plugin indent on
+
+" Color Scheme
+colorscheme base16-gruvbox-dark-hard
+
 " Sets
 set number						" set line numbers
 set cursorline					" set cursorline
@@ -17,12 +42,15 @@ set autoindent    				" turns it on
 set smartindent   				" does the right thing (mostly) in programs
 set ruler                       " show the cursor position all the time
 set showcmd                     " display incomplete commands
+set backspace=indent,eol,start  " Set backspace to a more normal behavior
 
 filetype indent on
 
+let python_highlight_all=1
 syntax on                       " Turn on syntax highlighting
 
 " Key remaps
 nnoremap $ $l
 imap ;; <esc>					" Easy escaping to normal model
+
 
