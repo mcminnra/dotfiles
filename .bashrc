@@ -46,10 +46,9 @@ export PROMPT_COMMAND='q="- $(date +%T)"; while [[ ${#q} -lt $COLUMNS ]]; do q="
 export PS1="${WHITE}[ \[${LIGHTGREEN}\]\u ${NC}@ ${GREEN}\h${LIGHTBLUE} \W${NC}]${ROOT} \$ ${NC}"
 
 # Defaults
-export EDITOR="vim"
+export EDITOR="emacs"
 # export TERMINAL="terminator"
 export TERM=xterm-256color
-# export MONITOR="eDP1"
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
