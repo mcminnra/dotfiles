@@ -32,23 +32,6 @@
 (toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 
 ;; Helper Functions
-(defun open-iterm ()
-  "Opens ITerm"
-  (interactive)
-  (do-applescript
-   (concat
-    "tell application \"iTerm2\"\n"
-    ;;    "  create window with default profile\n"
-    "  launch session \"Default Session\"\n"
-    "end tell\n"
-    ))
-  )
-
-(defun external-shell-in-dir ()
-  "Start iterm in the current file's dir"
-  (interactive)
-  (start-process "iTerm" nil "iTerm"))
-
 (defun iterm-here ()
   (interactive)
   (dired-smart-shell-command "open -a iTerm $PWD" nil nil))
@@ -120,26 +103,27 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
+(add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-agenda-files (list "~/org/tasks.org"
 			     "~/org/microsoft.org" 
-                             "~/org/iutasks.org" 
-                             "~/org/school.org"
-			     "~/org/habits.org"			
-			     "~/org/dev.org"
-			     "~/org/stuff.org"
-			     "~/org/calendar.org"
-			     "~/org/calendar-ews.org"))
-(setq org-deadline-warning-days 365)  ;;warn me of any deadlines in next year
+                             "~/org/planned.org"
+			     "~/org/inbox.org"))
+(setq org-deadline-warning-days 90)
+(setq org-agenda-deadline-faces
+      '((0.92 . org-warning)
+        (0.84 . org-upcoming-deadline)
+        (0.0 . default)))
 (setq org-habit-show-habits-only-for-today nil)
 (setq org-agenda-repeating-timestamp-show-all nil)
 (setq org-todo-keywords
       '(
-	(sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")
-	(sequence "GOAL(g)" "|" "GOALREACHED(r)" "GOALMISSED(m)")))
+	(sequence "TODO(t)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
 
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "white" :weight bold))
-	("WAITING" . (:foreground "yellow" :weight bold))
+	("BLOCKED" . (:foreground "orange" :weight bold))
+	("REVIEW" . (:foreground "yellow" :weight bold))
+	("IN-PROGRESS" . (:foreground "dark magenta" :weight bold))
 	("DONE" . (:foreground "white" :background "#33cc33" :weight bold))
 	("CANCELED" . (:foreground "white" :background "#ff0000" :weight bold))
 	("GOAL" . (:foreground "#0000ff" :weight bold))
