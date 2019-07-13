@@ -117,10 +117,11 @@
 (setq org-agenda-repeating-timestamp-show-all nil)
 (setq org-todo-keywords
       '(
-	(sequence "TODO(t)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
+	(sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")))
 
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "white" :weight bold))
+	("SCHEDULED" . (:foreground "green" :weight bold))
 	("BLOCKED" . (:foreground "orange" :weight bold))
 	("REVIEW" . (:foreground "yellow" :weight bold))
 	("IN-PROGRESS" . (:foreground "dark magenta" :weight bold))
