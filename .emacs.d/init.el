@@ -70,9 +70,6 @@
 (eval-after-load "company"
  '(add-to-list 'company-backends 'company-anaconda))
 
-;; Anaconda Mode
-(add-hook 'python-mode-hook 'anaconda-mode)
-
 ;; Helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -82,6 +79,10 @@
 
 ;; Rainbow Delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; Python
+;;(add-hook 'python-mode-hook 'anaconda-mode)  ;; Anaconda Mode
+(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Enabled pylint
 
 ;; Markdown
 (use-package markdown-mode
@@ -183,7 +184,7 @@ If the current buffer does not, find the first agenda file."
  '(org-fontify-whole-heading-line t)
  '(package-selected-packages
    (quote
-    (company gruvbox-theme material-theme xresources-theme 0blayout theme-changer company-anaconda dash anaconda-mode indent-guide powerline base16-theme neotree helm-flyspell markdown-mode rainbow-delimiters org-gnome latex-preview-pane yaml-mode doom-themes color-theme-sanityinc-tomorrow dracula-theme helm)))
+    (flycheck company gruvbox-theme material-theme xresources-theme 0blayout theme-changer company-anaconda dash anaconda-mode indent-guide powerline base16-theme neotree helm-flyspell markdown-mode rainbow-delimiters org-gnome latex-preview-pane yaml-mode doom-themes color-theme-sanityinc-tomorrow dracula-theme helm)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
