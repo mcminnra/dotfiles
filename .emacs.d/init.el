@@ -70,9 +70,6 @@
 (eval-after-load "company"
  '(add-to-list 'company-backends 'company-anaconda))
 
-;; Anaconda Mode
-(add-hook 'python-mode-hook 'anaconda-mode)
-
 ;; Helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -82,6 +79,10 @@
 
 ;; Rainbow Delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; Python
+;;(add-hook 'python-mode-hook 'anaconda-mode)  ;; Anaconda Mode
+(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Enabled pylint
 
 ;; Markdown
 (use-package markdown-mode
