@@ -17,6 +17,10 @@ alias irc='irssi'
 alias syncportfolio='rsync -rv ~/Projects/portfolio/* mcminnra@50.116.44.24:/srv/http/rydermcminn.com/public_html'
 alias beerme='brew update && brew upgrade && brew cleanup -s && brew doctor && brew missing'
 
+# Arch Helpers
+alias sleepoff='sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target'
+alias sleepon='sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target'
+
 # Common Directories
 alias home='cd ~'
 alias projects='cd ~/Projects'
