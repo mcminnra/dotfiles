@@ -1,0 +1,22 @@
+[global_config]
+  title_hide_sizetext = True
+  title_transmit_bg_color = "#4e9a06"
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      profile = default
+      type = Window
+      size = 900, 600
+[plugins]
+[profiles]
+  [[default]]
+    background_darkness = 0.75
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    show_titlebar = False
