@@ -9,6 +9,7 @@
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "files.insertFinalNewline": true,
+    "git.confirmSync": false,
 
     //Python
     "python.linting.pylintEnabled": true,
