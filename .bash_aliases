@@ -19,6 +19,8 @@ alias beerme='brew update && brew upgrade && brew cleanup -s && brew doctor && b
 
 # Linux/Arch Helpers
 alias backup='borg create --stats /run/media/mcminnra/backup/backup-files/::backup ~'
+alias poweroff='sudo systemctl poweroff'
+alias reboot='sudo systemctl reboot'
 
 # Common Directories
 alias home='cd ~'

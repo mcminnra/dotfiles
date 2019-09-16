@@ -47,8 +47,8 @@ export PS1="${WHITE}[ \[${LIGHTGREEN}\]\u ${NC}@ ${GREEN}\h${LIGHTBLUE} \W${NC}]
 
 # Defaults
 export EDITOR="emacs"
-# export TERMINAL="terminator"
-export TERM=xterm-256color
+export TERMINAL="terminator"
+#export TERM=xterm-256color
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
