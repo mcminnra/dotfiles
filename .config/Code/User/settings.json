@@ -10,9 +10,11 @@
     "editor.insertSpaces": true,
     "files.insertFinalNewline": true,
     "git.confirmSync": false,
+    "git.enableSmartCommit": true,
 
     //Python
     "python.linting.pylintEnabled": true,
     "python.linting.pep8Enabled": true,
     "python.linting.lintOnTextChange": true,
+
 }
