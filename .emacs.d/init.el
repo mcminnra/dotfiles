@@ -39,7 +39,6 @@
 ;; Key Bindings
 (global-set-key (kbd "C-`") 'open-iterm)
 
-
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(95))
 (add-to-list 'default-frame-alist '(alpha . (95)))
@@ -50,12 +49,13 @@
 (setq indent-guide-char ":")
 
 ;; Flyspell
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-(dolist (hook '(org-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode -1))))
+; NOTE: figure out how to setup properly on arch
+;(dolist (hook '(text-mode-hook))
+;  (add-hook hook (lambda () (flyspell-mode 1))))
+;(dolist (hook '(org-mode-hook))
+;  (add-hook hook (lambda () (flyspell-mode 1))))
+;(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+;  (add-hook hook (lambda () (flyspell-mode -1))))
 
 ;; Neotree
 (require 'neotree)

@@ -1,0 +1,7 @@
+{
+    "workbench.iconTheme": "vscode-icons",
+    "editor.fontFamily": "source code pro",
+
+    // Programming
+    "editor.rulers": [80,120]
+}
