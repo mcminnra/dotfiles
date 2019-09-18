@@ -1,23 +1,23 @@
 {
     "workbench.iconTheme": "vscode-icons",
     "editor.fontFamily": "source code pro",
-
     // Programming
-    "editor.rulers": [80,120],
+    "editor.rulers": [
+        80,
+        120
+    ],
     "editor.detectIndentation": true,
     "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "files.insertFinalNewline": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "git.autofetch": true,
-
     //Python
-    "python.linting.pylintEnabled": true,
-    "python.linting.pep8Enabled": true,
-    "python.linting.lintOnTextChange": true,
-
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "yapf",
     //Latex
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.latex.autoBuild.run": "onFileChange"
