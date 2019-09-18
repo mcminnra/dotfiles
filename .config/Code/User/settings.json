@@ -17,4 +17,8 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pep8Enabled": true,
     "python.linting.lintOnTextChange": true,
+
+    //Latex
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.autoBuild.run": "onFileChange"
 }
