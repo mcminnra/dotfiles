@@ -23,7 +23,7 @@
 ;; Various Settings
 (scroll-bar-mode -1)                                  ; No Scroll
 (tool-bar-mode -1)                                    ; No Toolbar
-(menu-bar-mode -1)                                    ; No Menu Bar 
+(menu-bar-mode -1)                                    ; No Menu Bar
 (setq inhibit-startup-screen t)                       ; No start screen
 (show-paren-mode 1)                                   ; Make Emacs highlight paired parentheses
 (setq visible-bell t)                                 ; Make bell visible
@@ -105,8 +105,9 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 (add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-agenda-files (list "~/org/tasks.org"
-			     "~/org/microsoft.org" 
+(setq org-agenda-files (list "~/org/northstar.org"
+			     "~/org/tasks.org"
+			     "~/org/microsoft.org"
                              "~/org/planned.org"
 			     "~/org/inbox.org"))
 (setq org-deadline-warning-days 90)
