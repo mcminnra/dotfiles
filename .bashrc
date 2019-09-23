@@ -66,7 +66,11 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Path Adds
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    export PATH=/opt/anaconda/bin:$PATH
+    if [[ "$USER" == "rymcminn" ]]; then
+        export PATH=$HOME/anaconda3/bin:$PATH
+    else
+        export PATH=/opt/anaconda/bin:$PATH
+    fi
 fi
 
 # FUNCTIONS
