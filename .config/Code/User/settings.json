@@ -18,6 +18,7 @@
     //Python
     "python.pythonPath": "/opt/anaconda/bin/python",
     "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "none",
     //Latex
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.latex.autoBuild.run": "onFileChange",
