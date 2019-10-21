@@ -82,7 +82,10 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         unset __conda_setup
         # <<< conda initialize <<<
     else
+        # Home PC
         export PATH=/opt/anaconda/bin:$PATH
+        export PATH=/home/mcminnra/bin:$PATH
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64  # Tensorflow Cuda Add
     fi
 fi
 

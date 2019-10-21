@@ -19,10 +19,11 @@
     "python.pythonPath": "/opt/anaconda/bin/python",
     "python.linting.flake8Enabled": true,
     "python.formatting.provider": "none",
+    "python.dataScience.askForKernelRestart": false,
     //Latex
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.latex.autoBuild.run": "onFileChange",
     //Other 
     "vsicons.dontShowNewVersionMessage": true,
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
 }
