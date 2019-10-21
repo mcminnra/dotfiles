@@ -23,5 +23,6 @@
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.latex.autoBuild.run": "onFileChange",
     //Other 
-    "vsicons.dontShowNewVersionMessage": true
+    "vsicons.dontShowNewVersionMessage": true,
+    "window.zoomLevel": 0
 }
