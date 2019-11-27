@@ -1,5 +1,7 @@
-;;;; Ryder's Init.d
+;;; package -- summary: Ryder's init.el
+;;; Commentary:
 
+;;; Code:
 ;; Set default Directory on Windows
 (when (eq system-type 'windows-nt)
   (setq default-directory "C:/Users/rymcminn/" ))
@@ -18,6 +20,10 @@
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
+;; If there are no archived package contents, refresh them
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
 (require 'use-package)
 
 ;; Various Settings
@@ -31,39 +37,41 @@
 (global-linum-mode t)                                 ; Set line numbers
 (toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 
-;; Helper Functions
-(defun iterm-here ()
-  (interactive)
-  (dired-smart-shell-command "open -a iTerm $PWD" nil nil))
-
-;; Key Bindings
-(global-set-key (kbd "C-`") 'open-iterm)
+;; Font
+(set-face-attribute 'default nil :font "Source Code Pro" :height 105)
+(set-frame-font "Source Code Pro" nil t)
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(95))
 (add-to-list 'default-frame-alist '(alpha . (95)))
 
+;; Helper Functions
+(defun open-terminator ()
+  "Opens a Terminator terminal window."
+  (interactive)
+  (call-process "terminator" nil 0 nil "--working-directory" default-directory))
+
+;; Key Bindings
+(global-set-key (kbd "C-`") 'open-terminator)
+
+;; ===============================================
+;; Packages
+;; ===============================================
 ;; Indent Guide
 (require 'indent-guide)
 (indent-guide-global-mode)
 (setq indent-guide-char ":")
 
-;; Flyspell
-; NOTE: figure out how to setup properly on arch
-;(dolist (hook '(text-mode-hook))
-;  (add-hook hook (lambda () (flyspell-mode 1))))
-;(dolist (hook '(org-mode-hook))
-;  (add-hook hook (lambda () (flyspell-mode 1))))
-;(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
-;  (add-hook hook (lambda () (flyspell-mode -1))))
+;; Multiple Cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines) ;; Mark a region, then do this command
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; Neotree
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
-
-;; Font
-(set-face-attribute 'default nil :font "Source Code Pro" :height 105)
-(set-frame-font "Source Code Pro" nil t)
 
 ;; Company
 (add-hook 'after-init-hook 'global-company-mode)
@@ -80,9 +88,28 @@
 ;; Rainbow Delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
+;; Powerline
+(require 'powerline)
+(powerline-default-theme)
+
+;; Flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; ===============================================
+;; Programming Modes
+;; ===============================================
 ;; Python
-;;(add-hook 'python-mode-hook 'anaconda-mode)  ;; Anaconda Mode
-(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Enabled pylint
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+;; Set linux-specific python paths
+(when (eq system-type 'gnu/linux)
+  (setq flycheck-python-pylint-executable "/opt/anaconda/bin/pylint")
+  (setq flycheck-python-flake8-executable "/opt/anaconda/bin/flake8")
+  (setq flycheck-flake8rc "~/.config/flake8")
+  (setq ein:jupyter-default-server-command "/opt/anaconda/bin/jupyter"))
+
 
 ;; Markdown
 (use-package markdown-mode
@@ -93,10 +120,9 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-;; Powerline
-(require 'powerline)
-(powerline-default-theme)
-
+;; ===============================================
+;; Org Stuff
+;; ===============================================
 ;; Org
 (require 'org)
 (require 'org-habit)
@@ -116,7 +142,6 @@
         (0.84 . org-upcoming-deadline)
         (0.0 . default)))
 (setq org-habit-show-habits-only-for-today nil)
-(setq org-agenda-repeating-timestamp-show-all nil)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
 	(sequence "LOWRISK(l)" "MEDIUMRISK(m)" "HIGHRISK(h)")))
@@ -156,8 +181,7 @@ If the current buffer does not, find the first agenda file."
     (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
 
 
-
-;; Emacs Auto-Generated
+;;;; Emacs Auto-Generated
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -166,7 +190,7 @@ If the current buffer does not, find the first agenda file."
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
-   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+   ["#3c3836" "#fb4933" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
  '(ansi-term-color-vector
    [unspecified "#151515" "#fb9fb1" "#acc267" "#ddb26f" "#6fc2ef" "#e1a3ee" "#6fc2ef" "#d0d0d0"])
  '(beacon-color "#f2777a")
@@ -188,8 +212,8 @@ If the current buffer does not, find the first agenda file."
  '(org-fontify-whole-heading-line t)
  '(package-selected-packages
    (quote
-    (transpose-frame company gruvbox-theme material-theme xresources-theme 0blayout theme-changer company-anaconda dash anaconda-mode indent-guide powerline base16-theme neotree helm-flyspell markdown-mode rainbow-delimiters org-gnome latex-preview-pane yaml-mode doom-themes color-theme-sanityinc-tomorrow dracula-theme helm)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+    (ein gruvbox-theme base16-theme rainbow-delimiters flycheck elpy multiple-cursors transpose-frame material-theme xresources-theme 0blayout theme-changer company-anaconda anaconda-mode neotree helm-flyspell org-gnome latex-preview-pane yaml-mode doom-themes color-theme-sanityinc-tomorrow dracula-theme)))
+ '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#1d2021")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    (quote
