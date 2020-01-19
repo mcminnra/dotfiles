@@ -12,7 +12,7 @@
       parent = ""
       profile = default
       type = Window
-      size = 900, 600
+      size = 1200, 900
 [plugins]
 [profiles]
   [[default]]

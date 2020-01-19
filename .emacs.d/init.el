@@ -120,6 +120,9 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
+;; LaTex
+(latex-preview-pane-enable)
+
 ;; ===============================================
 ;; Org Stuff
 ;; ===============================================

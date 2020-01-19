@@ -67,25 +67,36 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # Path Adds
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     if [[ "$USER" == "rymcminn" ]]; then
-        # >>> conda initialize >>>
-        # !! Contents within this block are managed by 'conda init' !!
-        __conda_setup="$('/home/rymcminn/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-        if [ $? -eq 0 ]; then
-            eval "$__conda_setup"
-        else
-            if [ -f "/home/rymcminn/anaconda3/etc/profile.d/conda.sh" ]; then
-                . "/home/rymcminn/anaconda3/etc/profile.d/conda.sh"
-            else
-                export PATH="/home/rymcminn/anaconda3/bin:$PATH"
-            fi
-        fi
-        unset __conda_setup
-        # <<< conda initialize <<<
+	# Other Linux PC
+	printf "[Other Linux PC]"
     else
-        # Home PC
-        export PATH=/opt/anaconda/bin:$PATH
-        export PATH=/home/mcminnra/bin:$PATH
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64  # Tensorflow Cuda Add
+        # Home Linux PC
+	printf "[Home Linux PC]"
+
+	# Add GO bin path
+	export PATH=$PATH:$(go env GOPATH)/bin
+
+	# Tensorflow Cuda Add
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64
+	
+        # Add personal bin to path
+        export PATH=~/bin:$PATH
+
+	# Add local anaconda to path
+        # >>> conda initialize >>>
+	# !! Contents within this block are managed by 'conda init' !!
+	__conda_setup="$('/home/mcminnra/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+	    eval "$__conda_setup"
+	else
+	    if [ -f "/home/mcminnra/anaconda3/etc/profile.d/conda.sh" ]; then
+		. "/home/mcminnra/anaconda3/etc/profile.d/conda.sh"
+	    else
+		export PATH="/home/mcminnra/anaconda3/bin:$PATH"
+	    fi
+	fi
+	unset __conda_setup
+	# <<< conda initialize <<<
     fi
 fi
 
@@ -156,9 +167,4 @@ echo -e "${GREEN}   ,AMMMMMMMMMMMMMMMMMMA,    AMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHI
 echo -e "${GREEN} ,AMMMMMMMMMMMMMMMMMMMMMA   AMMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE} |_|  |_|_(_)  |_|  |_|\___|_|  |_|_|_| |_|_| |_|"
 echo -e "${GREEN}AMMMMMMMMMMMMMMMMMMMMMMMMAaAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE}                                                "
 echo ""
-
-#Autostart X
-if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx
-fi
 
