@@ -146,20 +146,18 @@
         (0.0 . default)))
 (setq org-habit-show-habits-only-for-today nil)
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
-	(sequence "LOWRISK(l)" "MEDIUMRISK(m)" "HIGHRISK(h)")))
+      '((sequence "TODO(t)" "PRIORITY(p)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
+	(sequence "LOWRISK(l)" "MEDIUMRISK(m)" "HIGHRISK(h)" "|" "FINISHED(f)")))
 
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "white" :weight bold))
+	("PRIORITY" . (:foreground "#ff8c69" :weight bold))
 	("SCHEDULED" . (:foreground "#30acec" :weight bold))
 	("BLOCKED" . (:foreground "#e29d3e" :weight bold))
 	("REVIEW" . (:foreground "yellow" :weight bold))
 	("IN-PROGRESS" . (:foreground "#a666e1" :weight bold))
 	("DONE" . (:foreground "#80c34f" :weight bold))
 	("CANCELED" . (:foreground "#d64a3b" :weight bold))
-	("GOAL" . (:foreground "#0000ff" :weight bold))
-	("GOALREACHED" . (:foreground "white" :background "#33cc33" :weight bold))
-	("GOALMISSED" . (:foreground "white" :background "#ff0000" :weight bold))
 	("LOWRISK" . (:foreground "white" :background "#80c34f" :weight bold))
 	("MEDIUMRISK" . (:foreground "white" :background "#e29d3e" :weight bold))
 	("HIGHRISK" . (:foreground "white" :background "#d64a3b" :weight bold))))
