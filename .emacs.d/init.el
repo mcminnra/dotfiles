@@ -148,6 +148,7 @@
 (setq org-habit-show-habits-only-for-today nil)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "PRIORITY(p)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
+	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
 	(sequence "LOWRISK(l)" "MEDIUMRISK(m)" "HIGHRISK(h)" "|" "FINISHED(f)")))
 
 (setq org-todo-keyword-faces
@@ -159,6 +160,10 @@
 	("IN-PROGRESS" . (:foreground "#a666e1" :weight bold))
 	("DONE" . (:foreground "#80c34f" :weight bold))
 	("CANCELED" . (:foreground "#d64a3b" :weight bold))
+	("BACKLOG" . (:foreground "#30acec" :weight bold))
+	("NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
+	("NPML" . (:foreground "white" :background "purple" :weight bold))
+	("REJECTED" . (:foreground "#d64a3b" :weight bold))
 	("LOWRISK" . (:foreground "white" :background "#80c34f" :weight bold))
 	("MEDIUMRISK" . (:foreground "white" :background "#e29d3e" :weight bold))
 	("HIGHRISK" . (:foreground "white" :background "#d64a3b" :weight bold))))
