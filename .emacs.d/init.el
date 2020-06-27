@@ -3,8 +3,10 @@
 
 ;;; Code:
 ;; Set default Directory on Windows
-(when (eq system-type 'windows-nt)
+(when (and (eq system-type 'windows-nt) (string= user-real-login-name "rymcminn"))
   (setq default-directory "C:/Users/rymcminn/" ))
+(when (and (eq system-type 'windows-nt) (string= user-real-login-name "mcmin"))
+  (setq default-directory "C:/Users/mcmin/" ))
 
 ;; Set Home on Windows
 (when (eq system-type 'windows-nt)
@@ -145,12 +147,11 @@
       '((0.92 . org-warning)
         (0.84 . org-upcoming-deadline)
         (0.0 . default)))
-(setq org-habit-show-habits-only-for-today nil)
+(set 'org-habit-show-all-today t)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "PRIORITY(p)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
 	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
 	(sequence "LOWRISK(l)" "MEDIUMRISK(m)" "HIGHRISK(h)" "|" "FINISHED(f)")))
-
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "white" :weight bold))
 	("PRIORITY" . (:foreground "#ff8c69" :weight bold))
