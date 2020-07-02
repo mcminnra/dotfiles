@@ -145,7 +145,9 @@
       '((0.92 . org-warning)
         (0.84 . org-upcoming-deadline)
         (0.0 . default)))
-(set 'org-habit-show-all-today t)
+(setq org-habit-show-all-today t)
+(setq org-habit-following-days 1)
+(setq org-habit-preceding-days 29)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "PRIORITY(p)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
 	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
