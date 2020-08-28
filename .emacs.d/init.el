@@ -149,12 +149,13 @@
 (setq org-habit-following-days 1)
 (setq org-habit-preceding-days 29)
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "PRIORITY(p)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
+      '((sequence "GAMMA(g)" "BETA(b)" "ALPHA(a)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(k)" "|" "DONE(d)" "CANCELED(c)")
 	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
-	(sequence "LOWRISK(l)" "MEDIUMRISK(m)" "HIGHRISK(h)" "|" "FINISHED(f)")))
+	(sequence "PROJECT(P)" "|" "FINISHED(F)")))
 (setq org-todo-keyword-faces
-      '(("TODO" . (:foreground "white" :weight bold))
-	("PRIORITY" . (:foreground "#ff8c69" :weight bold))
+      '(("GAMMA" . (:foreground "#0275d8" :weight bold))
+	("BETA" . (:foreground "#5bc0de" :weight bold))
+	("ALPHA" . (:foreground "#f0ad4e" :weight bold))
 	("SCHEDULED" . (:foreground "#30acec" :weight bold))
 	("BLOCKED" . (:foreground "#e29d3e" :weight bold))
 	("REVIEW" . (:foreground "yellow" :weight bold))
