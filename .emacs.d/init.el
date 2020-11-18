@@ -148,6 +148,14 @@
 (setq org-habit-show-all-today t)
 (setq org-habit-following-days 1)
 (setq org-habit-preceding-days 29)
+(customize-set-variable 'org-highest-priority ?A)
+(customize-set-variable 'org-default-priority ?D)
+(customize-set-variable 'org-lowest-priority ?D)
+(setq org-agenda-sorting-strategy
+      '((agenda habit-down time-up priority-down category-keep)
+        (todo   priority-down category-keep todo-state-up)
+        (tags   priority-down category-keep)
+        (search category-keep)))
 (setq org-todo-keywords
       '((sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)")
 	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
@@ -167,9 +175,10 @@
 	("LOWRISK" . (:foreground "white" :background "#80c34f" :weight bold))
 	("MEDIUMRISK" . (:foreground "white" :background "#e29d3e" :weight bold))
 	("HIGHRISK" . (:foreground "white" :background "#d64a3b" :weight bold))))
-(setq org-priority-faces '((?A . (:foreground "red" :weight 'bold))
-                           (?B . (:foreground "orange"))
-                           (?C . (:foreground "yellow"))))
+(setq org-priority-faces '((?A . (:foreground "green"))
+                           (?B . (:foreground "DeepSkyBlue"))
+                           (?C . (:foreground "yellow"))
+			   (?D . (:foreground "red"))))
 
 (defun org-cycle-agenda-files ()
   "Cycle through the files in `org-agenda-files'.
@@ -217,9 +226,12 @@ If the current buffer does not, find the first agenda file."
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(org-default-priority 68)
  '(org-fontify-done-headline t)
  '(org-fontify-quote-and-verse-blocks t)
  '(org-fontify-whole-heading-line t)
+ '(org-highest-priority 65)
+ '(org-lowest-priority 68)
  '(package-selected-packages
    (quote
     (ein gruvbox-theme base16-theme rainbow-delimiters flycheck elpy multiple-cursors transpose-frame material-theme xresources-theme 0blayout theme-changer company-anaconda anaconda-mode neotree helm-flyspell org-gnome latex-preview-pane yaml-mode doom-themes color-theme-sanityinc-tomorrow dracula-theme)))
