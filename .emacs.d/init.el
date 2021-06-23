@@ -148,7 +148,8 @@
         (0.0 . default)))
 (setq org-habit-show-all-today t)
 (setq org-habit-following-days 1)
-(setq org-habit-preceding-days 29)
+(setq org-habit-preceding-days 99)
+(setq org-habit-graph-column 50)
 (customize-set-variable 'org-highest-priority ?A)
 (customize-set-variable 'org-default-priority ?D)
 (customize-set-variable 'org-lowest-priority ?D)
@@ -203,6 +204,19 @@ If the current buffer does not, find the first agenda file."
         (throw 'exit t))))
       (find-file (car fs)))
     (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
+
+(defun org-habit-streak-count ()
+  "Adds Counts to days after org column."
+  (point-min)
+  (while (not (eobp))
+    (when (get-text-property (point) 'org-habit-p)
+      (let ((count (count-matches
+                    (char-to-string org-habit-completed-glyph)
+                    (line-beginning-position) (line-end-position))))
+        (end-of-line)
+        (insert (number-to-string count))))
+      (forward-line 1)))
+(add-hook 'org-agenda-finalize-hook 'org-habit-streak-count)
 
 
 ;;;; Emacs Auto-Generated
