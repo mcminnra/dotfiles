@@ -138,7 +138,7 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-agenda-files (list "~/org/northstar.org"
 			     "~/org/tasks.org"
-			     "~/org/pe.org"
+			     "~/org/do.org"
 			     "~/org/learning.org"
 			     "~/org/microsoft.org"))
 (setq org-deadline-warning-days 90)
@@ -161,7 +161,7 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)")
 	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
-	(sequence "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "SCRAPPED(S)")))
+	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "SCRAPPED(S)")))
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "#0275d8" :weight bold))
 	("SCHEDULED" . (:foreground "#30acec" :weight bold))
@@ -173,6 +173,7 @@
 	("BACKLOG" . (:foreground "#30acec" :weight bold))
 	("NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
 	("NPML" . (:foreground "white" :background "purple" :weight bold))
+	("HOBBY" . (:foreground "white" :background "darkgreen" :weight bold))
 	("PROJECT" . (:foreground "white" :background "purple" :weight bold))
 	("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
 	("COMPLETED" . (:foreground "#80c34f" :weight bold))
