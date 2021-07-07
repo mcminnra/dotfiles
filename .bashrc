@@ -70,12 +70,6 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         # Home Linux PC
 	    printf "[Home Linux PC]"
 
-	    # Add GO bin path
-	    export PATH=$PATH:$(go env GOPATH)/bin
-
-        # Tensorflow Cuda Add
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64
-        
         # Add personal bin to path
         export PATH=~/bin:$PATH
 
