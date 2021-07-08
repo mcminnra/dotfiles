@@ -128,8 +128,6 @@ function cd()
 # WELCOME SCREEN
 ###########################################################################
 
-clear
-
 echo -e "${GREEN}           ,aodObo,                                       "
 echo -e "${GREEN}        ,AMMMMP~~~~                                       "
 echo -e "${GREEN}     ,MMMMMMMMA.                                          "
