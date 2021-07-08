@@ -68,7 +68,8 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     if [[ "$USER" == "mcminnra" ]]; then
         # Home Linux PC
-	    printf "[Home Linux PC]"
+	    echo "[Home Linux PC]"
+        echo
 
         # Add personal bin to path
         export PATH=~/bin:$PATH
@@ -90,7 +91,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         # <<< conda initialize <<<
     else
         # Other Linux PC
-	    printf "[Other Linux PC]"
+	    echo "[Other Linux PC]"
     fi
 fi
 
