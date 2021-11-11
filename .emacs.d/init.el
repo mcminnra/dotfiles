@@ -28,7 +28,7 @@
 
 (require 'use-package)
 
-;; Various Settings
+;; Various Emacs Settings
 (scroll-bar-mode -1)                                  ; No Scroll
 (tool-bar-mode -1)                                    ; No Toolbar
 (menu-bar-mode -1)                                    ; No Menu Bar
@@ -156,28 +156,30 @@
         (search category-keep)))
 (setq org-todo-keywords
       '((sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)")
-	(sequence "BACKLOG(B)" "NOTEBOOK(O)" "NPML(N)" "|" "REJECTED(R)")
-	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "SCRAPPED(S)")))
+	(sequence "REOCCURING(e)" "|" "DONE(f)")
+	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "ARCHIVED(A)")
+	(sequence "BACKLOG(B)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
-      '(("TODO" . (:foreground "#0275d8" :weight bold))
-	("SCHEDULED" . (:foreground "#30acec" :weight bold))
-	("BLOCKED" . (:foreground "#e29d3e" :weight bold))
-	("REVIEW" . (:foreground "yellow" :weight bold))
-	("IN-PROGRESS" . (:foreground "#a666e1" :weight bold))
-	("DONE" . (:foreground "#80c34f" :weight bold))
-	("CANCELED" . (:foreground "#d64a3b" :weight bold))
-	("BACKLOG" . (:foreground "#30acec" :weight bold))
-	("NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
-	("NPML" . (:foreground "white" :background "purple" :weight bold))
+      '(("TODO" . (:foreground "#30acec" :weight bold))
+	("SCHEDULED" . (:foreground "#339989" :weight bold))
+	("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
+	("REVIEW" . (:foreground "#f7b801" :weight bold))
+	("BLOCKED" . (:foreground "#f6511d" :weight bold))
+	("DONE" . (:foreground "#6a994e" :weight bold))
+	;; Reoccuring
+	("REOCCURING" . (:foreground "#339989" :weight bold))
+	;; Project, Hobby, Learning Flow
 	("HOBBY" . (:foreground "white" :background "darkgreen" :weight bold))
 	("PROJECT" . (:foreground "white" :background "purple" :weight bold))
 	("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
 	("COMPLETED" . (:foreground "#80c34f" :weight bold))
-        ("SCRAPPED" . (:foreground "#d64a3b" :weight bold))
-	("REJECTED" . (:foreground "#d64a3b" :weight bold))
-	("LOWRISK" . (:foreground "white" :background "#80c34f" :weight bold))
-	("MEDIUMRISK" . (:foreground "white" :background "#e29d3e" :weight bold))
-	("HIGHRISK" . (:foreground "white" :background "#d64a3b" :weight bold))))
+	("ARCHIVED" . (:foreground "#d64a3b" :weight bold))
+	;; Learning Flow
+	("BACKLOG" . (:foreground "#30acec" :weight bold))
+	("IN-NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
+	("IN-NPML" . (:foreground "white" :background "purple" :weight bold))
+	("IN-REPO" . (:foreground "white" :background "#7cb518" :weight bold))
+	("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
 (setq org-priority-faces '((?A . (:foreground "green"))
                            (?B . (:foreground "DeepSkyBlue"))
                            (?C . (:foreground "yellow"))
