@@ -10,9 +10,8 @@
 [[ $PS1 && -f /usr/local/etc/bash-completion ]] && \
     . /usr/local/etc/bash-completion
 
-force_color_prompt=yes
-
 # Colors
+force_color_prompt=yes
 BLACK='\033[0;30m'
 BLUE='\033[0;34m'
 GREEN='\033[0;32m'
@@ -45,10 +44,8 @@ fi
 export PROMPT_COMMAND='q="- $(date +%T)"; while [[ ${#q} -lt $COLUMNS ]]; do q="${q:0:1}$q"; done; echo -e "\033[0;90m$q\033[0;37m";'
 export PS1="${WHITE}[ \[${LIGHTGREEN}\]\u ${NC}@ ${GREEN}\h${LIGHTBLUE} \W${NC}]${ROOT} \$ ${NC}"
 
-# Defaults
+# Default ENV Vars
 export EDITOR="emacs"
-export TERMINAL="terminator"
-#export TERM=xterm-256color
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
@@ -64,35 +61,33 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-# Path Adds
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    if [[ "$USER" == "mcminnra" ]]; then
-        # Home Linux PC
-	    echo "[Home Linux PC]"
-        echo
+# Ubuntu Linux WSL2-Specific Config
+if [[ "$USER" == "mcminnra" ]] && [[ -d "/run/WSL" ]]; then
+    echo "[Home WSL2 Ubuntu]"
+    echo
 
-        # Add personal bin to path
-        export PATH=~/bin:$PATH
+    # WSL2 Specific ENV Vars
+    export BROWSER="wslview"
+    export EDITOR="code"
 
-        # Add local anaconda to path
-        # >>> conda initialize >>>
-        # !! Contents within this block are managed by 'conda init' !!
-        __conda_setup="$('/home/mcminnra/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-        if [ $? -eq 0 ]; then
-            eval "$__conda_setup"
-        else
-            if [ -f "/home/mcminnra/miniconda3/etc/profile.d/conda.sh" ]; then
-                . "/home/mcminnra/miniconda3/etc/profile.d/conda.sh"
-            else
-                export PATH="/home/mcminnra/miniconda3/bin:$PATH"
-            fi
-        fi
-        unset __conda_setup
-        # <<< conda initialize <<<
+    # Add personal bin to path
+    export PATH=~/bin:$PATH
+
+    # Add local anaconda to path
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('/home/mcminnra/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        # Other Linux PC
-	    echo "[Other Linux PC]"
+        if [ -f "/home/mcminnra/miniconda3/etc/profile.d/conda.sh" ]; then
+            . "/home/mcminnra/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="/home/mcminnra/miniconda3/bin:$PATH"
+        fi
     fi
+    unset __conda_setup
+    # <<< conda initialize <<<
 fi
 
 # FUNCTIONS
