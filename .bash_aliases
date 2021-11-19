@@ -51,3 +51,8 @@ alias tynamo='ssh -v -L 16006:127.0.0.1:6006 tynamo.soic.indiana.edu -l rmcminn'
 alias rydermcminn.com='ssh 50.116.44.24 -l mcminnra'
 alias burrow='ssh burrow.cs.indiana.edu -l rmcminn'
 alias xsede='ssh -l rmcminn login.xsede.org'
+
+# Ubuntu Linux WSL2-Specific Config
+if [[ "$USER" == "mcminnra" ]] && [[ -d "/run/WSL" ]]; then\
+    alias projects="cd /mnt/c/Users/mcmin/projects"
+fi
