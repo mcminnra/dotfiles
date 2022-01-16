@@ -136,7 +136,11 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 (add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-agenda-files (list "~/org/main.org"))
+(setq org-agenda-files (list "~/org/northstar.org" 
+           "~/org/tasks.org"
+			     "~/org/work.org"
+			     "~/org/phel.org"
+			     ))
 (setq org-deadline-warning-days 90)
 (setq org-agenda-deadline-faces
       '((0.92 . org-warning)
@@ -155,17 +159,18 @@
         (tags   priority-down category-keep)
         (search category-keep)))
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "SCHEDULED(s)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)")
+      '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
 	(sequence "REOCCURING(e)" "|" "DONE(f)")
 	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "ARCHIVED(A)")
 	(sequence "BACKLOG(B)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "#30acec" :weight bold))
-	("SCHEDULED" . (:foreground "#339989" :weight bold))
-	("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
+	("WAITING" . (:foreground "#339989" :weight bold))
+	("STARTED" . (:foreground "#725ac1" :weight bold))
 	("REVIEW" . (:foreground "#f7b801" :weight bold))
 	("BLOCKED" . (:foreground "#f6511d" :weight bold))
 	("DONE" . (:foreground "#6a994e" :weight bold))
+	("CANCELLED" . (:foreground "#d64a3b" :weight bold))
 	;; Reoccuring
 	("REOCCURING" . (:foreground "#339989" :weight bold))
 	;; Project, Hobby, Learning Flow
