@@ -136,8 +136,8 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 (add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-agenda-files (list "~/org/northstar.org" 
-           "~/org/tasks.org"
+(setq org-agenda-files (list "~/org/northstar.org"
+			     "~/org/tasks.org"
 			     "~/org/work.org"
 			     "~/org/phel.org"
 			     ))
@@ -154,7 +154,7 @@
 (customize-set-variable 'org-default-priority ?D)
 (customize-set-variable 'org-lowest-priority ?D)
 (setq org-agenda-sorting-strategy
-      '((agenda habit-down time-up priority-down category-keep)
+      '((agenda habit-down deadline-up scheduled-up time-up priority-down category-keep)
         (todo   priority-down category-keep todo-state-up)
         (tags   priority-down category-keep)
         (search category-keep)))
