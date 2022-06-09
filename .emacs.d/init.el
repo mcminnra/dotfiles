@@ -136,17 +136,10 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 (add-hook 'org-mode-hook 'org-indent-mode)
-; Set agenda differently on Mac OSX
-(when (eq system-type 'darwin)
- (setq org-agenda-files (list "/Users/mcminnra/Google Drive/My Drive/org/northstar.org"
-			      "/Users/mcminnra/Google Drive/My Drive/org/tasks.org"
-			      "/Users/mcminnra/Google Drive/My Drive/org/work.org"
-			      "/Users/mcminnra/Google Drive/My Drive/org/phel.org")))
-(when (not (eq system-type 'darwin))
-  (setq org-agenda-files (list "~/org/northstar.org"
-			       "~/org/tasks.org"
-			       "~/org/work.org"
-			       "~/org/phel.org")))
+(setq org-agenda-files (list "~/org/northstar.org"
+			     "~/org/tasks.org"
+			     "~/org/work.org"
+			     "~/org/phel.org"))
 (setq org-deadline-warning-days 90)
 (setq org-agenda-deadline-faces
       '((0.92 . org-warning)
