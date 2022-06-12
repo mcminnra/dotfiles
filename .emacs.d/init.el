@@ -139,7 +139,9 @@
 (setq org-agenda-files (list "~/org/northstar.org"
 			     "~/org/tasks.org"
 			     "~/org/work.org"
-			     "~/org/phel.org"))
+			     "~/org/ph.org"
+			     "~/org/e.org"
+			     "~/org/l.org"))
 (setq org-deadline-warning-days 90)
 (setq org-agenda-deadline-faces
       '((0.92 . org-warning)
