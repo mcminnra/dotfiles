@@ -152,8 +152,8 @@
 (setq org-habit-preceding-days 29)
 (setq org-habit-graph-column 50)
 (customize-set-variable 'org-highest-priority ?A)
-(customize-set-variable 'org-default-priority ?D)
-(customize-set-variable 'org-lowest-priority ?D)
+(customize-set-variable 'org-default-priority ?E)
+(customize-set-variable 'org-lowest-priority ?E)
 (setq org-agenda-sorting-strategy
       '((agenda habit-down deadline-up scheduled-up time-up priority-down category-keep)
         (todo   priority-down category-keep todo-state-up)
