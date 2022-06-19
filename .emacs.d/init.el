@@ -151,10 +151,9 @@
 (setq org-habit-following-days 1)
 (setq org-habit-preceding-days 29)
 (setq org-habit-graph-column 50)
-(setq org-enable-priority-commands t
-      org-priority-highest ?A
-      org-priority-default ?E
-      org-priority-lowest ?E)
+(customize-set-variable 'org-highest-priority ?A)
+(customize-set-variable 'org-default-priority ?E)
+(customize-set-variable 'org-lowest-priority ?E)
 (setq org-agenda-sorting-strategy
       '((agenda habit-down deadline-up scheduled-up time-up priority-down category-keep)
         (todo   priority-down category-keep todo-state-up)
@@ -190,8 +189,7 @@
 (setq org-priority-faces '((?A . (:foreground "green"))
                            (?B . (:foreground "DeepSkyBlue"))
                            (?C . (:foreground "yellow"))
-			   (?D . (:foreground "orange red"))
-			   (?E . (:foreground "red"))))
+			   (?D . (:foreground "red"))))
 
 (defun org-cycle-agenda-files ()
   "Cycle through the files in `org-agenda-files'.
