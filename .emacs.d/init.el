@@ -38,6 +38,7 @@
 (setq backup-directory-alist `(("." . "~/.saves")))   ; Set backupdir
 (global-linum-mode t)                                 ; Set line numbers
 (toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
+(setq create-lockfiles nil)                           ; Turn off .# lock files
 
 ;; Font
 (set-face-attribute 'default nil :font "Source Code Pro" :height 105)
