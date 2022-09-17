@@ -76,6 +76,11 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+alias ll='ls -AlhGrti'
+alias lsa='ls -a'
+alias gitlog='git log --graph --oneline --all --decorate --pretty="%C(bold)%ad%C(reset) %C(yellow)%h%C(reset) %an %C(blue)%s" --date=format:"%y/%m/%d"'
+alias ip='ifconfig | grep -Eo '"'"'inet (addr:)?([0-9]*\.){3}[0-9]*'"'"' | grep -Eo '"'"'([0-9]*\.){3}[0-9]*'"'"' | grep -v '"'"'127.0.0.1'"'"''
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -99,3 +104,57 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# WELCOME SCREEN
+###########################################################################
+
+force_color_prompt=yes
+BLACK='\033[0;30m'
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+RED='\033[0;31m'
+PURPLE='\033[0;35m'
+BROWN='\033[0;33m'
+LIGHTGRAY='\033[0;37m'
+DARKGRAY='\033[1;30m'
+LIGHTBLUE='\033[1;34m'
+LIGHTGREEN='\033[1;32m'
+LIGHTCYAN='\033[1;36m'
+LIGHTRED='\033[1;31m'
+LIGHTPURPLE='\033[1;35m'
+YELLOW='\033[1;33m'
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}           ,aodObo,                                       "
+echo -e "${GREEN}        ,AMMMMP~~~~                                       "
+echo -e "${GREEN}     ,MMMMMMMMA.                                          "
+echo -e "${GREEN}   ,M;'     'YV'                                          "
+echo -e "${GREEN}  AM' ,OMA,                                               "
+echo -e "${GREEN} AM|   '~VMM,.      ${LIGHTGREEN}.,ama,____,amma,..                    "
+echo -e "${GREEN} MML      )MMMD   ${LIGHTGREEN}.AMMMMMMMMMMMMMMMMMMD.                  "
+echo -e "${GREEN} VMMM    .AMMY'  ${LIGHTGREEN},AMMMMMMMMMMMMMMMMMMMMD                  "
+echo -e "${GREEN} 'VMM, AMMMV'  ${LIGHTGREEN},AMMMMMMMMMMMMMMMMMMMMMMM,                ${GREEN},"
+echo -e "${GREEN}  VMMMMMMV'  ${LIGHTGREEN},AMY~~''  'MMMMMMMMMMMM' '~~             ${GREEN},aMM"
+echo -e "${GREEN}  'YMMMM'   ${LIGHTGREEN}AMM'        'VMMMMMMMMP'_              ${GREEN}A,aMMMM"
+echo -e "${GREEN}   AMMM'    ${LIGHTGREEN}VMMA. YVmmmMMMMMMMMMMML MmmmY          ${GREEN}MMMMMMM"
+echo -e "${GREEN}  ,AMMA   _,${LIGHTGREEN}HMMMMmdMMMMMMMMMMMMMMMML'VMV'         ${GREEN},MMMMMMM"
+echo -e "${GREEN}  AMMMA _'MMM${LIGHTGREEN}MMMMMMMMMMMMMMMMMMMMMMMA ''          ${GREEN}MMMMMMMM"
+echo -e "${GREEN} ,AMMMMMMMMMM${LIGHTGREEN}MMMMMMMMMMMMMMMMMMMMMMMMa      ,,,   ${GREEN}'MMMMMMM"
+echo -e "${GREEN} AMMMMMMMMM'~${LIGHTGREEN}'YMMMMMMMMMMMMMMMMMMMMMMA    ,AMMV    ${GREEN}MMMMMMM"
+echo -e "${GREEN} VMV MMMMMV   ${LIGHTGREEN}'YMMMMMMMMMMMMMMMMMMMMMY   'VMMY'  ${GREEN}adMMMMMMM${WHITE}  _    _      _ _   "
+echo -e "${GREEN} 'V  MMMM'      ${LIGHTGREEN}'YMMMMMMMV.~~~~~~~~~,aado,'V''   ${GREEN}MMMMMMMMM${WHITE} | |  | |    | | |    "
+echo -e "${GREEN}    aMMMMmv       ${LIGHTGREEN}'YMMMMMMMm,    ,/AMMMMMA,      ${GREEN}YMMMMMMMM${WHITE} | |__| | ___| | | ___  "
+echo -e "${GREEN}    VMMMMM,,v       ${LIGHTGREEN}YMMMMMMMMMo oMMMMMMMMM'    ${GREEN}a, YMMMMMMM${WHITE} |  __  |/ _ \ | |/ _ \ "
+echo -e "${GREEN}    'YMMMMMY'       ${LIGHTGREEN}'YMMMMMMMY' 'YMMMMMMMY     ${GREEN}MMmMMMMMMMM${WHITE} | |  | |  __/ | | (_) |"
+echo -e "${GREEN}     AMMMMM  ,        ${LIGHTGREEN}~~~~~,aooooa,~~~~~~      ${GREEN}MMMMMMMMMMM${WHITE} |_|  |_|\___|_|_|\___( )"
+echo -e "${GREEN}       YMMMb,d'         ${LIGHTGREEN}dMMMMMMMMMMMMMD,   ${GREEN}a,, AMMMMMMMMMM${WHITE}                      |/  "
+echo -e "${GREEN}        YMMMMM, A       ${LIGHTGREEN}YMMMMMMMMMMMMMY   ${GREEN},MMMMMMMMMMMMMMM${WHITE}  __  __        __  __      __  __ _"
+echo -e "${GREEN}       AMMMMMMMMM        ${LIGHTGREEN}'~~~~'  '~~~~'   ${GREEN}AMMMMMMMMMMMMMMM${WHITE} |  \/  |      |  \/  |    |  \/  (_)"
+echo -e "${GREEN}       'VMMMMMM'  ,A,                  ,,AMMMMMMMMMMMMMMMM${WHITE} | \  / |_ __  | \  / | ___| \  / |_ _ __  _ __"
+echo -e "${GREEN}     ,AMMMMMMMMMMMMMMA,       ,aAMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE} | |\/| | '__| | |\/| |/ __| |\/| | | '_ \| '_ \ "
+echo -e "${GREEN}   ,AMMMMMMMMMMMMMMMMMMA,    AMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE} | |  | | |_   | |  | | (__| |  | | | | | | | | |"
+echo -e "${GREEN} ,AMMMMMMMMMMMMMMMMMMMMMA   AMMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE} |_|  |_|_(_)  |_|  |_|\___|_|  |_|_|_| |_|_| |_|"
+echo -e "${GREEN}AMMMMMMMMMMMMMMMMMMMMMMMMAaAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE}                                                "
+echo ""
