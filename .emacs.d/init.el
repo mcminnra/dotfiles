@@ -141,18 +141,23 @@
         (tags   priority-down category-keep)
         (search category-keep)))
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
+      '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
+	(sequence "STORY->TODO(s)" "STORY->IN-PROGRESS(n)" "|" "STORY->DONE(y)")
 	(sequence "REOCCURING(e)" "|" "DONE(f)")
 	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "ARCHIVED(A)")
 	(sequence "BACKLOG(B)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "#30acec" :weight bold))
 	("WAITING" . (:foreground "#339989" :weight bold))
-	("STARTED" . (:foreground "#725ac1" :weight bold))
+	("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
 	("REVIEW" . (:foreground "#f7b801" :weight bold))
 	("BLOCKED" . (:foreground "#f6511d" :weight bold))
 	("DONE" . (:foreground "#6a994e" :weight bold))
 	("CANCELLED" . (:foreground "#d64a3b" :weight bold))
+	;; Story
+	("STORY->TODO" . (:foreground "#008080" :weight bold))
+	("STORY->IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
+	("STORY->DONE" . (:foreground "#6a994e" :weight bold))
 	;; Reoccuring
 	("REOCCURING" . (:foreground "#339989" :weight bold))
 	;; Project, Hobby, Learning Flow
