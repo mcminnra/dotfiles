@@ -140,6 +140,7 @@
         (todo   priority-down category-keep todo-state-up)
         (tags   priority-down category-keep)
         (search category-keep)))
+(setq org-agenda-start-on-weekday nil)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
 	(sequence "STORY->TODO(s)" "STORY->IN-PROGRESS(n)" "|" "STORY->DONE(y)")
