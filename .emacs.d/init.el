@@ -144,9 +144,10 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
 	(sequence "STORY->TODO(s)" "STORY->IN-PROGRESS(n)" "|" "STORY->DONE(y)")
-	(sequence "REOCCURING(e)" "|" "DONE(f)")
-	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "|" "COMPLETED(C)" "ARCHIVED(A)")
-	(sequence "BACKLOG(B)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
+	(sequence "HABIT(h)" "|" "DONE(f)")
+	(sequence "REOCCURING(e)" "|" "DONE(g)")
+	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "VIDEO-GAME(V)" "BOOK(B)" "|" "COMPLETED(C)" "ARCHIVED(A)")
+	(sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "#30acec" :weight bold))
 	("WAITING" . (:foreground "#339989" :weight bold))
@@ -163,6 +164,8 @@
 	("REOCCURING" . (:foreground "#339989" :weight bold))
 	;; Project, Hobby, Learning Flow
 	("HOBBY" . (:foreground "white" :background "darkgreen" :weight bold))
+	("VIDEO-GAME" . (:foreground "white" :background "darkblue" :weight bold))
+	("BOOK" . (:foreground "white" :background "darkred" :weight bold))
 	("PROJECT" . (:foreground "white" :background "purple" :weight bold))
 	("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
 	("COMPLETED" . (:foreground "#80c34f" :weight bold))
