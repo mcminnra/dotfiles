@@ -77,7 +77,8 @@
 			     "~/org/work.org"
 			     "~/org/ph.org"
 			     "~/org/e.org"
-			     "~/org/l.org"))
+			     "~/org/l.org"
+                             "~/org/capture.org"))
 (setq org-deadline-warning-days 90)
 (setq org-agenda-deadline-faces
       '((0.92 . org-warning)
