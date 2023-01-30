@@ -3,8 +3,8 @@
 ;; Doom settings
 (setq user-full-name "Ryder McMinn"
       user-mail-address "mcminnra@gmail.com")
-(setq doom-theme 'doom-gruvbox)
-(setq doom-font "Source Code Pro")
+(setq doom-theme 'doom-old-hope) ; doom-old-hope
+(setq doom-font (font-spec :family "Source Code Pro" :weight 'normal))
 (setq display-line-numbers-type t)
 (setq org-directory "~/org/")
 
@@ -103,7 +103,7 @@
 	(sequence "STORY->TODO(s)" "STORY->IN-PROGRESS(n)" "|" "STORY->DONE(y)")
 	(sequence "HABIT(h)" "|" "DONE(f)")
 	(sequence "REOCCURING(e)" "|" "DONE(g)")
-	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "VIDEO-GAME(V)" "BOOK(B)" "|" "COMPLETED(C)" "ARCHIVED(A)")
+	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "VIDEO-GAME(V)" "BOOK(B)" "|" "COMPLETED(C)" "1(1)" "2(2)" "3(3)" "4(4)" "5(5)")
 	(sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "#30acec" :weight bold))
@@ -126,7 +126,11 @@
 	("PROJECT" . (:foreground "white" :background "purple" :weight bold))
 	("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
 	("COMPLETED" . (:foreground "#80c34f" :weight bold))
-	("ARCHIVED" . (:foreground "#d64a3b" :weight bold))
+	("1" . (:foreground "red" :weight bold))
+        ("2" . (:foreground "orange" :weight bold))
+        ("3" . (:foreground "gold" :weight bold))
+        ("4" . (:foreground "lightgreen" :weight bold))
+        ("5" . (:foreground "forestgreen" :weight bold))
 	;; Learning Flow
 	("BACKLOG" . (:foreground "#30acec" :weight bold))
 	("IN-NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
