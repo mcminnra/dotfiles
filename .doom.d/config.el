@@ -74,6 +74,7 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-agenda-files (list "~/org/northstar.org"
 			     "~/org/tasks.org"
+                             "~/org/stuff.org"
 			     "~/org/work.org"
 			     "~/org/ph.org"
 			     "~/org/e.org"
