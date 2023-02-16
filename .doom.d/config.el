@@ -101,10 +101,8 @@
         (search category-keep)))
 (setq org-agenda-start-on-weekday nil)
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "BLOCKED(b)" "|" "DONE(d)" "CANCELLED(c)")
+      '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
 	(sequence "STORY->TODO(s)" "STORY->IN-PROGRESS(n)" "|" "STORY->DONE(y)")
-	(sequence "HABIT(h)" "|" "DONE(f)")
-	(sequence "REOCCURING(e)" "|" "DONE(g)")
 	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "VIDEO-GAME(V)" "BOOK(B)" "|" "COMPLETED(C)" "1(1)" "2(2)" "3(3)" "4(4)" "5(5)")
 	(sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
