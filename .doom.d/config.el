@@ -76,9 +76,9 @@
 			     "~/org/tasks.org"
                              "~/org/stuff.org"
 			     "~/org/work.org"
-			     "~/org/ph.org"
-			     "~/org/e.org"
-			     "~/org/l.org"
+			     "~/org/projects.org"
+			     "~/org/experiences.org"
+			     "~/org/learning.org"
                              "~/org/capture.org"))
 (setq org-deadline-warning-days 90)
 (setq org-agenda-deadline-faces
@@ -101,9 +101,9 @@
         (search category-keep)))
 (setq org-agenda-start-on-weekday nil)
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
-	(sequence "STORY->TODO(s)" "STORY->IN-PROGRESS(n)" "|" "STORY->DONE(y)")
-	(sequence "HOBBY(H)" "PROJECT(P)" "EXPERIENCE(E)" "VIDEO-GAME(V)" "BOOK(B)" "|" "COMPLETED(C)" "1(1)" "2(2)" "3(3)" "4(4)" "5(5)")
+      '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)")
+        (sequence "PROJECT(P)" "|" "DONE(d)" "CANCELLED(c)")
+        (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)")
 	(sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "#30acec" :weight bold))
@@ -113,24 +113,17 @@
 	("BLOCKED" . (:foreground "#f6511d" :weight bold))
 	("DONE" . (:foreground "#6a994e" :weight bold))
 	("CANCELLED" . (:foreground "#d64a3b" :weight bold))
-	;; Story
-	("STORY->TODO" . (:foreground "#008080" :weight bold))
-	("STORY->IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
-	("STORY->DONE" . (:foreground "#6a994e" :weight bold))
-	;; Reoccuring
-	("REOCCURING" . (:foreground "#339989" :weight bold))
-	;; Project, Hobby, Learning Flow
+	;; Project, Experience
 	("HOBBY" . (:foreground "white" :background "darkgreen" :weight bold))
 	("VIDEO-GAME" . (:foreground "white" :background "darkblue" :weight bold))
 	("BOOK" . (:foreground "white" :background "darkred" :weight bold))
 	("PROJECT" . (:foreground "white" :background "purple" :weight bold))
 	("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
-	("COMPLETED" . (:foreground "#80c34f" :weight bold))
-	("1" . (:foreground "red" :weight bold))
-        ("2" . (:foreground "orange" :weight bold))
-        ("3" . (:foreground "gold" :weight bold))
-        ("4" . (:foreground "lightgreen" :weight bold))
-        ("5" . (:foreground "forestgreen" :weight bold))
+	("ONE" . (:foreground "red" :weight bold))
+        ("TWO" . (:foreground "orange" :weight bold))
+        ("THREE" . (:foreground "gold" :weight bold))
+        ("FOUR" . (:foreground "lightgreen" :weight bold))
+        ("FIVE" . (:foreground "forestgreen" :weight bold))
 	;; Learning Flow
 	("BACKLOG" . (:foreground "#30acec" :weight bold))
 	("IN-NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
