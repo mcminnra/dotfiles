@@ -29,6 +29,7 @@
 (global-linum-mode t)                                 ; Set line numbers
 (toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 (setq create-lockfiles nil)                           ; Turn off .# lock files
+(global-auto-revert-mode t)                           ; Auto refresh buffers
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(95))
