@@ -136,6 +136,10 @@
                            (?C . (:foreground "yellow"))
 			                     (?D . (:foreground "orange red"))
                            (?E . (:foreground "red"))))
+(setq org-capture-templates
+      '(("l" "Link"
+             entry (file "~/org/capture.org")
+             "* [[%^{link-url}][%^{link-description}]]")))
 
 (defun org-cycle-agenda-files ()
   "Cycle through the files in `org-agenda-files'.
