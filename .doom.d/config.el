@@ -145,6 +145,7 @@
         (setq org-roam-index-file "~/org/notes/index.org")
         (setq find-file-visit-truename t)  ; Enable symlinks
         (org-roam-db-autosync-mode)
+        (setq org-roam-db-update-on-save t)
         (global-set-key (kbd "C-c n r w") #'org-roam-refile))
 
 (defun org-cycle-agenda-files ()
