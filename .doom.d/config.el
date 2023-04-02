@@ -140,6 +140,12 @@
       '(("l" "Link"
              entry (file "~/org/capture.org")
              "* [[%^{link-url}][%^{link-description}]]")))
+(after! org
+        (setq org-roam-directory "~/org/notes/")
+        (setq org-roam-index-file "~/org/notes/index.org")
+        (setq find-file-visit-truename t)  ; Enable symlinks
+        (org-roam-db-autosync-mode)
+        (global-set-key (kbd "C-c n r w") #'org-roam-refile))
 
 (defun org-cycle-agenda-files ()
   "Cycle through the files in `org-agenda-files'.
