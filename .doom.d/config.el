@@ -138,8 +138,11 @@
                            (?E . (:foreground "red"))))
 (setq org-capture-templates
       '(("l" "Link"
-             entry (file "~/org/capture.org")
-             "* [[%^{link-url}][%^{link-description}]]")))
+            entry (file "~/org/capture.org")
+            "* [[%^{link-url}][%^{link-description}]]")
+        ("t" "Tasks"
+            entry (file  "~/org/capture.org")
+            "* TODO %?\n %U")))
 (after! org
         (setq org-roam-directory "~/org/notes/")
         (setq org-roam-index-file "~/org/notes/index.org")
