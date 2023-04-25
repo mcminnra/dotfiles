@@ -2,7 +2,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-# Set paths folder
+# Set paths
 switch (uname -s)
     case Darwin
         fish_add_path /opt/homebrew/bin
@@ -12,6 +12,19 @@ switch (uname -s)
        echo "Unable to set paths"
 end
 
+#== Aliases
+alias ls exa
+alias cat bat
+alias ll "exa -alh"
+alias la "exa -alh"
+
+#== Functions
+function db
+    set user $HOME
+    cd "$HOME/Dropbox"
+end
+
+# Starship.rs prompt init
 starship init fish | source
 
 # >>> conda initialize >>>
