@@ -105,6 +105,21 @@ alias ip='ifconfig | grep -Eo '"'"'inet (addr:)?([0-9]*\.){3}[0-9]*'"'"' | grep 
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/mcminnra/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/mcminnra/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/mcminnra/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/mcminnra/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
 # WELCOME SCREEN
 ###########################################################################
 
@@ -158,3 +173,6 @@ echo -e "${GREEN}   ,AMMMMMMMMMMMMMMMMMMA,    AMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHI
 echo -e "${GREEN} ,AMMMMMMMMMMMMMMMMMMMMMA   AMMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE} |_|  |_|_(_)  |_|  |_|\___|_|  |_|_|_| |_|_| |_|"
 echo -e "${GREEN}AMMMMMMMMMMMMMMMMMMMMMMMMAaAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM${WHITE}                                                "
 echo ""
+
+
+
