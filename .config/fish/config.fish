@@ -12,6 +12,9 @@ switch (uname -s)
        echo "Unable to set paths"
 end
 
+#== Universal Variables
+set -U EDITOR code
+
 #== Aliases
 alias ls exa
 alias cat bat
