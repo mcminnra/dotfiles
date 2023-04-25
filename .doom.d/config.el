@@ -4,19 +4,8 @@
 (setq user-full-name "Ryder McMinn"
       user-mail-address "mcminnra@gmail.com")
 (setq doom-theme 'doom-old-hope) ; doom-old-hope
-(setq doom-font (font-spec :family "Source Code Pro" :weight 'normal))
-(setq display-line-numbers-type t)
+(setq doom-font (font-spec :family "Hack Nerd Font" :weight 'normal))
 (setq org-directory "~/org/")
-
-;; Set default Directory on Windows
-(when (and (eq system-type 'windows-nt) (string= user-real-login-name "rymcminn"))
-  (setq default-directory "c:/Users/rymcminn/" ))
-(when (and (eq system-type 'windows-nt) (string= user-real-login-name "mcmin"))
-  (setq default-directory "c:/Users/mcmin/" ))
-
-;; Set Home on Windows
-(when (eq system-type 'windows-nt)
-  (setenv "Home" (getenv "UserProfile")))
 
 ;; Various Emacs Settings
 (scroll-bar-mode -1)                                  ; No Scroll
@@ -26,7 +15,6 @@
 (show-paren-mode 1)                                   ; Make Emacs highlight paired parentheses
 (setq visible-bell t)                                 ; Make bell visible
 (setq backup-directory-alist `(("." . "~/.saves")))   ; Set backupdir
-(global-linum-mode t)                                 ; Set line numbers
 (toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 (setq create-lockfiles nil)                           ; Turn off .# lock files
 (global-auto-revert-mode t)                           ; Auto refresh buffers
@@ -35,7 +23,7 @@
 (set-frame-parameter (selected-frame) 'alpha '(95))
 (add-to-list 'default-frame-alist '(alpha . (95)))
 
-;; Helper functions
+;; Emacs Helper functions
 (defun split-and-follow-horizontally ()
   (interactive)
   (split-window-below)
@@ -53,9 +41,6 @@
 ;; ===============================================
 ;; Packages Config
 ;; ===============================================
-;; neotree
-(global-set-key [f8] 'neotree-toggle)
-
 ;; multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
