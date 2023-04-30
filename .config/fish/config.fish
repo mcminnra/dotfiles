@@ -11,6 +11,7 @@ switch (uname -s)
     case Darwin
         fish_add_path /opt/homebrew/bin
         fish_add_path ~/.emacs.d/bin
+        alias emacs='emacsclient -t --alternate-editor=nano'  # Sets the terminal emacs experience
     case Linux
         #do linux
     case '*'
@@ -25,7 +26,6 @@ alias ls exa
 alias cat bat
 alias ll "exa -alh"
 alias la "exa -alh"
-alias emacs='emacsclient -t --alternate-editor=nano'  # Sets the terminal emacs experience
 
 #== Functions
 function db
