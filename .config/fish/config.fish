@@ -40,10 +40,12 @@ end
 # Starship.rs prompt init
 starship init fish | source
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+# Manually config Conda
+# OSX
 if test -f /Users/mcminnra/miniconda3/bin/conda
     eval /Users/mcminnra/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 end
-# <<< conda initialize <<<
-
+# Linux
+if test -f /home/mcminnra/miniconda3/bin/conda
+    eval /home/mcminnra/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+end
