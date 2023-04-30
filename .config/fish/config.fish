@@ -5,7 +5,6 @@ end
 # Disable the greeting
 set fish_greeting ""
 
-
 # Set paths
 switch (uname -s)
     case Darwin
@@ -22,10 +21,15 @@ end
 set -U EDITOR emacs
 
 #== Aliases
-alias ls exa
-alias cat bat
-alias ll "exa -alh"
-alias la "exa -alh"
+alias ls exa  # Replace ls - https://github.com/ogham/exa
+alias ll "exa -alh" # Replace ls - https://github.com/ogham/exa
+alias la "exa -alh" # Replace ls - https://github.com/ogham/exa
+alias cat bat  # Replace cat - https://github.com/sharkdp/bat
+alias top btop  # Replace top - https://github.com/aristocratos/btop
+alias htop btop  # Replace top - https://github.com/aristocratos/btop
+alias sg "s -p google"  # https://github.com/zquestz/s
+alias tree "tree -ChD --dirsfirst"
+alias ydl youtube-dl  # https://github.com/ytdl-org/youtube-dl
 
 #== Functions
 function db
