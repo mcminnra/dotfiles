@@ -12,7 +12,8 @@ switch (uname -s)
         fish_add_path ~/.emacs.d/bin
         alias emacs='emacsclient -t --alternate-editor=nano'  # Sets the terminal emacs experience
     case Linux
-        #do linux
+        fish_add_path ~/.config/emacs/bin/
+        fish_add_path ~/.local/bin/
     case '*'
        echo "Unable to set paths"
 end
