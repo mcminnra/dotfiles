@@ -45,7 +45,3 @@ starship init fish | source
 if test -f /Users/mcminnra/miniconda3/bin/conda
     eval /Users/mcminnra/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 end
-# Linux
-if test -f /home/mcminnra/miniconda3/bin/conda
-    eval /home/mcminnra/miniconda3/bin/conda "shell.fish" "hook" $argv | source
-end
