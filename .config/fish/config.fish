@@ -14,6 +14,7 @@ switch (uname -s)
     case Linux
         fish_add_path ~/.config/emacs/bin/
         fish_add_path ~/.local/bin/
+        fish_add_path ~/.cargo/bin/  # Rust
     case '*'
        echo "Unable to set paths"
 end
