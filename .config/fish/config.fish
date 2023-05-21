@@ -10,6 +10,7 @@ switch (uname -s)
     case Darwin
         fish_add_path /opt/homebrew/bin
         fish_add_path ~/.emacs.d/bin
+        fish_add_path /Users/mcminnra/.local/bin
         alias emacs='emacsclient -t --alternate-editor=nano'  # Sets the terminal emacs experience
     case Linux
         fish_add_path ~/.config/emacs/bin/
