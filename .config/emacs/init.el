@@ -64,9 +64,8 @@
 (use-package multiple-cursors
   :config
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+  (global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-M-<up>") 'mc/mark-previous-like-this))
 
 ;; ===============================================
 ;; Org Config
