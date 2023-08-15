@@ -3,7 +3,7 @@
 ;; Doom settings
 (setq user-full-name "Ryder McMinn"
       user-mail-address "mcminnra@gmail.com")
-(setq doom-theme 'doom-old-hope) ; doom-old-hope
+(setq doom-theme 'doom-old-hope)
 (setq doom-font (font-spec :family "Hack Nerd Font" :weight 'normal))
 (setq org-directory "~/org/")
 
