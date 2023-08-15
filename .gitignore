@@ -1,2 +1,6 @@
-.emacs.d/auto-save-list/*
-.emacs.d/network-security.data
+# General
+.uuid
+
+# Emacs
+.config/emacs/*
+!.config/emacs/init.el
