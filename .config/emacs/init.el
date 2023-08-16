@@ -4,6 +4,22 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
+;; Setup straight.el package manage
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(setq package-enable-at-startup nil)     ; turn off emacs default package.el
+(setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
+
 ;; Font
 (add-to-list 'default-frame-alist '(font . "IntelOne Mono-10.5" ))
 (set-face-attribute 'default t :font "IntelOne Mono-10.5")
@@ -59,6 +75,14 @@
   (doom-themes-neotree-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+
+;; Helm
+(use-package helm
+  :config
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (helm-mode 1))
 
 ;; multiple-cursors
 (use-package multiple-cursors
