@@ -173,6 +173,11 @@
         ("t" "Tasks"
             entry (file  "~/org/capture.org")
             "* TODO %?\n %U")))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 8)))
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+
 ;; (after! org
 ;;         (setq org-roam-directory "~/org/notes/")
 ;;         (setq org-roam-index-file "~/org/notes/index.org")
