@@ -159,8 +159,8 @@
 	 "~/org/projects.org"
 	 "~/org/experiences.org"
 	 "~/org/learning.org"
-	 "~/org/work.org"
 	 "~/org/tasks.org"
+	 "~/org/work.org"
 	 "~/org/stuff.org"
 	 "~/org/capture.org"))
   (setq org-agenda-deadline-faces
