@@ -112,6 +112,7 @@
   (define-key global-map "\C-cl" 'org-store-link)
   (setq org-log-done t)
   (setq org-deadline-warning-days 90)
+  (setq org-enforce-todo-dependencies t)
   (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)")
         (sequence "PROJECT(P)" "|" "DONE(d)" "CANCELLED(c)")
@@ -199,7 +200,11 @@
 		(throw 'exit t))))
 	(find-file (car fs)))
       (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer))))))
-	    
+
+(use-package org-edna
+  :config
+  (org-edna-mode))
+
 ;; (after! org
 ;;         (setq org-roam-directory "~/org/notes/")
 ;;         (setq org-roam-index-file "~/org/notes/index.org")
