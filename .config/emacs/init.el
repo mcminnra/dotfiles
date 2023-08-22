@@ -113,6 +113,8 @@
   (setq org-log-done t)
   (setq org-deadline-warning-days 90)
   (setq org-enforce-todo-dependencies t)
+  (setq org-refile-use-outline-path 'file)
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
   (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)")
         (sequence "PROJECT(P)" "|" "DONE(d)" "CANCELLED(c)")
