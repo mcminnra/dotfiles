@@ -98,6 +98,11 @@
   (global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-M-<up>") 'mc/mark-previous-like-this))
 
+;; ace-window
+(use-package ace-window
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))
+
 ;; ===============================================
 ;; Org Config
 ;; ===============================================
