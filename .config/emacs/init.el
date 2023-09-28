@@ -213,10 +213,16 @@
   :config
   (org-edna-mode))
 
-;; (after! org
-;;         (setq org-roam-directory "~/org/notes/")
-;;         (setq org-roam-index-file "~/org/notes/index.org")
-;;         (setq find-file-visit-truename t)  ; Enable symlinks
-;;         (org-roam-db-autosync-mode)
-;;         (setq org-roam-db-update-on-save t)
-;;         (global-set-key (kbd "C-c n r w") #'org-roam-refile))
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/org/notes")
+  (org-roam-index-file "~/org/notes/index.org")
+  (org-roam-db-update-on-save t)
+  :bind (("C-c r l" . org-roam-buffer-toggle)
+         ("C-c r f" . org-roam-node-find)
+         ("C-c r i" . org-roam-node-insert)
+	 ("C-c r n" . org-roam-capture)
+	 ("C-c r w" . org-roam-refile))
+  :config
+  (org-roam-db-autosync-mode))
