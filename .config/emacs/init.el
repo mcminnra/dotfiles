@@ -22,14 +22,23 @@
 
 ;; Font
 ; Set font size depending on system (Windows weird I guess)
-(cond ((string-match "-[Mm]icrosoft" operating-system-release)
-       (progn
-	 (add-to-list 'default-frame-alist '(font . "IntelOne Mono-10.5" ))
-	 (set-face-attribute 'default t :font "IntelOne Mono-10.5")))
-      (t
-       (progn
-	 (add-to-list 'default-frame-alist '(font . "IntelOne Mono-12" ))
-         (set-face-attribute 'default t :font "IntelOne Mono-12"))))
+(cond 
+  ((eq `windows-nt system-type)
+    (progn
+      (set-face-attribute 'default nil :font "IntelOne Mono" :height 105)))
+  (t
+    (progn
+      (set-face-attribute 'default nil :font "IntelOne Mono" :height 120))))
+
+;; Set default-directory
+; Windows weird
+(cond 
+  ((eq `windows-nt system-type)
+    (progn
+      (setq default-directory (getenv "HOME"))))
+  (t
+    (progn
+	    (setq default-directory "~"))))
 
 ;; Various Emacs Settings
 (setq user-full-name "Ryder McMinn"
