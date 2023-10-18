@@ -235,8 +235,8 @@
 		 :and (:file-path "tasks.org" :scheduled today :not (:habit t)))
 	  (:name "Habits"
 		 :habit t)
-	  (:name "Deadlines"
-		 :deadline t)))
+	  (:name "Next"
+		 :anything)))
   (org-super-agenda-mode))
 
 (use-package org-roam
