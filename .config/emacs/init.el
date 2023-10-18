@@ -120,10 +120,13 @@
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
+  :bind (("C-c n" . org-capture)
+	 ("C-c a" . org-agenda)
+	 ("C-c l" . org-store-link))
   :config
   (add-to-list 'org-modules 'org-habit t)
-  (define-key global-map "\C-ca" 'org-agenda)
-  (define-key global-map "\C-cl" 'org-store-link)
+  ;(define-key global-map "\C-ca" 'org-agenda)
+  ;(define-key global-map "\C-cl" 'org-store-link)
   (setq org-log-done t)
   (setq org-deadline-warning-days 90)
   (setq org-enforce-todo-dependencies t)
@@ -221,6 +224,20 @@
 (use-package org-edna
   :config
   (org-edna-mode))
+
+(use-package org-super-agenda
+  :config
+  (setq org-super-agenda-groups
+	'(
+	  (:name "Work"
+		 :and (:file-path "work.org" :scheduled today :not (:habit t)))
+	  (:name "Personal"
+		 :and (:file-path "tasks.org" :scheduled today :not (:habit t)))
+	  (:name "Habits"
+		 :habit t)
+	  (:name "Deadlines"
+		 :deadline t)))
+  (org-super-agenda-mode))
 
 (use-package org-roam
   :ensure t
