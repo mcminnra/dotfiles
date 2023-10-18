@@ -232,7 +232,7 @@
 	  (:name "Work"
 		 :and (:file-path "work.org" :scheduled today :not (:habit t)))
 	  (:name "Personal"
-		 :and (:file-path "tasks.org" :scheduled today :not (:habit t)))
+		 :and (:not (:file-path "work.org") :scheduled today :not (:habit t)))
 	  (:name "Habits"
 		 :habit t)
 	  (:name "Next"
