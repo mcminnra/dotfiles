@@ -35,10 +35,10 @@
 (cond 
   ((eq `windows-nt system-type)
     (progn
-      (setq default-directory (getenv "HOME"))))
+      (setq default-directory (substitute-env-vars "$HOME/"))))
   (t
     (progn
-	    (setq default-directory "~"))))
+	    (setq default-directory "~/"))))
 
 ;; Various Emacs Settings
 (setq user-full-name "Ryder McMinn"
