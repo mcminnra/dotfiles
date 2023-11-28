@@ -178,7 +178,7 @@
 	 "~/org/experiences.org"
 	 "~/org/learning.org"
 	 "~/org/tasks.org"
-	 "~/org/work.org"
+	 "~/org/work"
 	 "~/org/stuff.org"
 	 "~/org/capture.org"))
   (setq org-agenda-deadline-faces
@@ -192,7 +192,8 @@
           (search category-keep)))
   (setq org-agenda-start-on-weekday nil)
   (setq org-refile-use-outline-path 'file)
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 9)))
+  (setq org-refile-targets
+	`((,(directory-files-recursively "~/org/" "^[a-z0-9]*.org$") :maxlevel . 1)))
   (setq org-outline-path-complete-in-steps nil)
   ;; habit
   (setq org-habit-show-all-today t)
@@ -230,9 +231,9 @@
   (setq org-super-agenda-groups
 	'(
 	  (:name "Work"
-		 :and (:file-path "work.org" :scheduled today :not (:habit t)))
+		 :and (:file-path "work/" :scheduled today :not (:habit t)))
 	  (:name "Personal"
-		 :and (:not (:file-path "work.org") :scheduled today :not (:habit t)))
+		 :and (:not (:file-path "work/") :scheduled today :not (:habit t)))
 	  (:name "Habits"
 		 :habit t)
 	  (:name "Next"
