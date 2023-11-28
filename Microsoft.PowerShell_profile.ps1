@@ -1,0 +1,1 @@
+oh-my-posh init pwsh --config ~/dotfiles/atomic.omp.json | Invoke-Expression
