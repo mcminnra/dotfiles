@@ -28,7 +28,7 @@
       (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 105))) ; https://www.nerdfonts.com/font-downloads
   (t
     (progn
-      (set-face-attribute 'default nil :font "SauceCodePro NFm" :height 120)))) ; https://www.nerdfonts.com/font-downloads
+      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 120)))) ; https://www.nerdfonts.com/font-downloads
 
 ;; Set default-directory
 ; Windows weird
