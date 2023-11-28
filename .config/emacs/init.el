@@ -25,7 +25,7 @@
 (cond 
   ((eq `windows-nt system-type)
     (progn
-      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 105))) ; https://www.nerdfonts.com/font-downloads
+      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 110))) ; https://www.nerdfonts.com/font-downloads
   (t
     (progn
       (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 120)))) ; https://www.nerdfonts.com/font-downloads
