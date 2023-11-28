@@ -1,5 +1,6 @@
 # Ryder's DOTFILES
 
-Shell: fish
-Shell Prompt: starship.rs
-Editor: DOOM Emacs
+Terminal: Alacritty
+Shell: fish for *nix, PowerShell for Windows
+Prompt: oh-my-posh
+Editor: VS Code (Settings synced via GitHub) and Emacs
