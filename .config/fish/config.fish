@@ -41,8 +41,8 @@ function db
     cd "$HOME/Dropbox"
 end
 
-# Starship.rs prompt init
-starship init fish | source
+# oh-my-posh prompt init
+oh-my-posh init fish --config ~/dotfiles/omp.json | source
 
 # Manually config Conda
 # OSX
