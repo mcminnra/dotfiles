@@ -174,9 +174,9 @@
   (setq org-agenda-files
 	(list
 	 "~/org/northstar.org"
-	 "~/org/projects.org"
+	 "~/org/projects"
 	 "~/org/experiences.org"
-	 "~/org/learning.org"
+	 "~/org/wiki"
 	 "~/org/tasks.org"
 	 "~/org/work"
 	 "~/org/stuff.org"
@@ -193,7 +193,7 @@
   (setq org-agenda-start-on-weekday nil)
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-targets
-	`((,(directory-files-recursively "~/org/" "^[a-z0-9]*.org$") :maxlevel . 1)))
+	`((,(directory-files-recursively "~/org/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 1)))
   (setq org-outline-path-complete-in-steps nil)
   ;; habit
   (setq org-habit-show-all-today t)
@@ -239,17 +239,3 @@
 	  (:name "Next"
 		 :anything)))
   (org-super-agenda-mode))
-
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-directory "~/org/notes")
-  (org-roam-index-file "~/org/notes/index.org")
-  (org-roam-db-update-on-save t)
-  :bind (("C-c r l" . org-roam-buffer-toggle)
-         ("C-c r f" . org-roam-node-find)
-         ("C-c r i" . org-roam-node-insert)
-	 ("C-c r n" . org-roam-capture)
-	 ("C-c r w" . org-roam-refile))
-  :config
-  (org-roam-db-autosync-mode))
