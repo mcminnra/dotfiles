@@ -231,9 +231,14 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Work"
+    (:name "Pursuits"
+     :file-path "northstar.org"
+     :file-path "projects/"
+     :file-path "wiki/"
+     :file-path "experiences.org")
+	  (:name "Work Tasks"
 		 :and (:file-path "work/" :scheduled today :not (:habit t)))
-	  (:name "Personal"
+	  (:name "Personal Tasks"
 		 :and (:not (:file-path "work/") :scheduled today :not (:habit t)))
 	  (:name "Habits"
 		 :habit t)
