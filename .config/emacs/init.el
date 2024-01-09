@@ -172,16 +172,7 @@
 	  (?D . (:foreground "orange red"))
           (?E . (:foreground "red"))))
   ;; agenda
-  (setq org-agenda-files
-	(list
-	 "~/org/northstar.org"
-	 "~/org/projects"
-	 "~/org/experiences.org"
-	 "~/org/wiki"
-	 "~/org/tasks.org"
-	 "~/org/work"
-	 "~/org/stuff.org"
-	 "~/org/capture.org"))
+  (setq org-agenda-files (directory-files-recursively "~/Dropbox/" "\\.org$"))
   (setq org-agenda-deadline-faces
 	'((0.92 . org-warning)
           (0.84 . org-upcoming-deadline)
@@ -194,7 +185,7 @@
   (setq org-agenda-start-on-weekday nil)
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-targets
-	`((,(directory-files-recursively "~/org/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 1)))
+	`((,(directory-files-recursively "~/Dropbox/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 1)))
   (setq org-outline-path-complete-in-steps nil)
   ;; habit
   (setq org-habit-show-all-today t)
@@ -203,8 +194,8 @@
   (setq org-habit-graph-column 50)
   ;; capture
   (setq org-capture-templates
-	'(("l" "Link" entry (file "~/org/capture.org") "* [[%^{link-url}][%^{link-description}]]")
-          ("t" "Tasks" entry (file  "~/org/capture.org") "* TODO %?\n %U")))
+	'(("l" "Link" entry (file "~/Dropbox/00-09 Meta/02 Todo/02.01 General Todo/capture.org") "* [[%^{link-url}][%^{link-description}]]")
+          ("t" "Tasks" entry (file  "~/Dropbox/00-09 Meta/02 Todo/02.01 General Todo/capture.org") "* TODO %?\n %U")))
   ;; functions
   (defun org-cycle-agenda-files ()
     "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
@@ -231,15 +222,11 @@
   :config
   (setq org-super-agenda-groups
 	'(
-    (:name "Pursuits"
-     :file-path "northstar.org"
-     :file-path "projects/"
-     :file-path "wiki/"
-     :file-path "experiences.org")
+	  (:name "Pursuits" :file-path "02.03 Projects Todo/")
 	  (:name "Work Tasks"
-		 :and (:file-path "work/" :scheduled today :not (:habit t)))
+		 :and (:file-path "02.02 Work Todo/" :scheduled today :not (:habit t)))
 	  (:name "Personal Tasks"
-		 :and (:not (:file-path "work/") :scheduled today :not (:habit t)))
+		 :and (:file-path "02.01 General Todo/" :scheduled today :not (:habit t)))
 	  (:name "Habits"
 		 :habit t)
 	  (:name "Next"
