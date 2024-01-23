@@ -136,7 +136,7 @@
 	  ; Tasks
 	  (sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "|" "DONE(d)" "CANCELLED(c)")
 	  ; Project
-          (sequence "PROJECT(P)" "|" "DONE(d)" "ARCHIVED(a)" "CANCELLED(c)")
+          (sequence "PROJECT(p)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "DONE(d)" "ARCHIVED(a)" "CANCELLED(c)")
 	  ; Experience
           (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)" "ARCHIVED(a)")
 	  ; Learning
@@ -150,10 +150,9 @@
         ("DONE" . (:foreground "#6a994e" :weight bold))
         ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
         ;; Project
-        ("HOBBY" . (:foreground "white" :background "darkgreen" :weight bold))
-        ("VIDEO-GAME" . (:foreground "white" :background "darkblue" :weight bold))
-        ("BOOK" . (:foreground "white" :background "darkred" :weight bold))
-        ("PROJECT" . (:foreground "white" :background "purple" :weight bold))
+        ("PROJECT" . (:foreground "white" :background "#5C3E84" :weight bold))
+	("FEATURE" . (:foreground "#686EE2" :weight bold))
+	("BUG" . (:foreground "#F35C6E" :weight bold))
         ;; Experience
         ("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
         ("ONE" . (:foreground "red" :weight bold))
