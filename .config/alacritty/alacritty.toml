@@ -6,6 +6,8 @@ family = "SauceCodePro Nerd Font Mono"
 [window]
 dynamic_title = true
 opacity = 0.85
+decorations = "Full"
+blur = true
 
 [window.dimensions]
 columns = 120
