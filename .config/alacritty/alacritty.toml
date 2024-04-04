@@ -1,0 +1,12 @@
+import = ["/Users/mcminnra/.config/alacritty/themes/base16_default_dark.toml"]
+
+[font.normal]
+family = "SauceCodePro Nerd Font Mono"
+
+[window]
+dynamic_title = true
+opacity = 0.85
+
+[window.dimensions]
+columns = 120
+lines = 40
