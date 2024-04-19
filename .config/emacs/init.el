@@ -112,6 +112,13 @@
   :config
   (global-set-key (kbd "M-o") 'ace-window))
 
+;; evil mode
+(use-package evil
+  :init
+  (setq evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1))
+
 ;; ===============================================
 ;; Org Config
 ;; ===============================================
@@ -237,3 +244,4 @@
 	  (:name "Next"
 		 :anything)))
   (org-super-agenda-mode))
+
