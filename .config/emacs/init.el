@@ -243,6 +243,7 @@
 		 :habit t)
 	  (:name "Next"
 		 :anything)))
+  (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
 (use-package evil-org
@@ -251,4 +252,4 @@
   :hook (org-mode . (lambda () evil-org-mode))
   :config
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys))  
