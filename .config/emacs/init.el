@@ -53,7 +53,8 @@
 (toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 (setq create-lockfiles nil)                           ; Turn off .# lock files
 (global-auto-revert-mode t)                           ; Auto refresh buffers
-(global-display-line-numbers-mode t)                  ; Turn on line numbers globally
+(add-hook 'prog-mode-hook 'display-line-numbers-mode) ; turn on numbers for programming modes
+(add-hook 'org-mode-hook 'display-line-numbers-mode)  ; turn on numbers for org-mode 
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(95))
@@ -92,6 +93,11 @@
   (doom-themes-neotree-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+
+;; Doom modeline
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 ;; Helm
 (use-package helm
