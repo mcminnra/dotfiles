@@ -38,11 +38,21 @@
           "type": "os"
         },
         {
-          "type": "path",
-          "style": "powerline",
-          "powerline_symbol": "",
+          "type": "session",
+          "style": "diamond",
           "foreground": "#ffffff",
-          "background": "#78bd65",
+          "background": "#ea3d54",
+          "leading_diamond": "░",
+          "trailing_diamond": "",
+          "template": " {{ if .SSHSession }} {{ end }}{{ .UserName }} "
+        },
+        {
+          "type": "path",
+          "style": "diamond",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "foreground": "#ffffff",
+          "background": "#3f444a",
           "properties": {
             "style": "letter"
           }
@@ -67,6 +77,12 @@
               "/Users/user/Projects/oh-my-posh/": "no"
             }
           }
+        },
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#ffffff",
+          "template": "\u00A0"
         }
       ],
       "alignment": "left"
@@ -76,10 +92,17 @@
       "alignment": "right",
       "segments": [
         {
+          "type": "time",
+          "style": "plain",
+          "foreground": "#ffffff",
+          "properties": {
+            "time_format": "15:04:05"
+          }
+        },
+        {
           "type": "executiontime",
           "style": "plain",
           "foreground": "#ffffff",
-          "background": "#3f444a",
           "template": " <#fefefe></> {{ .FormattedMs }} ",
           "properties": {
             "threshold": 500,
