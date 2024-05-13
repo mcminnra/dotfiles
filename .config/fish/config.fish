@@ -25,9 +25,9 @@ end
 set -U EDITOR emacs
 
 #== Aliases
-alias ls exa  # Replace ls - https://github.com/ogham/exa
-alias ll "exa -alh" # Replace ls - https://github.com/ogham/exa
-alias la "exa -alh" # Replace ls - https://github.com/ogham/exa
+alias ls lsd  # Replace ls - https://github.com/lsd-rs/lsd
+alias ll "lsd -Al" # Replace ls - https://github.com/lsd-rs/lsd
+alias la "lsd -Al" # Replace ls - https://github.com/lsd-rs/lsd
 alias cat bat  # Replace cat - https://github.com/sharkdp/bat
 alias top btop  # Replace top - https://github.com/aristocratos/btop
 alias htop btop  # Replace top - https://github.com/aristocratos/btop
