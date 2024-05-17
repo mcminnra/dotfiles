@@ -134,7 +134,7 @@
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
-  :bind (("C-c n" . org-capture)
+  :bind (("C-c c" . org-capture)
 	 ("C-c a" . org-agenda)
 	 ("C-c l" . org-store-link))
   :config
@@ -252,6 +252,26 @@
 		 :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
+
+(use-package org-roam
+  :straight (org-roam :type git :host github :repo "org-roam/org-roam" :commit "ca873f7")
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/Dropbox/org/notes"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+	 ("C-c n r" . org-roam-refile) 
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
 
 (use-package evil-org
   :ensure t
