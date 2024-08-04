@@ -134,6 +134,7 @@
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
+  :hook (org-agenda-finalize-hook . org-habit-streak-count)
   :bind (("C-c c" . org-capture)
 	 ("C-c a" . org-agenda)
 	 ("C-c l" . org-store-link))
@@ -231,7 +232,22 @@
 		(find-file (car files))
 		(throw 'exit t))))
 	(find-file (car fs)))
-      (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer))))))
+      (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
+
+  (defun org-habit-streak-percentage ()
+    (point-min)
+    (while (not (eobp))
+      (when (get-text-property (point) 'org-habit-p)
+        (let (
+	      (count (count-matches
+                      (char-to-string org-habit-completed-glyph)
+                      (line-beginning-position) (line-end-position))))
+          (end-of-line)
+          (insert (concat (number-to-string
+			   (/ (round (* 10 (* 100 (/ (float count) (+ org-habit-following-days org-habit-preceding-days)))))10.0)
+			   ) "%" ))))
+      (forward-line 1)))
+  (add-hook 'org-agenda-finalize-hook 'org-habit-streak-percentage))
 
 (use-package org-edna
   :config
