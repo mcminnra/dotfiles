@@ -193,6 +193,7 @@
           (?E . (:foreground "red"))))
   ;; agenda
   (setq org-agenda-files (directory-files-recursively "~/Dropbox/" "\\.org$"))
+  (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
   (setq org-agenda-deadline-faces
 	'((0.92 . org-warning)
           (0.84 . org-upcoming-deadline)
