@@ -25,10 +25,10 @@
 (cond 
   ((eq `windows-nt system-type)
     (progn
-      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 110))) ; https://www.nerdfonts.com/font-downloads
+      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))) ; https://www.nerdfonts.com/font-downloads
   (t
     (progn
-      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 110)))) ; https://www.nerdfonts.com/font-downloads
+      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100)))) ; https://www.nerdfonts.com/font-downloads
 
 ;; Set default-directory
 ; Windows weird
@@ -208,6 +208,11 @@
   (setq org-refile-targets
 	`((,(directory-files-recursively "~/Dropbox/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 5)))
   (setq org-outline-path-complete-in-steps nil)
+  (setq org-agenda-prefix-format
+	'((agenda . " %i %-12:c%?-12t% s %?-12T")
+	  (todo . " %i %-12:c")
+	  (tags . " %i %-12:c")
+	  (search . " %i %-12:c")))
   ;; habit
   (setq org-habit-show-all-today t)
   (setq org-habit-following-days 1)
