@@ -42,7 +42,7 @@ function db
 end
 
 # oh-my-posh prompt init
-oh-my-posh init fish --config ~/dotfiles/omp.json | source
+oh-my-posh init fish --config ~/repos/dotfiles/omp.json | source
 
 # Manually config Conda
 # OSX
