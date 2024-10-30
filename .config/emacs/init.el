@@ -242,6 +242,7 @@
   (add-to-list 'org-modules 'org-habit t)
   (setq org-log-done t)
   (setq org-log-into-drawer "LOGBOOK")
+  (setq org-archive-location "~/org/archive/%s_archive::")
   (setq org-deadline-warning-days 90)
   (setq org-enforce-todo-dependencies t)
   (setq org-todo-keywords
