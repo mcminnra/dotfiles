@@ -21,28 +21,28 @@
 (setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
 
 ;; Font
-; Set font size depending on system (Windows weird I guess)
+;; Set font size depending on system (Windows can be sometimes weird, so keeping them seperate)
 (cond 
-  ((eq `windows-nt system-type)
-    (progn
-      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))) ; https://www.nerdfonts.com/font-downloads
-  (t
-    (progn
-      (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100)))) ; https://www.nerdfonts.com/font-downloads
+ ((eq `windows-nt system-type)
+  (progn
+    (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))) ; https://www.nerdfonts.com/font-downloads
+ (t
+  (progn
+    (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100)))) ; https://www.nerdfonts.com/font-downloads
 
 ;; Set default-directory
 ; Windows weird
 (cond 
-  ((eq `windows-nt system-type)
-    (progn
-      (setq default-directory (substitute-env-vars "$HOME/"))))
-  (t
-    (progn
-	    (setq default-directory "~/"))))
+ ((eq `windows-nt system-type)
+  (progn
+    (setq default-directory (substitute-env-vars "$HOME/"))))
+ (t
+  (progn
+    (setq default-directory "~/"))))
 
 ;; Various Emacs Settings
 (setq user-full-name "Ryder McMinn"
-      user-mail-address "mcminnra@gmail.com")
+      user-mail-address "rdr@rdrmc.com")
 (scroll-bar-mode -1)                                  ; No Scroll
 (tool-bar-mode -1)                                    ; No Toolbar
 (menu-bar-mode -1)                                    ; No Menu Bar
@@ -106,6 +106,11 @@
   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
   (global-set-key (kbd "C-x C-f") #'helm-find-files)
   (helm-mode 1))
+
+;; which-key
+(use-package which-key
+  :config
+  (which-key-mode))
 
 ;; multiple-cursors
 (use-package multiple-cursors
@@ -235,47 +240,45 @@
 	 ("C-c l" . org-store-link))
   :config
   (add-to-list 'org-modules 'org-habit t)
-  ;(define-key global-map "\C-ca" 'org-agenda)
-  ;(define-key global-map "\C-cl" 'org-store-link)
   (setq org-log-done t)
   (setq org-log-into-drawer "LOGBOOK")
   (setq org-deadline-warning-days 90)
   (setq org-enforce-todo-dependencies t)
   (setq org-todo-keywords
 	'(
-	  ; Tasks
+	  ;; Tasks
 	  (sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "|" "DONE(d)" "CANCELLED(c)")
-	  ; Project
+	  ;; Project
           (sequence "PROJECT(p)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "DONE(d)" "ARCHIVED(a)" "CANCELLED(c)")
-	  ; Experience
+	  ;; Experience
           (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)" "ARCHIVED(a)")
-	  ; Learning
+	  ;; Learning
 	  (sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
   (setq org-todo-keyword-faces
-      '(("TODO" . (:foreground "#30acec" :weight bold))
-        ("WAITING" . (:foreground "#339989" :weight bold))
-        ("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
-        ("REVIEW" . (:foreground "#f7b801" :weight bold))
-        ("BLOCKED" . (:foreground "#f6511d" :weight bold))
-        ("DONE" . (:foreground "#6a994e" :weight bold))
-        ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
-        ;; Project
-        ("PROJECT" . (:foreground "white" :background "#5C3E84" :weight bold))
-	("FEATURE" . (:foreground "#686EE2" :weight bold))
-	("BUG" . (:foreground "#F35C6E" :weight bold))
-        ;; Experience
-        ("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
-        ("ONE" . (:foreground "red" :weight bold))
-        ("TWO" . (:foreground "orange" :weight bold))
-        ("THREE" . (:foreground "gold" :weight bold))
-        ("FOUR" . (:foreground "lightgreen" :weight bold))
-        ("FIVE" . (:foreground "forestgreen" :weight bold))
-        ;; Learning Flow
-        ("BACKLOG" . (:foreground "#30acec" :weight bold))
-        ("IN-NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
-        ("IN-NPML" . (:foreground "white" :background "purple" :weight bold))
-        ("IN-REPO" . (:foreground "white" :background "#7cb518" :weight bold))
-        ("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
+	'(("TODO" . (:foreground "#30acec" :weight bold))
+          ("WAITING" . (:foreground "#339989" :weight bold))
+          ("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
+          ("REVIEW" . (:foreground "#f7b801" :weight bold))
+          ("BLOCKED" . (:foreground "#f6511d" :weight bold))
+          ("DONE" . (:foreground "#6a994e" :weight bold))
+          ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
+          ;; Project
+          ("PROJECT" . (:foreground "white" :background "#5C3E84" :weight bold))
+	  ("FEATURE" . (:foreground "#686EE2" :weight bold))
+	  ("BUG" . (:foreground "#F35C6E" :weight bold))
+          ;; Experience
+          ("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
+          ("ONE" . (:foreground "red" :weight bold))
+          ("TWO" . (:foreground "orange" :weight bold))
+          ("THREE" . (:foreground "gold" :weight bold))
+          ("FOUR" . (:foreground "lightgreen" :weight bold))
+          ("FIVE" . (:foreground "forestgreen" :weight bold))
+          ;; Learning Flow
+          ("BACKLOG" . (:foreground "#30acec" :weight bold))
+          ("IN-NOTEBOOK" . (:foreground "white" :background "#30acec" :weight bold))
+          ("IN-NPML" . (:foreground "white" :background "purple" :weight bold))
+          ("IN-REPO" . (:foreground "white" :background "#7cb518" :weight bold))
+          ("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
   (setq org-enable-priority-commands t
 	org-highest-priority ?A
 	org-default-priority ?B
