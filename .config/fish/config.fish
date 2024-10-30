@@ -12,7 +12,6 @@ switch (uname -s)
         fish_add_path ~/.emacs.d/bin
         fish_add_path ~/.local/bin
         fish_add_path ~/.cargo/bin/  # Rust
-        alias emacs='emacsclient -t --alternate-editor=nano'  # Sets the terminal emacs experience
     case Linux
         fish_add_path ~/.config/emacs/bin/
         fish_add_path ~/.local/bin/
