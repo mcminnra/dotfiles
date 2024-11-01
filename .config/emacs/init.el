@@ -276,7 +276,7 @@
 	  (?D . (:foreground "orange red"))
           (?E . (:foreground "red"))))
   ;; agenda
-  (setq org-agenda-files (directory-files-recursively "~/Dropbox/" "\\.org$"))
+  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
   (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
   (setq org-agenda-deadline-faces
 	'((0.92 . org-warning)
@@ -290,7 +290,7 @@
   (setq org-agenda-start-on-weekday nil)
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-targets
-	`((,(directory-files-recursively "~/Dropbox/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 5)))
+	`((,(directory-files-recursively "~/org/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 5)))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-agenda-prefix-format
 	'((agenda . " %i %-12:c%?-12t% s %?-12T")
@@ -347,7 +347,7 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Pursuits" :file-path "phel.org")
+	  (:name "Pursuits" :file-path "/projects/")
 	  (:name "Work Tasks"
 		 :and (:file-path "work_sie.org" :scheduled today :not (:habit t)))
 	  (:name "Personal Tasks"
