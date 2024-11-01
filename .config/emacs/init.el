@@ -60,21 +60,6 @@
 (set-frame-parameter (selected-frame) 'alpha '(95))
 (add-to-list 'default-frame-alist '(alpha . (95)))
 
-;; Emacs Helper functions
-(defun split-and-follow-horizontally ()
-  (interactive)
-  (split-window-below)
-  (balance-windows)
-  (other-window 1))
-(global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
-
-(defun split-and-follow-vertically ()
-  (interactive)
-  (split-window-right)
-  (balance-windows)
-  (other-window 1))
-(global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
-
 ;; ===============================================
 ;; Packages Config
 ;; ===============================================
@@ -401,3 +386,30 @@
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))  
+
+
+;; ===============================================
+;; Functions
+;; ===============================================
+(defun split-and-follow-horizontally ()
+  (interactive)
+  (split-window-below)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+(defun split-and-follow-vertically ()
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+
+(defun open-org-layout ()
+  (interactive)
+  (pop-to-buffer (find-file "~/org/tasks.org"))
+  (org-agenda-list)
+  (org-agenda-day-view)
+  (treemacs-add-and-display-current-project-exclusively)
+  (other-window 1))
+(global-set-key (kbd "C-x 9") 'open-org-layout)
