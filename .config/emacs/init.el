@@ -54,7 +54,6 @@
 (setq create-lockfiles nil)                           ; Turn off .# lock files
 (global-auto-revert-mode t)                           ; Auto refresh buffers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode) ; turn on numbers for programming modes
-(add-hook 'org-mode-hook 'display-line-numbers-mode)  ; turn on numbers for org-mode 
 
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(100))
@@ -220,6 +219,7 @@
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-count)
+  :hook (org-mode . visual-line-mode)  ;; Enable word wrap in Org mode
   :bind (("C-c c" . org-capture)
 	 ("C-c a" . org-agenda)
 	 ("C-c l" . org-store-link))
