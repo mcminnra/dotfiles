@@ -230,6 +230,8 @@
   (setq org-archive-location "~/org/archive/%s_archive::")
   (setq org-deadline-warning-days 90)
   (setq org-enforce-todo-dependencies t)
+  (setq org-tags-column 0)
+  (setq org-special-ctrl-a/e t)
   (setq org-todo-keywords
 	'(
 	  ;; Tasks
@@ -385,8 +387,10 @@
   :hook (org-mode . (lambda () evil-org-mode))
   :config
   (require 'evil-org-agenda)
+  ;; Revert to trad emacs keybinds for these
+  (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
+  (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
   (evil-org-agenda-set-keys))  
-
 
 ;; ===============================================
 ;; Functions
