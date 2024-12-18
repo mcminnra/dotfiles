@@ -113,7 +113,14 @@
   :init
   (setq evil-want-C-i-jump nil)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  ;; Revert to trad emacs keybinds for these
+  (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
+  (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
+  ;; Make vim use org mode heading cmds in org-mode
+  (evil-define-key 'normal org-mode-map
+    (kbd "]]") 'org-next-visible-heading
+    (kbd "[[") 'org-previous-visible-heading))
 
 ;; treemacs
 (use-package treemacs
@@ -235,9 +242,9 @@
   (setq org-todo-keywords
 	'(
 	  ;; Tasks
-	  (sequence "TODO(t)" "WAITING(w)" "BLOCKED(b)" "IN-PROGRESS(i)" "|" "DONE(d)" "CANCELLED(c)")
+	  (sequence "TODO(t)" "BLOCKED(b)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
 	  ;; Project
-          (sequence "PROJECT(p)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "DONE(d)" "ARCHIVED(a)" "CANCELLED(c)")
+          (sequence "PROJECT(p)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
 	  ;; Experience
           (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)" "ARCHIVED(a)")
 	  ;; Learning
@@ -269,8 +276,8 @@
           ("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
   (setq org-enable-priority-commands t
 	org-highest-priority ?A
-	org-default-priority ?B
-	org-lowest-priority ?C)
+	org-default-priority ?C
+	org-lowest-priority ?E)
   (setq org-priority-faces
 	'((?A . (:foreground "green"))
 	  (?B . (:foreground "DeepSkyBlue"))
@@ -285,8 +292,8 @@
           (0.84 . org-upcoming-deadline)
           (0.0 . default)))
   (setq org-agenda-sorting-strategy
-	'((agenda habit-down deadline-up scheduled-up time-up priority-down category-keep)
-          (todo priority-down category-keep todo-state-up)
+	'((agenda habit-down deadline-up scheduled-up time-up todo-state-down priority-down category-keep)
+          (todo priority-down category-keep todo-state-down)
           (tags priority-down category-keep)
           (search category-keep)))
   (setq org-agenda-start-on-weekday nil)
@@ -387,9 +394,6 @@
   :hook (org-mode . (lambda () evil-org-mode))
   :config
   (require 'evil-org-agenda)
-  ;; Revert to trad emacs keybinds for these
-  (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
-  (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
   (evil-org-agenda-set-keys))  
 
 ;; ===============================================
