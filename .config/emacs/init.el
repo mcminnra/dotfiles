@@ -276,14 +276,17 @@
           ("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
   (setq org-enable-priority-commands t
 	org-highest-priority ?A
-	org-default-priority ?C
-	org-lowest-priority ?E)
+	org-default-priority ?D
+	org-lowest-priority ?G)
+  ; Using WoW quality colors because F it - https://warcraft.wiki.gg/wiki/Quality
   (setq org-priority-faces
-	'((?A . (:foreground "green"))
-	  (?B . (:foreground "DeepSkyBlue"))
-	  (?C . (:foreground "yellow"))
-	  (?D . (:foreground "orange red"))
-          (?E . (:foreground "red"))))
+	'((?A . (:foreground "#e6cc80"))
+	  (?B . (:foreground "#ff8000"))
+	  (?C . (:foreground "#a335ee"))
+	  (?D . (:foreground "#0070dd"))
+          (?E . (:foreground "#1eff00"))
+	  (?F . (:foreground "#ffffff"))
+	  (?G . (:foreground "#9d9d9d"))))
   ;; agenda
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
   (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
