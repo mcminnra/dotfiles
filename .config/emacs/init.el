@@ -359,11 +359,11 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Pursuits" :file-path "/projects/")
 	  (:name "Work Tasks"
 		 :and (:file-path "work_sie.org" :scheduled today :not (:habit t)))
 	  (:name "Personal Tasks"
-		 :and (:file-path "tasks.org" :scheduled today :not (:habit t)))
+		 :and (:file-path "tasks.org" :scheduled today :not (:habit t))
+     :and (:file-path "/notes/" :scheduled today :not (:habit t)))
 	  (:name "Habits"
 		 :habit t)
 	  (:name "Next"
