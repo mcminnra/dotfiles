@@ -30,14 +30,16 @@ alias la "lsd -Al" # Replace ls - https://github.com/lsd-rs/lsd
 alias cat bat  # Replace cat - https://github.com/sharkdp/bat
 alias top btop  # Replace top - https://github.com/aristocratos/btop
 alias htop btop  # Replace top - https://github.com/aristocratos/btop
+alias find fd  # Replace find - https://github.com/sharkdp/fd
 alias sg "s -p google"  # https://github.com/zquestz/s
 alias tree "tree -ChD --dirsfirst"
 alias ydl youtube-dl  # https://github.com/ytdl-org/youtube-dl
+alias neofetch fastfetch  #https://github.com/fastfetch-cli/fastfetch
 
 #== Functions
-function db
+function org
     set user $HOME
-    cd "$HOME/Dropbox"
+    cd "$HOME/org"
 end
 
 # oh-my-posh prompt init
