@@ -21,14 +21,8 @@
 (setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
 
 ;; Font
-;; Set font size depending on system (Windows can be sometimes weird, so keeping them seperate)
-(cond 
- ((eq `windows-nt system-type)
-  (progn
-    (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))) ; https://www.nerdfonts.com/font-downloads
- (t
-  (progn
-    (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100)))) ; https://www.nerdfonts.com/font-downloads
+(when (member "SauceCodePro NFM" (font-family-list))
+  (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))
 
 ;; Set default-directory
 ; Windows weird
@@ -240,7 +234,6 @@
 (use-package org
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
-  :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-count)
   :hook (org-mode . visual-line-mode)  ;; Enable word wrap in Org mode
   :bind (("C-c c" . org-capture)
@@ -248,6 +241,10 @@
 	 ("C-c l" . org-store-link))
   :config
   (add-to-list 'org-modules 'org-habit t)
+
+  ;; Make the document title a bit bigger
+  (set-face-attribute 'org-document-title nil :font "SauceCodePro NFM" :weight 'bold :height 1.5)
+
   (setq org-log-done t)
   (setq org-log-into-drawer "LOGBOOK")
   (setq org-archive-location "~/org/archive/%s_archive::")
@@ -387,25 +384,11 @@
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
-(use-package org-roam
-  :straight (org-roam :type git :host github :repo "org-roam/org-roam" :commit "ca873f7")
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename "~/Dropbox/org/notes"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-	 ("C-c n r" . org-roam-refile) 
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
+(use-package org-superstar
   :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
+  (setq org-superstar-leading-bullet " ")
+  (setq org-superstar-headline-bullets-list '("■" "□"))
+  :hook (org-mode . org-superstar-mode))
 
 (use-package evil-org
   :ensure t
@@ -414,6 +397,7 @@
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))  
+
 
 ;; ===============================================
 ;; Functions
