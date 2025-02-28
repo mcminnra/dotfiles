@@ -234,6 +234,7 @@
 (use-package org
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
+  :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-count)
   :hook (org-mode . visual-line-mode)  ;; Enable word wrap in Org mode
   :bind (("C-c c" . org-capture)
@@ -387,7 +388,7 @@
 (use-package org-superstar
   :config
   (setq org-superstar-leading-bullet " ")
-  (setq org-superstar-headline-bullets-list '("■" "□"))
+  (setq org-superstar-headline-bullets-list '("■" "□" "▫" "▫" "▫" "▫"))
   :hook (org-mode . org-superstar-mode))
 
 (use-package evil-org
