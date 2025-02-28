@@ -247,6 +247,7 @@
   (set-face-attribute 'org-document-title nil :font "SauceCodePro NFM" :weight 'bold :height 1.5)
 
   (setq org-log-done t)
+  (setq org-ellipsis " ▼ ")
   (setq org-log-into-drawer "LOGBOOK")
   (setq org-archive-location "~/org/archive/%s_archive::")
   (setq org-deadline-warning-days 90)
