@@ -378,13 +378,13 @@
   :config
   (setq org-super-agenda-groups
 	'(
+	  (:name "Rules"
+		 :habit t)
 	  (:name "Work Tasks"
 		 :and (:file-path "work_sie.org" :scheduled today :not (:habit t)))
 	  (:name "Personal Tasks"
 		 :and (:file-path "tasks.org" :scheduled today :not (:habit t))
-     :and (:file-path "/notes/" :scheduled today :not (:habit t)))
-	  (:name "Rules"
-		 :habit t)
+		 :and (:file-path "/notes/" :scheduled today :not (:habit t))) 
 	  (:name "Next"
 		 :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
