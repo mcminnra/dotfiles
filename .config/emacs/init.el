@@ -327,6 +327,7 @@
 	  (todo . " %i %-12:c")
 	  (tags . " %i %-12:c")
 	  (search . " %i %-12:c")))
+  (setq org-agenda-remove-tags t)
   ;; habit
   (setq org-habit-show-all-today t)
   (setq org-habit-following-days 1)
