@@ -9,6 +9,7 @@ fd \
 fish \
 gh \
 git \
+git-delta \
 lsd \
 oh-my-posh \
 rsync \
