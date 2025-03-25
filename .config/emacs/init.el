@@ -253,7 +253,7 @@
   (setq org-ellipsis " ▼ ")
   (setq org-log-into-drawer "LOGBOOK")
   (setq org-archive-location "~/org/archive/%s_archive::")
-  (setq org-deadline-warning-days 90)
+  (setq org-deadline-warning-days 365)
   (setq org-enforce-todo-dependencies t)
   (setq org-tags-column 0)
   (setq org-special-ctrl-a/e t)
