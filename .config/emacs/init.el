@@ -378,6 +378,7 @@
   :config
   (setq org-super-agenda-groups
 	'(
+	  (:name "Pursuits" :file-path ".notes/personal_northstar.org")
 	  (:name "Rules"
 		 :habit t)
 	  (:name "Work Tasks"
