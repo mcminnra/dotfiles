@@ -1,4 +1,4 @@
-import = ["/Users/mcminnra/.config/alacritty/themes/base16_default_dark.toml"]
+general.import = ["/Users/mcminnra/.config/alacritty/themes/base16_default_dark.toml"]
 
 [font.normal]
 family = "SauceCodePro Nerd Font Mono"
