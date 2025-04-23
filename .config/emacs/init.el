@@ -214,6 +214,26 @@
   :after (treemacs evil)
   :ensure t)
 
+(use-package olivetti
+  :ensure t
+  :custom
+  (olivetti-body-width 80)
+  ;; (olivetti-minimum-body-width 72)
+  ;; (olivetti-header-margin 5)
+
+  ; NOTE: Currently setting this by .dir-locals-el
+  ;;:hook
+  ;;(org-mode . olivetti-mode)
+  ;;(markdown-mode . olivetti-mode)
+  ;;(text-mode . olivetti-mode)
+  ;;(prog-mode . olivetti-mode)
+
+  :bind
+  ("C-c o" . olivetti-mode))
+
+;; Ensure Olivetti respects visual-line-mode's wrapping (often desirable)
+(with-eval-after-load 'olivetti
+  (advice-add 'olivetti-set-width :before-while #'visual-line-mode))
 
 ;; ===============================================
 ;; Programming Modes Config
@@ -228,7 +248,6 @@
 
 (use-package poly-markdown
   :ensure t)
-
 
 ;; ===============================================
 ;; Org Config
@@ -397,6 +416,27 @@
   (setq org-superstar-leading-bullet " ")
   (setq org-superstar-headline-bullets-list '("■" "□" "▫" "▫" "▫" "▫"))
   :hook (org-mode . org-superstar-mode))
+
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory (file-truename "~/org/notes/")) ; Set the directory where your Org-roam files will be stored
+  (org-roam-capture-templates
+   '(("c" "concept" plain "%?"
+      :target (file+head "concept-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :concept:\n") :unarrowed t)
+     ("l" "literature" plain "%?"
+      :target (file+head "literature-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :literature:\n") :unarrowed t))
+   )
+  :bind
+  (("C-c n l" . org-roam-buffer-toggle) ; Toggle the Org-roam buffer (shows backlinks, etc.)
+   ("C-c n f" . org-roam-node-find)     ; Find an existing Org-roam node or create a new one
+   ("C-c n i" . org-roam-node-insert)   ; Insert a link to an Org-roam node
+   ("C-c n g" . org-roam-graph)         ; Display the Org-roam graph
+   ("C-c n c" . org-roam-capture))      ; Capture a new Org-roam node using a template
+  :config
+  (org-roam-setup))
 
 (use-package evil-org
   :ensure t
