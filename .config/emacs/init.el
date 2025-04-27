@@ -426,8 +426,10 @@
   (org-roam-capture-templates
    '(("c" "concept" plain "%?"
       :target (file+head "concept-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :concept:\n") :unarrowed t)
-     ("l" "literature" plain "%?"
-      :target (file+head "literature-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :literature:\n") :unarrowed t))
+     ("p" "project" plain "%?"
+      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :project:\n") :unarrowed t)
+     ("l" "life" plain "%?"
+      :target (file+head "life-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :life:\n") :unarrowed t))
    )
   :bind
   (("C-c n l" . org-roam-buffer-toggle) ; Toggle the Org-roam buffer (shows backlinks, etc.)
