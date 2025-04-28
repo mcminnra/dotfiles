@@ -217,23 +217,23 @@
 (use-package olivetti
   :ensure t
   :custom
-  (olivetti-body-width 80)
+  (olivetti-body-width 110)
   ;; (olivetti-minimum-body-width 72)
   ;; (olivetti-header-margin 5)
 
   ; NOTE: Currently setting this by .dir-locals-el
-  ;;:hook
-  ;;(org-mode . olivetti-mode)
-  ;;(markdown-mode . olivetti-mode)
-  ;;(text-mode . olivetti-mode)
+  :hook
+  (org-mode . olivetti-mode)
+  (markdown-mode . olivetti-mode)
+  (text-mode . olivetti-mode)
   ;;(prog-mode . olivetti-mode)
 
   :bind
   ("C-c o" . olivetti-mode))
 
 ;; Ensure Olivetti respects visual-line-mode's wrapping (often desirable)
-(with-eval-after-load 'olivetti
-  (advice-add 'olivetti-set-width :before-while #'visual-line-mode))
+;;(with-eval-after-load 'olivetti
+;;  (advice-add 'olivetti-set-width :before-while #'visual-line-mode))
 
 ;; ===============================================
 ;; Programming Modes Config
