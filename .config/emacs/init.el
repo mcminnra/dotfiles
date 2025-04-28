@@ -397,7 +397,7 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Pursuits" :file-path ".notes/personal_northstar.org")
+	  (:name "Pursuits" :file-path "/notes/life-northstar.org")
 	  (:name "Projects" :tag "project")
 	  (:name "Rules"
 		 :habit t)
