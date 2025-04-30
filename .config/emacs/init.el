@@ -339,7 +339,7 @@
   (setq org-agenda-start-on-weekday nil)
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-targets
-	`((,(directory-files-recursively "~/org/" "^[a-zA-Z0-9_]*.org$") :maxlevel . 5)))
+	`((,(directory-files-recursively "~/org/" "^[a-zA-Z0-9_-]*.org$") :maxlevel . 5)))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-agenda-prefix-format
 	'((agenda . " %i %-12:c%?-12t% s %?-12T")
