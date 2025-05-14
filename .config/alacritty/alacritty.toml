@@ -1,4 +1,4 @@
-general.import = ["/Users/mcminnra/.config/alacritty/themes/base16_default_dark.toml"]
+general.import = ["/Users/mcminnra/.config/alacritty/themes/old_hope.toml"]
 
 [font.normal]
 family = "SauceCodePro Nerd Font Mono"
@@ -6,9 +6,13 @@ family = "SauceCodePro Nerd Font Mono"
 [window]
 dynamic_title = true
 opacity = 0.85
-decorations = "Full"
+decorations = "Buttonless"
 blur = true
 
 [window.dimensions]
 columns = 120
 lines = 40
+
+[window.padding]
+x=10
+y=10
