@@ -52,6 +52,10 @@
 (global-auto-revert-mode t)                           ; Auto refresh buffers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode) ; turn on numbers for programming modes
 
+;; Setup windmovw to use S- command and override org's S- keys
+(windmove-default-keybindings)
+(setq org-replace-disputed-keys t)
+
 ;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(100))
 (add-to-list 'default-frame-alist '(alpha . (100)))
