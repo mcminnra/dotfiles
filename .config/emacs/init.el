@@ -109,6 +109,7 @@
 (use-package evil
   :init
   (setq evil-want-C-i-jump nil)
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
   ;; Revert to trad emacs keybinds for these
@@ -118,6 +119,13 @@
   (evil-define-key 'normal org-mode-map
     (kbd "]]") 'org-next-visible-heading
     (kbd "[[") 'org-previous-visible-heading))
+
+; More evil commands not covered by base
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;; treemacs
 (use-package treemacs
@@ -214,6 +222,7 @@
   :after (treemacs evil)
   :ensure t)
 
+;; olivetti
 (use-package olivetti
   :ensure t
   :custom
