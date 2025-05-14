@@ -105,28 +105,6 @@
   :config
   (global-set-key (kbd "M-o") 'ace-window))
 
-;; evil mode
-(use-package evil
-  :init
-  (setq evil-want-C-i-jump nil)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  ;; Revert to trad emacs keybinds for these
-  (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
-  (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
-  ;; Make vim use org mode heading cmds in org-mode
-  (evil-define-key 'normal org-mode-map
-    (kbd "]]") 'org-next-visible-heading
-    (kbd "[[") 'org-previous-visible-heading))
-
-; More evil commands not covered by base
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
-
 ;; treemacs
 (use-package treemacs
   :ensure t
@@ -217,10 +195,6 @@
         ("C-c t B"   . treemacs-bookmark)
         ("C-c t C-t" . treemacs-find-file)
         ("C-c t M-t" . treemacs-find-tag)))
-
-(use-package treemacs-evil
-  :after (treemacs evil)
-  :ensure t)
 
 ;; olivetti
 (use-package olivetti
@@ -448,15 +422,6 @@
    ("C-c n c" . org-roam-capture))      ; Capture a new Org-roam node using a template
   :config
   (org-roam-setup))
-
-(use-package evil-org
-  :ensure t
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))  
-
 
 ;; ===============================================
 ;; Functions
