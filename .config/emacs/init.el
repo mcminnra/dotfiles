@@ -308,7 +308,7 @@
 	  (?F . (:foreground "#ffffff"))
 	  (?G . (:foreground "#9d9d9d"))))
   ;; agenda
-  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+  (setq org-agenda-files (directory-files-recursively "~/org/notes/" "\\.org$"))
   (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
   (setq org-agenda-deadline-faces
 	'((0.92 . org-warning)
@@ -322,7 +322,7 @@
   (setq org-agenda-start-on-weekday nil)
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-targets
-	`((,(directory-files-recursively "~/org/" "^[a-zA-Z0-9_-]*.org$") :maxlevel . 5)))
+	`((,(directory-files-recursively "~/org/notes/" "^[a-zA-Z0-9_-]*.org$") :maxlevel . 5)))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-agenda-prefix-format
 	'((agenda . " %i %-12:c%?-12t% s %?-12T")
@@ -335,10 +335,6 @@
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
   (setq org-habit-graph-column 50)
-  ;; capture
-  (setq org-capture-templates
-	'(("l" "Link" entry (file "~/Dropbox/org/capture.org") "* [[%^{link-url}][%^{link-description}]]")
-          ("t" "Tasks" entry (file  "~/Dropbox/org/capture.org") "* TODO %?\n %U")))
   ;; functions
   (defun org-cycle-agenda-files ()
     "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
@@ -442,7 +438,7 @@
 
 (defun open-org-layout ()
   (interactive)
-  (pop-to-buffer (find-file "~/org/tasks.org"))
+  (pop-to-buffer (find-file "~/org/notes/life-tasks.org"))
   (org-agenda-list)
   (org-agenda-day-view)
   (treemacs-add-and-display-current-project-exclusively)
