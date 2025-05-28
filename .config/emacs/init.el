@@ -47,7 +47,6 @@
 (show-paren-mode 1)                                   ; Make Emacs highlight paired parentheses
 (setq visible-bell t)                                 ; Make bell visible
 (setq backup-directory-alist `(("." . "~/.saves")))   ; Set backupdir
-(toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 (setq create-lockfiles nil)                           ; Turn off .# lock files
 (global-auto-revert-mode t)                           ; Auto refresh buffers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode) ; turn on numbers for programming modes
