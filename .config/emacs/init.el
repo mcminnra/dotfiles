@@ -44,6 +44,7 @@
 (tool-bar-mode -1)                                    ; No Toolbar
 (menu-bar-mode -1)                                    ; No Menu Bar
 (setq inhibit-startup-screen t)                       ; No start screen
+(toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                   ; Make Emacs highlight paired parentheses
 (setq visible-bell t)                                 ; Make bell visible
 (setq backup-directory-alist `(("." . "~/.saves")))   ; Set backupdir
