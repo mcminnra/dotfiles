@@ -1,5 +1,3 @@
-general.import = ["/Users/mcminnra/.config/alacritty/themes/old_hope.toml"]
-
 [terminal.shell]
 program = "/bin/fish"
 
