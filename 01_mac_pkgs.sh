@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# === Intall Packages ===
+# === Install Packages ===
+# This is supposed to be a "core" set of packages I rely on. Not an exaustive set.
+
 PKGS=(
     "bat"          # Better cat replacement
     "btop"         # Better top replacement
@@ -25,7 +27,6 @@ CASK_PKGS=(
     "libreoffice"                    # Office suite
     "proton-mail"                    # Proton mail
     "proton-pass"                    # Proton password manager
-    "spotify"                        # Spotify
     "stats"                          # Top bar system stats
     "syncthing"                      # P2P file syncing
     "tailscale"                      # Tailscale VPN
