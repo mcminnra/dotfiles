@@ -1,13 +1,10 @@
-[terminal.shell]
-program = "/bin/fish"
-
 [font.normal]
 family = "SauceCodePro Nerd Font Mono"
 
 [window]
 dynamic_title = true
 opacity = 0.85
-decorations = "Buttonless"
+decorations = "Full"
 blur = true
 
 [window.dimensions]
