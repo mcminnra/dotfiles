@@ -8,6 +8,4 @@ stow fish -t ~/ --verbose=2
 read -p "Do you want to stow git? (y/n): " answer
 if [[ "$answer" =~ ^[Yy]$ ]]; then
     stow git -t ~/ --verbose=2
-else
-    echo "Command aborted."
 fi
