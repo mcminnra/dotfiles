@@ -15,3 +15,16 @@
 
 [merge]
     conflictstyle = zdiff3
+
+[alias]
+# Pretty git log alias
+lg = log --reverse --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+
+# Use github-cli (gh) to manage creds
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+	
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
