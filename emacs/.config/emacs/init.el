@@ -380,7 +380,7 @@
   (setq org-super-agenda-groups
 	'(
 	  (:name "Pursuits" :file-path "/notes/life-northstar.org")
-	  (:name "Projects" :tag "project")
+	  (:name "Projects/Concepts" :tag "project" :tag "concept")
 	  (:name "Rules"
 		 :habit t)
 	  (:name "Work Tasks"
