@@ -338,7 +338,7 @@
           (0.84 . org-upcoming-deadline)
           (0.0 . default)))
   (setq org-agenda-sorting-strategy
-	'((agenda habit-down deadline-up scheduled-up time-up todo-state-down priority-down category-keep)
+	'((agenda habit-down scheduled-up deadline-up time-up todo-state-down priority-down category-keep)
           (todo priority-down category-keep todo-state-down)
           (tags priority-down category-keep)
           (search category-keep)))
