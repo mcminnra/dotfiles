@@ -66,17 +66,30 @@
 ;; ===============================================
 ;; Packages Config
 ;; ===============================================
-;; Theme
+;; Theming
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p)
+  :config
+  ;; Install fonts automatically if they're not already installed
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
 (use-package doom-themes
   :ensure t
-  :config
+  :custom
   ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t)
+  ;; for treemacs users
+  (doom-themes-treemacs-theme "doom-colors")
+  :config
   (load-theme 'doom-old-hope t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
+  ;; Treemacs theme
+  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -84,6 +97,12 @@
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
+
+;; Solaire
+(use-package solaire-mode
+  :ensure t
+  :config
+  (solaire-global-mode +1))
 
 ;; Helm
 (use-package helm
@@ -118,7 +137,7 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
+  ;; :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
@@ -426,3 +445,4 @@
   (treemacs-add-and-display-current-project-exclusively)
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'open-org-layout)
+
