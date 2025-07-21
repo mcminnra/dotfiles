@@ -116,6 +116,22 @@
   (global-set-key (kbd "C-s") #'helm-occur)
   (helm-mode 1))
 
+;; Projectile setup with use-package
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-project-search-path '("~/repos"))
+  :config
+  (global-set-key (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
+;; Helm <-> projectile
+(use-package helm-projectile
+  :after (projectile helm)
+  :ensure t
+  :init
+  (helm-projectile-on))
+
 ;; which-key
 (use-package which-key
   :config
