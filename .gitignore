@@ -1,5 +1,6 @@
 # General
 .uuid
+**/.DS_Store
 
 # Emacs
 .config/emacs/*
