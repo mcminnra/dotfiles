@@ -148,10 +148,15 @@
 ;; Visual fill column for centered narrow text body
 (use-package visual-fill-column
   :ensure t
-  :hook (visual-line-mode . visual-fill-column-mode)
+  :hook ((text-mode . visual-fill-column-mode)
+         (org-mode . visual-fill-column-mode)
+         (markdown-mode . visual-fill-column-mode))
   :config
-  (setq visual-fill-column-width 120
-        visual-fill-column-center-text t))
+  (setq-default visual-fill-column-width 120)
+  (setq-default visual-fill-column-center-text t)
+  
+  ;; Optional: Enable visual-line-mode with visual-fill-column
+  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
 
 ;; ===============================================
 ;; Evil Mode Configs
