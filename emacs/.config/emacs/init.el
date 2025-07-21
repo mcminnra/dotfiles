@@ -167,8 +167,7 @@
 ;; Visual fill column for centered narrow text body
 (use-package visual-fill-column
   :ensure t
-  :hook ((text-mode . visual-fill-column-mode)
-         (org-mode . visual-fill-column-mode)
+  :hook ((org-mode . visual-fill-column-mode)
          (markdown-mode . visual-fill-column-mode))
   :config
   (setq-default visual-fill-column-width 120)
