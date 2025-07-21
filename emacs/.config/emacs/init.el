@@ -104,6 +104,15 @@
   :config
   (solaire-global-mode +1))
 
+;; Projectile 
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-project-search-path '("~/repos"))
+  :config
+  (global-set-key (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
 ;; Helm
 (use-package helm
   :config
@@ -116,16 +125,6 @@
   (global-set-key (kbd "C-s") #'helm-occur)
   (helm-mode 1))
 
-;; Projectile setup with use-package
-(use-package projectile
-  :ensure t
-  :init
-  (setq projectile-project-search-path '("~/repos"))
-  :config
-  (global-set-key (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
-
-;; Helm <-> projectile
 (use-package helm-projectile
   :after (projectile helm)
   :ensure t
@@ -178,6 +177,14 @@
         ("C-c t B"   . treemacs-bookmark)
         ("C-c t C-t" . treemacs-find-file)
         ("C-c t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
 
 ;; visual-line-fill-mode
 ;; Visual fill column for centered narrow text body
