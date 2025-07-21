@@ -400,16 +400,13 @@
   (setq org-super-agenda-groups
 	'(
 	  (:name "Pursuits" :file-path "/notes/life-northstar.org")
-	  (:name "Projects/Concepts" :tag "project" :tag "concept")
-	  (:name "Rules"
-		 :habit t)
 	  (:name "Work Tasks"
-		 :and (:file-path "work_sie.org" :scheduled today :not (:habit t)))
+		 :and (:file-path "/notes/life-work_sie.org" :not (:habit t)))
 	  (:name "Personal Tasks"
-		 :and (:file-path "tasks.org" :scheduled today :not (:habit t))
-		 :and (:file-path "/notes/" :scheduled today :not (:habit t))) 
-	  (:name "Next"
-		 :anything)))
+		 :and (:file-path "/notes/life-tasks.org" :not (:habit t))) 
+	  (:name "Rules" :habit t)
+	  (:name "Projects/Concepts" :tag "project" :tag "concept")
+	  (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
