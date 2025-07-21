@@ -222,6 +222,44 @@
 ;;  (advice-add 'olivetti-set-width :before-while #'visual-line-mode))
 
 ;; ===============================================
+;; Evil Mode Configs
+;; ===============================================
+
+;; evil mode
+(use-package evil
+  :init
+  (setq evil-want-C-i-jump nil)
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  ;; Revert to trad emacs keybinds for these
+  (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
+  (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
+  ;; Make vim use org mode heading cmds in org-mode
+  (evil-define-key 'normal org-mode-map
+    (kbd "]]") 'org-next-visible-heading
+    (kbd "[[") 'org-previous-visible-heading))
+
+; More evil commands not covered by base
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))  
+
+;; ===============================================
 ;; Programming Modes Config
 ;; ===============================================
 ;; Markdown
