@@ -77,8 +77,6 @@
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -120,6 +118,7 @@
 (use-package treemacs
   :ensure t
   :defer t
+  :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
