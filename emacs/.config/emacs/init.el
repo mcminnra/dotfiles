@@ -52,6 +52,10 @@
 (global-auto-revert-mode t)                           ; Auto refresh buffers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode) ; turn on numbers for programming modes
 
+;; Soft wrap, variable pitch, spell check for text modes
+(add-hook 'text-mode-hook #'visual-line-mode)
+(add-hook 'text-mode-hook #'flyspell-mode)
+
 ;; Transparency
 (cond
  ((eq `gnu/linux system-type)
@@ -199,27 +203,14 @@
         ("C-c t C-t" . treemacs-find-file)
         ("C-c t M-t" . treemacs-find-tag)))
 
-;; olivetti
-(use-package olivetti
+;; visual-line-fill-mode
+;; Visual fill column for centered narrow text body
+(use-package visual-fill-column
   :ensure t
-  :custom
-  (olivetti-body-width 110)
-  ;; (olivetti-minimum-body-width 72)
-  ;; (olivetti-header-margin 5)
-
-  ; NOTE: Currently setting this by .dir-locals-el
-  :hook
-  (org-mode . olivetti-mode)
-  (markdown-mode . olivetti-mode)
-  (text-mode . olivetti-mode)
-  ;;(prog-mode . olivetti-mode)
-
-  :bind
-  ("C-c o" . olivetti-mode))
-
-;; Ensure Olivetti respects visual-line-mode's wrapping (often desirable)
-;;(with-eval-after-load 'olivetti
-;;  (advice-add 'olivetti-set-width :before-while #'visual-line-mode))
+  :hook (visual-line-mode . visual-fill-column-mode)
+  :config
+  (setq visual-fill-column-width 120
+        visual-fill-column-center-text t))
 
 ;; ===============================================
 ;; Evil Mode Configs
@@ -232,10 +223,15 @@
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
-  ;; Revert to trad emacs keybinds for these
+  ; Revert to trad emacs keybinds for these
   (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
   (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
-  ;; Make vim use org mode heading cmds in org-mode
+  ; Evil mode navigate between visual lines insted of logical
+  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+  ; Make vim use org mode heading cmds in org-mode
   (evil-define-key 'normal org-mode-map
     (kbd "]]") 'org-next-visible-heading
     (kbd "[[") 'org-previous-visible-heading))
@@ -282,7 +278,6 @@
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-count)
-  :hook (org-mode . visual-line-mode)  ;; Enable word wrap in Org mode
   :bind (("C-c c" . org-capture)
 	 ("C-c a" . org-agenda)
 	 ("C-c l" . org-store-link))
