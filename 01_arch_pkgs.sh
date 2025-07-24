@@ -29,6 +29,7 @@ AUR_PKGS=(
     "oh-my-posh-bin"              # Prompt engine (pretty shells!)\
     "proton-mail-bin"             # Proton mail
     "proton-pass-bin"             # Proton password manager
+    "steam"                       # Steam
     "visual-studio-code-bin"      # IDE
 )
 
