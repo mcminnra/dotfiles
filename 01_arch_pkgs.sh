@@ -16,6 +16,7 @@ ARCH_PKGS=(
     "libreoffice-fresh"           # Office suite
     "lsd"                         # Better ls
     "rsync"                       # Rsync
+    "steam"                       # Steam
     "stow"                        # Gnu Symlink Manager
     "syncthing"                   # P2P file syncing
     "tailscale"                   # Tailscale VPN   
@@ -29,7 +30,7 @@ AUR_PKGS=(
     "oh-my-posh-bin"              # Prompt engine (pretty shells!)\
     "proton-mail-bin"             # Proton mail
     "proton-pass-bin"             # Proton password manager
-    "steam"                       # Steam
+    "sunshine"                    # Streaming server for Moonlight
     "visual-studio-code-bin"      # IDE
 )
 
