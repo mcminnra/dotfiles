@@ -22,8 +22,10 @@
 
 ;; Font
 ; Unsure why on some systems it is shortened
-(when (member "JetBrainsMono Nerd Font" (font-family-list))
-  (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 100))
+(when (member "SauceCodePro Nerd Font Mono" (font-family-list))
+  (set-face-attribute 'default nil :font "SauceCodePro Nerd Font Mono" :height 100))
+(when (member "SauceCodePro NFM" (font-family-list))
+  (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))
 
 ;; Set default-directory
 ; Windows weird
