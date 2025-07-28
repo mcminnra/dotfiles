@@ -390,11 +390,11 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Pursuits" :file-path "/notes/life-northstar.org")
+	  (:name "Pursuits" :file-path "/notes/admin-northstar.org")
 	  (:name "Work Tasks"
-		 :and (:file-path "/notes/life-work_sie.org" :not (:habit t)))
+		 :and (:file-path "/notes/admin-work_sie.org" :not (:habit t)))
 	  (:name "Personal Tasks"
-		 :and (:file-path "/notes/life-tasks.org" :not (:habit t))) 
+		 :and (:file-path "/notes/admin-tasks.org" :not (:habit t))) 
 	  (:name "Rules" :habit t)
 	  (:name "Projects/Concepts" :tag "project" :tag "concept")
 	  (:name "Next" :anything)))
@@ -418,9 +418,8 @@
       :target (file+head "concept-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :concept:\n") :unarrowed t)
      ("p" "project" plain "%?"
       :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :project:\n") :unarrowed t)
-     ("l" "life" plain "%?"
-      :target (file+head "life-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :life:\n") :unarrowed t))
-   )
+     ("a" "admin" plain "%?"
+      :target (file+head "admin-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :admin:\n") :unarrowed t)))
   :bind
   (("C-c n l" . org-roam-buffer-toggle) ; Toggle the Org-roam buffer (shows backlinks, etc.)
    ("C-c n f" . org-roam-node-find)     ; Find an existing Org-roam node or create a new one
@@ -449,7 +448,7 @@
 
 (defun open-org-layout ()
   (interactive)
-  (pop-to-buffer (find-file "~/org/notes/life-tasks.org"))
+  (pop-to-buffer (find-file "~/org/notes/admin-tasks.org"))
   (org-agenda-list)
   (org-agenda-day-view)
   (treemacs-add-and-display-current-project-exclusively)
