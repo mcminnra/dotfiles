@@ -12,10 +12,12 @@ switch (uname -s)
         fish_add_path ~/.emacs.d/bin
         fish_add_path ~/.local/bin
         fish_add_path ~/.cargo/bin/  # Rust
+        fish_add_path ~/.npm-global  # NPM (this is custon set through npm config)
     case Linux
         fish_add_path ~/.config/emacs/bin/
         fish_add_path ~/.local/bin/
         fish_add_path ~/.cargo/bin/  # Rust
+        fish_add_path ~/.npm-global  # NPM (this is custon set through npm config)
     case '*'
        echo "Unable to set paths"
 end
