@@ -1,30 +1,32 @@
 [user]
     name = Ryder McMinn
 	email = rdr@rdrmc.com
-	
 [core]
-    pager = delta
-
+    pager = delta  # Better git diff
 [interactive]
     diffFilter = delta --color-only
-
-[delta]
-    navigate = true  # use n and N to move between diff sections
-    dark = true      # or light = true, or omit for auto-detection
-	side-by-side = true
-
+[column]
+    ui = auto
+[branch]
+    sort = -committerdate
+[push]
+    autoSetupRemote = true
+    followTags = true
 [merge]
     conflictstyle = zdiff3
-
 [alias]
-# Pretty git log alias
-lg = log --reverse --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    # Pretty git log alias
+    lg = log --reverse --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 
-# Use github-cli (gh) to manage creds
-[credential "https://github.com"]
-	helper = !/opt/homebrew/bin/gh auth git-credential
-	helper = !/usr/bin/gh auth git-credential
-	
-[credential "https://gist.github.com"]
-	helper = !/opt/homebrew/bin/gh auth git-credential
-	helper = !/usr/bin/gh auth git-credential
+# External tools settings
+[delta]  # Better git diff
+    navigate = true
+    dark = true      
+	side-by-side = true
+
+# OS-specific configs
+[includeIf "gitdir/i:/Users/"]
+    path = ~/.gitconfig-macos
+
+[includeIf "gitdir/i:/home/"]
+    path = ~/.gitconfig-linux
