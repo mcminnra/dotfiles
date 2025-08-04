@@ -329,7 +329,7 @@
           (0.84 . org-upcoming-deadline)
           (0.0 . default)))
   (setq org-agenda-sorting-strategy
-	'((agenda habit-down scheduled-up deadline-up time-up todo-state-down priority-down category-keep)
+	'((agenda habit-up scheduled-up deadline-up time-up todo-state-down priority-down category-keep)
           (todo priority-down category-keep todo-state-down)
           (tags priority-down category-keep)
           (search category-keep)))
@@ -348,7 +348,7 @@
   (setq org-habit-show-all-today t)
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
-  (setq org-habit-graph-column 50)
+  (setq org-habit-graph-column 80)
   ;; functions
   (defun org-cycle-agenda-files ()
     "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
@@ -391,11 +391,11 @@
   (setq org-super-agenda-groups
 	'(
 	  (:name "Pursuits" :file-path "/notes/admin-northstar.org")
-	  (:name "Work Tasks"
-		 :and (:file-path "/notes/admin-work_sie.org" :not (:habit t)))
+	  (:name "Work Tasks" :file-path "/notes/admin-work_sie.org")
 	  (:name "Personal Tasks"
 		 :and (:file-path "/notes/admin-tasks.org" :not (:habit t))) 
-	  (:name "Rules" :habit t)
+	  (:name "Rules"
+		 :and (:file-path "/notes/admin-tasks.org" :habit t))
 	  (:name "Projects/Concepts" :tag "project" :tag "concept")
 	  (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
