@@ -348,7 +348,7 @@
   (setq org-habit-show-all-today t)
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
-  (setq org-habit-graph-column 80)
+  (setq org-habit-graph-column 65)
   ;; functions
   (defun org-cycle-agenda-files ()
     "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
