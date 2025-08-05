@@ -393,7 +393,7 @@
 	  (:name "Pursuits" :file-path "/notes/admin-northstar.org")
 	  (:name "Work Tasks" :file-path "/notes/admin-work_sie.org")
 	  (:name "Personal Tasks"
-		 :and (:file-path "/notes/admin-tasks.org" :not (:habit t))) 
+		 :and (:tag "admin" :not (:habit t))) 
 	  (:name "Rules"
 		 :and (:file-path "/notes/admin-tasks.org" :habit t))
 	  (:name "Projects/Concepts" :tag "project" :tag "concept")
