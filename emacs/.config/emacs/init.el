@@ -132,6 +132,9 @@
   :init
   (helm-projectile-on))
 
+;; vterm
+(use-package vterm :ensure t)
+
 ;; which-key
 (use-package which-key
   :config
