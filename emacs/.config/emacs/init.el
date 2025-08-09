@@ -247,23 +247,36 @@
 ;;   :hook (org-mode . (lambda () evil-org-mode))
 ;;   :config
 ;;   (require 'evil-org-agenda)
-;;   (evil-org-agenda-set-keys))  
+;;   (evil-org-agenda-set-keys))
 
 ;; ===============================================
+;; Programming 
+;; ===============================================
+;; NOTE: Syntax hightlighting and LSP kinda a pain
+
 ;; Tree-sitter
-;; ===============================================
-(setq treesit-language-source-alist
-      '((python "https://github.com/tree-sitter/tree-sitter-python")
-        (svelte "https://github.com/Himujjal/tree-sitter-svelte")
-        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
-        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-        (json "https://github.com/tree-sitter/tree-sitter-json")
-        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-        (css "https://github.com/tree-sitter/tree-sitter-css")
-        (html "https://github.com/tree-sitter/tree-sitter-html")))
+;; (setq treesit-language-source-alist
+;;       '((python "https://github.com/tree-sitter/tree-sitter-python")
+;;         (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
+;;         (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+;;         (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+;;         (json "https://github.com/tree-sitter/tree-sitter-json")
+;;         (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+;;         (css "https://github.com/tree-sitter/tree-sitter-css")
+;;         (html "https://github.com/tree-sitter/tree-sitter-html")))
 
-(setq treesit-font-lock-level 4) ; Maximum highlighting level
+;; (setq treesit-font-lock-level 4) ; Maximum highlighting level
+
+;; ;; Use tree-sitter for modes
+;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+
+;; LSP
+;; Eglot already builtin to Emcas 29+
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '(svelte-mode . ("svelteserver" "--stdio"))))
+
+;; (add-hook 'python-mode-hook 'eglot-ensure)
 
 ;; ===============================================
 ;; Org Config
