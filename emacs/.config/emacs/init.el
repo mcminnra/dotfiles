@@ -252,7 +252,18 @@
 ;; ===============================================
 ;; Tree-sitter
 ;; ===============================================
-;; TODO
+(setq treesit-language-source-alist
+      '((python "https://github.com/tree-sitter/tree-sitter-python")
+        (svelte "https://github.com/Himujjal/tree-sitter-svelte")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (html "https://github.com/tree-sitter/tree-sitter-html")))
+
+(setq treesit-font-lock-level 4) ; Maximum highlighting level
 
 ;; ===============================================
 ;; Org Config
@@ -462,3 +473,10 @@
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'open-org-layout)
 
+(defun install-all-treesit-grammars ()
+  "Install all tree-sitter grammars defined in treesit-language-source-alist."
+  (interactive)
+  (dolist (lang (mapcar #'car treesit-language-source-alist))
+    (unless (treesit-language-available-p lang)
+      (message "Installing %s grammar..." lang)
+      (treesit-install-language-grammar lang))))
