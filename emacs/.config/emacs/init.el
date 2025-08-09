@@ -132,8 +132,15 @@
   :init
   (helm-projectile-on))
 
-;; vterm
-(use-package vterm :ensure t)
+;; eat (Emulate A Termial)
+(use-package eat
+  :ensure t
+  :config
+  (setq eat-kill-buffer-on-exit t)
+  (setq eat-enable-mouse t)
+  :bind
+  ("C-c e" . eat)
+  ("C-c E" . eat-other-window))
 
 ;; which-key
 (use-package which-key
