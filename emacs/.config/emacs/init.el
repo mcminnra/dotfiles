@@ -147,6 +147,10 @@
   :config
   (which-key-mode))
 
+;; transpose-frame
+;; NOTE: this coming native in Emacs 31+
+(use-package transpose-frame)
+
 ;; multiple-cursors
 (use-package multiple-cursors
   :config
