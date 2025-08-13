@@ -426,7 +426,7 @@
   (setq org-super-agenda-groups
 	'(
 	  (:name "Pursuits" :file-path "/notes/admin-northstar.org")
-	  (:name "Work Tasks" :file-path "/notes/admin-work_sie.org")
+	  (:name "Work" :tag "work")
 	  (:name "Personal Tasks"
 		 :and (:tag "admin" :not (:habit t))) 
 	  (:name "Rules"
