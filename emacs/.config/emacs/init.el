@@ -374,10 +374,10 @@
 	`((,(directory-files-recursively "~/org/notes/" "^[a-zA-Z0-9_-]*.org$") :maxlevel . 5)))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-agenda-prefix-format
-	'((agenda . " %i %-12:c%?-12t% s %?-12T")
-	  (todo . " %i %-12:c")
-	  (tags . " %i %-12:c")
-	  (search . " %i %-12:c")))
+	'((agenda . " %i %-24:c%?-24t%s")
+	  (todo . " %i %-24:c")
+	  (tags . " %i %-24:c")
+	  (search . " %i %-24:c")))
   (setq org-agenda-remove-tags t)
   ;; habit
   (setq org-habit-show-all-today t)
@@ -425,13 +425,9 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Pursuits" :file-path "/notes/admin-northstar.org")
-	  (:name "Work" :tag "work")
-	  (:name "Personal Tasks"
-		 :and (:tag "admin" :not (:habit t))) 
-	  (:name "Rules"
-		 :and (:file-path "/notes/admin-tasks.org" :habit t))
-	  (:name "Projects/Concepts" :tag "project" :tag "concept")
+	  (:name "Pursuits" :file-path "/notes/project-northstar.org")
+	  (:name "Work Tasks / Projects" :tag "work")
+	  (:name "Personal Tasks / Projects" :tag "personal") 
 	  (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
@@ -449,12 +445,19 @@
   :custom
   (org-roam-directory (file-truename "~/org/notes/")) ; Set the directory where your Org-roam files will be stored
   (org-roam-capture-templates
-   '(("c" "concept" plain "%?"
-      :target (file+head "concept-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :concept:\n") :unarrowed t)
+   '(("k" "knowledge" plain "%?"
+      :target (file+head "knowledge-${slug}.org" "#+TITLE: Knowledge - ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :personal:knowledge:\n")
+      :unarrowed t)
      ("p" "project" plain "%?"
-      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :project:\n") :unarrowed t)
-     ("a" "admin" plain "%?"
-      :target (file+head "admin-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :admin:\n") :unarrowed t)))
+      :target (file+head "project-${slug}.org" "#+TITLE: Project - ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :personal:project:\n")
+      :unarrowed t)
+     ("K" "work-knowledge" plain "%?"
+      :target (file+head "work-knowledge-${slug}.org" "#+TITLE: Work Knowledge - ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:knowledge:\n")
+      :unarrowed t)
+     ("P" "work-project" plain "%?"
+      :target (file+head "work-project-${slug}.org" "#+TITLE: Work Project - ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:project:\n")
+      :unarrowed t)
+     ))
   :bind
   (("C-c n l" . org-roam-buffer-toggle) ; Toggle the Org-roam buffer (shows backlinks, etc.)
    ("C-c n f" . org-roam-node-find)     ; Find an existing Org-roam node or create a new one
@@ -483,7 +486,7 @@
 
 (defun open-org-layout ()
   (interactive)
-  (pop-to-buffer (find-file "~/org/notes/admin-tasks.org"))
+  (pop-to-buffer (find-file "~/org/notes/project-tasks.org"))
   (org-agenda-list)
   (org-agenda-day-view)
   (treemacs-add-and-display-current-project-exclusively)
