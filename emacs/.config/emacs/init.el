@@ -154,9 +154,18 @@
 ;; multiple-cursors
 (use-package multiple-cursors
   :config
+  ;; Core multiple-cursors bindings
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-  (global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-M-<up>") 'mc/mark-previous-like-this))
+
+  ;; Click to add cursor
+  (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+  ;; Line editing
+  (global-set-key (kbd "C-S-c C-S-a") 'mc/edit-beginnings-of-lines)
+  (global-set-key (kbd "C-S-c C-S-e") 'mc/edit-ends-of-lines))
 
 ;; ace-window
 (use-package ace-window
