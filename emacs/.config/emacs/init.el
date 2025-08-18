@@ -55,7 +55,6 @@
 
 ;; Soft wrap, variable pitch, spell check for text modes
 (add-hook 'text-mode-hook #'visual-line-mode)
-(add-hook 'text-mode-hook #'flyspell-mode)
 
 ;; Transparency
 (cond
