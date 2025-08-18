@@ -3,6 +3,7 @@
 stow alacritty -t ~/ --verbose=2
 stow emacs -t ~/ --verbose=2
 stow fish -t ~/ --verbose=2
+stow nvim -t ~/ --verbose=2
 
 # === Condionally ask for some folders
 # git
