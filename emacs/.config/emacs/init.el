@@ -7,8 +7,11 @@
 ;; Setup straight.el package manage
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
@@ -19,6 +22,9 @@
   (load bootstrap-file nil 'nomessage))
 (setq package-enable-at-startup nil)     ; turn off emacs default package.el
 (setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
+
+(when (not package-archive-contents)
+    (package-refresh-contents))
 
 ;; Font
 ; Unsure why on some systems it is shortened
@@ -40,18 +46,18 @@
 ;; Various Emacs Settings
 (setq user-full-name "Ryder McMinn"
       user-mail-address "rdr@rdrmc.com")
-(scroll-bar-mode -1)                                  ; No Scroll
-(tool-bar-mode -1)                                    ; No Toolbar
-(menu-bar-mode -1)                                    ; No Menu Bar
-(setq inhibit-startup-screen t)                       ; No start screen
-(toggle-frame-maximized)                              ; Set max window on startup (Mac OSX only?)
-(show-paren-mode 1)                                   ; Make Emacs highlight paired parentheses
-(setq visible-bell t)                                 ; Make bell visible
-(setq backup-directory-alist `(("." . "~/.saves")))   ; Set backupdir
-(setq create-lockfiles nil)                           ; Turn off .# lock files
-(global-auto-revert-mode t)                           ; Auto refresh buffers
-(add-hook 'prog-mode-hook 'display-line-numbers-mode) ; turn on numbers for programming modes
-(setq mac-command-modifier 'meta)                     ; Setup cmd key as "alt" on mac
+(scroll-bar-mode -1)                                         ; No Scroll
+(tool-bar-mode -1)                                           ; No Toolbar
+(menu-bar-mode -1)                                           ; No Menu Bar
+(setq inhibit-startup-screen t)                              ; No start screen
+(toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
+(show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
+(setq visible-bell t)                                        ; Make bell visible
+(setq backup-directory-alist `(("." . "~/.saves")))          ; Set backupdir
+(setq create-lockfiles nil)                                  ; Turn off .# lock files
+(global-auto-revert-mode t)                                  ; Auto refresh buffers
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)        ; turn on numbers for programming modes
+(setq mac-command-modifier 'meta)                            ; Setup cmd key as "alt" on mac
 
 ;; Soft wrap, variable pitch, spell check for text modes
 (add-hook 'text-mode-hook #'visual-line-mode)
@@ -508,3 +514,4 @@
     (unless (treesit-language-available-p lang)
       (message "Installing %s grammar..." lang)
       (treesit-install-language-grammar lang))))
+
