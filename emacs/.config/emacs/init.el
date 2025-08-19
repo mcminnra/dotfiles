@@ -1,6 +1,6 @@
 ;;; init.el -- Emacs Config
 
-(when (version< emacs-version "30") (error "This requires Emacs 30 and above!"))
+(when (version< emacs-version "29") (error "This requires Emacs 29 and above!"))
 
 ;; Load package manager
 (require 'package)
@@ -64,6 +64,7 @@
 (setq split-width-threshold 80)                              ; lower the threshold to automatically split vertically
 (setq split-height-threshold nil)                            ; --^
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
+(add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
 
 ;; Less jumpy mouse scroll
 ;; Stolen From: https://github.com/deirn/fedoracfg/blob/deadb8eef399ef563e76f97edfcd9120643d0fc0/config/emacs/init.el#L122
@@ -87,16 +88,17 @@
 
 ;; OS-specific settings
 (cond
- ((eq `gnu/linux system-type)
-  (progn
-    (add-to-list 'default-frame-alist '(undecorated . t))       ; Remove title-bar
-    (set-frame-parameter nil 'alpha-background 98)              ; Transparency
-    (add-to-list 'default-frame-alist '(alpha-background . 98)) ; Transparency
-    ))
- ((eq `darwin system-type)
-  (progn
-    (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
-    )))
+  ((eq `gnu/linux system-type)
+   (progn
+     (set-frame-parameter nil 'alpha-background 98)              ; Transparency
+     (add-to-list 'default-frame-alist '(alpha-background . 98)) ; Transparency
+     ))
+  ((eq `darwin system-type)
+   (progn
+     (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
+     (set-face-background 'default "mac:windowBackgroundColor")
+     (set-face-stipple 'default "alpha:98%")
+     )))
 
 ;;; ===============================================
 ;;; Theming
