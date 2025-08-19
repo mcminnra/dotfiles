@@ -3,10 +3,6 @@
 (when (version< emacs-version "29") (error "This requires Emacs 29 and above!"))
 
 ;; Load package manager
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
-;; Setup straight.el package manage
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -23,12 +19,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'use-package)
-(setq package-enable-at-startup nil)     ; turn off emacs default package.el
 (setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
-
-(when (not package-archive-contents)
-    (package-refresh-contents))
 
 ;;; ===============================================
 ;;; General Emacs Settings
@@ -96,8 +87,6 @@
   ((eq `darwin system-type)
    (progn
      (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
-     (set-face-background 'default "mac:windowBackgroundColor")
-     (set-face-stipple 'default "alpha:98%")
      )))
 
 ;;; ===============================================
