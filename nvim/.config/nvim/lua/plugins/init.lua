@@ -1,8 +1,11 @@
 return {{
-    "tinted-theming/tinted-vim",
-    config = function()
-        vim.cmd.colorscheme('base16-tokyo-city-terminal-dark')
-    end
+  "sjl/badwolf",
+  lazy = false,
+  priority = 1000,
+  config = function()
+    -- load the colorscheme here
+    vim.cmd([[colorscheme badwolf]])
+  end,
 }, {
     'nvim-lualine/lualine.nvim',
     dependencies = {'nvim-tree/nvim-web-devicons'},
