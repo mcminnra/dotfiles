@@ -75,7 +75,7 @@ return {
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
       vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
-      vim.keymap.set("n", "<space>fb", ":Telescope file_browser<CR>")
+      vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>")
     end
   },
   {
@@ -114,5 +114,21 @@ return {
       vim.keymap.set('n', '<leader>tc', ':NvimTreeClose<CR>')
       vim.keymap.set('n', '<leader>tl', ':NvimTreeFindFile<CR>')
     end,
+  },
+{
+    "mason-org/mason-lspconfig.nvim",
+    opts = {},
+    dependencies = {
+        { "mason-org/mason.nvim", opts = {} },
+        "neovim/nvim-lspconfig",
+    },
+    config = function()
+      require("mason").setup()
+      require("mason-lspconfig").setup()
+
+      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+      vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+    end
   }
 }
