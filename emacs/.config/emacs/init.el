@@ -38,7 +38,6 @@
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
 (setq split-width-threshold 80)                              ; lower the threshold to automatically split vertically
 (setq split-height-threshold nil)                            ; --^
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)        ; turn on numbers for programming modes
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 
 ;; Less jumpy mouse scroll
@@ -48,6 +47,18 @@
 (setq scroll-conservatively 100000)       ; Never re-center automatically
 (setq scroll-preserve-screen-position t)  ; Keep point position when scrolling
 (setq auto-window-vscroll nil)
+
+;; Config line numbers
+(use-package display-line-numbers
+  :ensure nil  ; Comes preloaded with emacs
+  :custom
+  (display-line-numbers-grow-only t)
+  (display-line-numbers-width-start t)
+  ;(display-line-numbers-type 'relative)
+  :hook
+  (prog-mode . display-line-numbers-mode)
+  (conf-mode . display-line-numbers-mode)
+  (text-mode . display-line-numbers-mode))
 
 ;; OS-specific settings
 (cond
