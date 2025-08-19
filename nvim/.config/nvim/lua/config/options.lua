@@ -1,11 +1,14 @@
 -- ~/.config/nvim/lua/config/options.lua
-
 local opt = vim.opt
+
+-- Set Leader
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- General
 opt.mouse = "a"                    -- enable mouse support
 opt.clipboard = "unnamedplus"      -- use system clipboard
-opt.swapfile = false              -- disable swap files
+opt.swapfile = false               -- disable swap files
 opt.completeopt = "menu,menuone,noselect"
 
 -- UI
@@ -34,17 +37,8 @@ opt.tabstop = 2                  -- 1 tab == 2 spaces
 opt.autoindent = true            -- auto indent new lines
 opt.smartindent = true           -- smart indent
 
--- Performance
-opt.updatetime = 250             -- faster completion
-opt.timeoutlen = 300             -- time to wait for mapped sequence
-
 -- Undo/Backup
 opt.undofile = true              -- enable persistent undo
 opt.backup = false               -- don't create backup files
 opt.writebackup = false          -- don't backup before overwriting
 
--- Folding (if you use nvim-ufo or similar)
-opt.foldcolumn = "1"
-opt.foldlevel = 99
-opt.foldlevelstart = 99
-opt.foldenable = true
