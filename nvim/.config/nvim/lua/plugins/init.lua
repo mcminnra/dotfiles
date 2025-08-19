@@ -1,12 +1,16 @@
-return {{
-  "sjl/badwolf",
-  lazy = false,
-  priority = 1000,
-  config = function()
-    -- load the colorscheme here
-    vim.cmd([[colorscheme badwolf]])
-  end,
-}, {
+return {
+
+{
+    "tiagovla/tokyodark.nvim",
+    opts = {
+        transparent_background = true
+    },
+    config = function(_, opts)
+        require("tokyodark").setup(opts) -- calling setup is optional
+        vim.cmd [[colorscheme tokyodark]]
+    end,
+},
+{
     'nvim-lualine/lualine.nvim',
     dependencies = {'nvim-tree/nvim-web-devicons'},
     config = function()
