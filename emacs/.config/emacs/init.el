@@ -26,9 +26,9 @@
   (progn
     (setq default-directory "~/"))))
 
-(scroll-bar-mode -1)                                         ; No Scroll
-(tool-bar-mode -1)                                           ; No Toolbar
-(menu-bar-mode -1)                                           ; No Menu Bar
+(scroll-bar-mode -1)                                         ; No scroll bar
+(tool-bar-mode -1)                                           ; No toolbar
+(menu-bar-mode -1)                                           ; No menu bar
 (setq inhibit-startup-screen t)                              ; No start screen
 (toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
@@ -40,6 +40,14 @@
 (setq split-height-threshold nil)                            ; --^
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)        ; turn on numbers for programming modes
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
+
+;; Less jumpy mouse scroll
+;; Stolen From: https://github.com/deirn/fedoracfg/blob/deadb8eef399ef563e76f97edfcd9120643d0fc0/config/emacs/init.el#L122
+(setq scroll-step 1)                      ; Scroll one line at a time
+(setq scroll-margin 2)                    ; Start scrolling when 2 lines from the bottom
+(setq scroll-conservatively 100000)       ; Never re-center automatically
+(setq scroll-preserve-screen-position t)  ; Keep point position when scrolling
+(setq auto-window-vscroll nil)
 
 ;; OS-specific settings
 (cond
