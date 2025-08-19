@@ -52,7 +52,7 @@ return {
   {
     "lukas-reineke/headlines.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
-    config = true, -- or `opts = {}`
+    config = true,
   },
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
@@ -67,6 +67,12 @@ return {
         extensions = {
           file_browser = {
             hidden = { file_browser = true, folder_browser = true },
+          },
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
           }
         }
       }
@@ -79,17 +85,13 @@ return {
     end
   },
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    "nvim-telescope/telescope-file-browser.nvim", dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    },
+    opts = {},
     keys = {
       {
         "<leader>?",
@@ -115,20 +117,35 @@ return {
       vim.keymap.set('n', '<leader>tl', ':NvimTreeFindFile<CR>')
     end,
   },
-{
+  {
     "mason-org/mason-lspconfig.nvim",
     opts = {},
     dependencies = {
-        { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
     },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup()
 
-      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+      vim.keymap.set('n', '<space>d', vim.diagnostic.open_float)
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
     end
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      vim.keymap.set('n', ']g', ':Gitsigns next_hunk<CR>')
+      vim.keymap.set('n', '[g', ':Gitsigns prev_hunk<CR>')
+      vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<CR>')
+      vim.keymap.set('n', '<leader>gd', ':Gitsigns diffthis<CR>')
+    end
+  },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {}
   }
 }
+
