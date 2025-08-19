@@ -230,6 +230,20 @@
     (kbd "]]") 'org-next-visible-heading
     (kbd "[[") 'org-previous-visible-heading))
 
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
 ;; Treemacs
 (use-package treemacs
   :ensure t
