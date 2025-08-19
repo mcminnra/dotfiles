@@ -3,7 +3,7 @@ family = "SauceCodePro Nerd Font Mono"
 
 [window]
 dynamic_title = true
-opacity = 0.85
+opacity = 0.98 # matches emacs
 decorations = "Full"
 blur = true
 
