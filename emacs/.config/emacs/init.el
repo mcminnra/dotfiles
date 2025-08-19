@@ -43,7 +43,7 @@
   (progn
     (setq default-directory "~/"))))
 
-;; Various Emacs Settings
+;; General Emacs Settings
 (setq user-full-name "Ryder McMinn"
       user-mail-address "rdr@rdrmc.com")
 (scroll-bar-mode -1)                                         ; No Scroll
@@ -57,7 +57,19 @@
 (setq create-lockfiles nil)                                  ; Turn off .# lock files
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)        ; turn on numbers for programming modes
-(setq mac-command-modifier 'meta)                            ; Setup cmd key as "alt" on mac
+(setq split-width-threshold 80)                              ; lower the threshold to automatically split vertically
+(setq split-height-threshold nil)                            ; --^
+
+;; OS-specific settings
+(cond
+ ((eq `gnu/linux system-type)
+  (progn
+    (add-to-list 'default-frame-alist '(undecorated . t))    ; Remove title-bar
+    ))
+ ((eq `darwin system-type)
+  (progn
+    (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
+    )))
 
 ;; Soft wrap, variable pitch, spell check for text modes
 (add-hook 'text-mode-hook #'visual-line-mode)
