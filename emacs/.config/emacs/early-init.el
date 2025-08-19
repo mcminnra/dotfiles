@@ -7,6 +7,6 @@
 (cond
   ((eq 'darwin system-type)
    (progn
-    (setenv "LIBRARY_PATH" "/opt/homebrew/opt/gcc/lib/gcc/current:/opt/homebrew/opt/libgccjit/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin24/15")
-    )))
-(setq native-comp-async-report-warnings-errors nil)  ; Turn off native-comp errs
+     (setenv "LIBRARY_PATH" "/opt/homebrew/opt/gcc/lib/gcc/current:/opt/homebrew/opt/libgccjit/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin24/15")
+     (setq native-comp-async-report-warnings-errors nil)  ; Turn off native-comp errs
+     )))
