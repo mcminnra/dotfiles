@@ -22,6 +22,8 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
 (setq package-enable-at-startup nil)     ; turn off emacs default package.el
 (setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
 
@@ -318,10 +320,19 @@
         (css "https://github.com/tree-sitter/tree-sitter-css")
         (html "https://github.com/tree-sitter/tree-sitter-html")))
 
-;; (setq treesit-font-lock-level 4) ; Maximum highlighting level
+;; Install tree-sitter grammars if not already installed
+(dolist (lang treesit-language-source-alist)
+  (unless (treesit-language-available-p (car lang))
+    (treesit-install-language-grammar (car lang))))
 
-;; ;; Use tree-sitter for modes
-;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(setq treesit-font-lock-level 4) ; Maximum highlighting level
+
+;; Use tree-sitter for modes
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-ts-mode))
 
 ;; LSP
 ;; Eglot already builtin to Emcas 29+
