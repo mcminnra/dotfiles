@@ -2,8 +2,31 @@
 
 (when (version< emacs-version "30") (error "This requires Emacs 30 and above!"))
 
-;; Load elpaca
-(load "./elpaca-init.el" t)
+;; Load package manager
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+;; Setup straight.el package manage
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(setq package-enable-at-startup nil)     ; turn off emacs default package.el
+(setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
+
+(when (not package-archive-contents)
+    (package-refresh-contents))
 
 ;;; ===============================================
 ;;; General Emacs Settings
@@ -242,7 +265,7 @@
   :after (treemacs projectile))
 
 (use-package treemacs-evil
-  :ensure nil
+  :ensure t
   :after (treemacs evil))
 
 ;; ===============================================
