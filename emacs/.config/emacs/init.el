@@ -307,40 +307,39 @@
   :ensure t
   :hook (prog-mode . company-mode))
 
-;; NOTE: Syntax hightlighting and LSP kinda a pain
+;; Programming Modes
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'"
+  :config
+  (setq typescript-indent-level 2))
+
+(use-package svelte-mode
+  :ensure t
+  :mode "\\.svelte\\'"
+  :config
+  (add-to-list 'svelte-basic-html-table '("script" . typescript-mode)))
 
 ;; Tree-sitter
-(setq treesit-language-source-alist
-      '((python "https://github.com/tree-sitter/tree-sitter-python")
-        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
-        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-        (json "https://github.com/tree-sitter/tree-sitter-json")
-        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-        (css "https://github.com/tree-sitter/tree-sitter-css")
-        (html "https://github.com/tree-sitter/tree-sitter-html")))
+(use-package tree-sitter
+  :ensure t
+  :config
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
-;; Install tree-sitter grammars if not already installed
-(dolist (lang treesit-language-source-alist)
-  (unless (treesit-language-available-p (car lang))
-    (treesit-install-language-grammar (car lang))))
-
-(setq treesit-font-lock-level 4) ; Maximum highlighting level
-
-;; Use tree-sitter for modes
-(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-ts-mode))
-
-;; LSP
-;; Eglot already builtin to Emcas 29+
-;; (with-eval-after-load 'eglot
-;;   (add-to-list 'eglot-server-programs
-;;                '(svelte-mode . ("svelteserver" "--stdio"))))
-
-;; (add-hook 'python-mode-hook 'eglot-ensure)
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter
+  :config
+  (tree-sitter-require 'python)
+  (tree-sitter-require 'javascript)
+  (tree-sitter-require 'typescript)
+  (tree-sitter-require 'rust)
+  (tree-sitter-require 'go)
+  (tree-sitter-require 'c)
+  (tree-sitter-require 'cpp)
+  (tree-sitter-require 'svelte)
+)
 
 ;;; ===============================================
 ;;; Org Config
