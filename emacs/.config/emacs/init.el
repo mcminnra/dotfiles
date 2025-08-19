@@ -306,6 +306,11 @@
   :config
   (solaire-global-mode +1))
 
+;; Rainbow Delimiters
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 ;; visual-line-column
 (use-package visual-fill-column
   :ensure t
