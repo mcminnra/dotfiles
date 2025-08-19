@@ -74,6 +74,244 @@
     )))
 
 ;;; ===============================================
+;;; Theming
+;;; ===============================================
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p)
+  :config
+  ;; Install fonts automatically if they're not already installed
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
+(use-package doom-themes
+  :ensure t
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t)
+  ;; for treemacs users
+  (doom-themes-treemacs-theme "doom-colors")
+  :config
+  (load-theme 'doom-old-hope t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Treemacs theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+
+;; Doom modeline
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
+;; Solaire
+(use-package solaire-mode
+  :ensure t
+  :config
+  (solaire-global-mode +1))
+
+;; visual-line-column
+(use-package visual-fill-column
+  :ensure t
+  :hook ((org-mode . visual-fill-column-mode)
+         (markdown-mode . visual-fill-column-mode))
+  :config
+  (setq-default visual-fill-column-width 120)
+  (setq-default visual-fill-column-center-text t)
+  
+  ;; Optional: Enable visual-line-mode with visual-fill-column
+  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
+
+;;; ===============================================
+;;; Productivity
+;;; ===============================================
+;; Projectile 
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-project-search-path '("~/repos"))
+  :config
+  (global-set-key (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
+;; Helm
+(use-package helm
+  :ensure t
+  :config
+  ; Force helm to search inside of a given window
+  (setq helm-split-window-inside-p t) 
+  ; Keybinds
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (global-set-key (kbd "C-s") #'helm-occur)
+  (helm-mode 1))
+
+(use-package helm-projectile
+  :ensure t
+  :after (projectile helm)
+  :init
+  (helm-projectile-on))
+
+;; which-key
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+;; multiple-cursors
+(use-package multiple-cursors
+  :ensure t
+  :config
+  ;; Core multiple-cursors bindings
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+
+  ;; Click to add cursor
+  (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+  ;; Line editing
+  (global-set-key (kbd "C-S-c C-S-a") 'mc/edit-beginnings-of-lines)
+  (global-set-key (kbd "C-S-c C-S-e") 'mc/edit-ends-of-lines))
+
+;; ace-window
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))
+
+;; treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  ;; :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    ; Prevent other windows using treemacs window
+    (setq treemacs-is-never-other-window t)
+    (setq treemacs-position 'left) 
+    (setq treemacs-width 35)
+    ; Make treemacs automatically follow the file you are viewing
+    (treemacs-follow-mode t)
+    ; Automatically update the tree when files change on disk
+    (treemacs-filewatch-mode t)
+    ; Enable git integration for status highlights
+    (treemacs-git-mode 'deferred))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-c t 1"   . treemacs-delete-other-windows)
+        ("C-c t t"   . treemacs)
+        ("C-c t d"   . treemacs-select-directory)
+        ("C-c t B"   . treemacs-bookmark)
+        ("C-c t C-t" . treemacs-find-file)
+        ("C-c t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :ensure t
+  :after (treemacs projectile))
+
+;; ===============================================
+;; Evil Mode Configs
+;; ===============================================
+
+;; ;; evil mode
+;; (use-package evil
+;;   :init
+;;   (setq evil-want-C-i-jump nil)
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (evil-mode 1)
+;;   ; Revert to trad emacs keybinds for these
+;;   (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
+;;   (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
+;;   ; Evil mode navigate between visual lines insted of logical
+;;   (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+;;   (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
+;;   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+;;   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+;;   ; Make vim use org mode heading cmds in org-mode
+;;   (evil-define-key 'normal org-mode-map
+;;     (kbd "]]") 'org-next-visible-heading
+;;     (kbd "[[") 'org-previous-visible-heading))
+
+;; ; More evil commands not covered by base
+;; (use-package evil-collection
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (evil-collection-init))
+
+;; (use-package treemacs-evil
+;;   :after (treemacs evil)
+;;   :ensure t)
+
+;; (use-package evil-org
+;;   :ensure t
+;;   :after org
+;;   :hook (org-mode . (lambda () evil-org-mode))
+;;   :config
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
+
+;; ===============================================
+;; Programming 
+;; ===============================================
+;; Rainbow Delimiters
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; eat (Emulate A Termial)
+(use-package eat
+  :ensure t
+  :config
+  (setq eat-kill-buffer-on-exit t)
+  (setq eat-enable-mouse t)
+  :bind
+  ("C-c e" . eat)
+  ("C-c E" . eat-other-window))
+
+;; Company
+(use-package company
+  :ensure t
+  :hook (prog-mode . company-mode))
+
+;; NOTE: Syntax hightlighting and LSP kinda a pain
+
+;; Tree-sitter
+(setq treesit-language-source-alist
+      '((python "https://github.com/tree-sitter/tree-sitter-python")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (html "https://github.com/tree-sitter/tree-sitter-html")))
+
+;; (setq treesit-font-lock-level 4) ; Maximum highlighting level
+
+;; ;; Use tree-sitter for modes
+;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+
+;; LSP
+;; Eglot already builtin to Emcas 29+
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '(svelte-mode . ("svelteserver" "--stdio"))))
+
+;; (add-hook 'python-mode-hook 'eglot-ensure)
+
+;;; ===============================================
 ;;; Org Config
 ;;; ===============================================
 ;; Org
@@ -265,239 +503,6 @@
    ("C-c n c" . org-roam-capture))      ; Capture a new Org-roam node using a template
   :config
   (org-roam-setup))
-
-;;; ===============================================
-;;; Theming
-;;; ===============================================
-(use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p)
-  :config
-  ;; Install fonts automatically if they're not already installed
-  (unless (find-font (font-spec :name "all-the-icons"))
-    (all-the-icons-install-fonts t)))
-
-(use-package doom-themes
-  :ensure t
-  :custom
-  ;; Global settings (defaults)
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t)
-  ;; for treemacs users
-  (doom-themes-treemacs-theme "doom-colors")
-  :config
-  (load-theme 'doom-old-hope t)
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Treemacs theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
-;; Doom modeline
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
-
-;; Solaire
-(use-package solaire-mode
-  :ensure t
-  :config
-  (solaire-global-mode +1))
-
-;; Rainbow Delimiters
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-;; visual-line-column
-(use-package visual-fill-column
-  :ensure t
-  :hook ((org-mode . visual-fill-column-mode)
-         (markdown-mode . visual-fill-column-mode))
-  :config
-  (setq-default visual-fill-column-width 120)
-  (setq-default visual-fill-column-center-text t)
-  
-  ;; Optional: Enable visual-line-mode with visual-fill-column
-  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
-
-;;; ===============================================
-;;; Productivity
-;;; ===============================================
-;; Projectile 
-(use-package projectile
-  :ensure t
-  :init
-  (setq projectile-project-search-path '("~/repos"))
-  :config
-  (global-set-key (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
-
-;; Helm
-(use-package helm
-  :ensure t
-  :config
-  ; Force helm to search inside of a given window
-  (setq helm-split-window-inside-p t) 
-  ; Keybinds
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-  (global-set-key (kbd "C-x C-f") #'helm-find-files)
-  (global-set-key (kbd "C-s") #'helm-occur)
-  (helm-mode 1))
-
-(use-package helm-projectile
-  :ensure t
-  :after (projectile helm)
-  :init
-  (helm-projectile-on))
-
-;; eat (Emulate A Termial)
-(use-package eat
-  :ensure t
-  :config
-  (setq eat-kill-buffer-on-exit t)
-  (setq eat-enable-mouse t)
-  :bind
-  ("C-c e" . eat)
-  ("C-c E" . eat-other-window))
-
-;; which-key
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-
-;; multiple-cursors
-(use-package multiple-cursors
-  :ensure t
-  :config
-  ;; Core multiple-cursors bindings
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-
-  ;; Click to add cursor
-  (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
-
-  ;; Line editing
-  (global-set-key (kbd "C-S-c C-S-a") 'mc/edit-beginnings-of-lines)
-  (global-set-key (kbd "C-S-c C-S-e") 'mc/edit-ends-of-lines))
-
-;; ace-window
-(use-package ace-window
-  :ensure t
-  :config
-  (global-set-key (kbd "M-o") 'ace-window))
-
-;; treemacs
-(use-package treemacs
-  :ensure t
-  :defer t
-  ;; :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    ; Prevent other windows using treemacs window
-    (setq treemacs-is-never-other-window t)
-    (setq treemacs-position 'left) 
-    (setq treemacs-width 35)
-    ; Make treemacs automatically follow the file you are viewing
-    (treemacs-follow-mode t)
-    ; Automatically update the tree when files change on disk
-    (treemacs-filewatch-mode t)
-    ; Enable git integration for status highlights
-    (treemacs-git-mode 'deferred))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-c t 1"   . treemacs-delete-other-windows)
-        ("C-c t t"   . treemacs)
-        ("C-c t d"   . treemacs-select-directory)
-        ("C-c t B"   . treemacs-bookmark)
-        ("C-c t C-t" . treemacs-find-file)
-        ("C-c t M-t" . treemacs-find-tag)))
-
-(use-package treemacs-projectile
-  :ensure t
-  :after (treemacs projectile))
-
-;; ===============================================
-;; Evil Mode Configs
-;; ===============================================
-
-;; ;; evil mode
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-C-i-jump nil)
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (evil-mode 1)
-;;   ; Revert to trad emacs keybinds for these
-;;   (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
-;;   (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
-;;   ; Evil mode navigate between visual lines insted of logical
-;;   (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-;;   (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
-;;   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-;;   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-;;   ; Make vim use org mode heading cmds in org-mode
-;;   (evil-define-key 'normal org-mode-map
-;;     (kbd "]]") 'org-next-visible-heading
-;;     (kbd "[[") 'org-previous-visible-heading))
-
-;; ; More evil commands not covered by base
-;; (use-package evil-collection
-;;   :after evil
-;;   :ensure t
-;;   :config
-;;   (evil-collection-init))
-
-;; (use-package treemacs-evil
-;;   :after (treemacs evil)
-;;   :ensure t)
-
-;; (use-package evil-org
-;;   :ensure t
-;;   :after org
-;;   :hook (org-mode . (lambda () evil-org-mode))
-;;   :config
-;;   (require 'evil-org-agenda)
-;;   (evil-org-agenda-set-keys))
-
-;; ===============================================
-;; Programming 
-;; ===============================================
-;; NOTE: Syntax hightlighting and LSP kinda a pain
-
-;; Tree-sitter
-(setq treesit-language-source-alist
-      '((python "https://github.com/tree-sitter/tree-sitter-python")
-        (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
-        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-        (json "https://github.com/tree-sitter/tree-sitter-json")
-        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-        (css "https://github.com/tree-sitter/tree-sitter-css")
-        (html "https://github.com/tree-sitter/tree-sitter-html")))
-
-;; (setq treesit-font-lock-level 4) ; Maximum highlighting level
-
-;; ;; Use tree-sitter for modes
-;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-
-;; LSP
-;; Eglot already builtin to Emcas 29+
-;; (with-eval-after-load 'eglot
-;;   (add-to-list 'eglot-server-programs
-;;                '(svelte-mode . ("svelteserver" "--stdio"))))
-
-;; (add-hook 'python-mode-hook 'eglot-ensure)
 
 ;;; ===============================================
 ;;; Functions
