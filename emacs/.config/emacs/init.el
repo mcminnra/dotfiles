@@ -299,38 +299,40 @@
   :hook (prog-mode . company-mode))
 
 ;; Programming Modes
-(use-package typescript-mode
-  :ensure t
-  :mode "\\.ts\\'"
-  :config
-  (setq typescript-indent-level 2))
+;; NOTE: largely just using Neovim for programming these days - turning these off for now
 
-(use-package svelte-mode
-  :ensure t
-  :mode "\\.svelte\\'"
-  :config
-  (add-to-list 'svelte-basic-html-table '("script" . typescript-mode)))
-
-;; Tree-sitter
-(use-package tree-sitter
-  :ensure t
-  :config
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
-(use-package tree-sitter-langs
-  :ensure t
-  :after tree-sitter
-  :config
-  (tree-sitter-require 'python)
-  (tree-sitter-require 'javascript)
-  (tree-sitter-require 'typescript)
-  (tree-sitter-require 'rust)
-  (tree-sitter-require 'go)
-  (tree-sitter-require 'c)
-  (tree-sitter-require 'cpp)
-  (tree-sitter-require 'svelte)
-)
+;(use-package typescript-mode
+;  :ensure t
+;  :mode "\\.ts\\'"
+;  :config
+;  (setq typescript-indent-level 2))
+;
+;(use-package svelte-mode
+;  :ensure t
+;  :mode "\\.svelte\\'"
+;  :config
+;  (add-to-list 'svelte-basic-html-table '("script" . typescript-mode)))
+;
+;;; Tree-sitter
+;(use-package tree-sitter
+;  :ensure t
+;  :config
+;  (global-tree-sitter-mode)
+;  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+;
+;(use-package tree-sitter-langs
+;  :ensure t
+;  :after tree-sitter
+;  :config
+;  (tree-sitter-require 'python)
+;  (tree-sitter-require 'javascript)
+;  (tree-sitter-require 'typescript)
+;  (tree-sitter-require 'rust)
+;  (tree-sitter-require 'go)
+;  (tree-sitter-require 'c)
+;  (tree-sitter-require 'cpp)
+;  (tree-sitter-require 'svelte)
+;)
 
 ;;; ===============================================
 ;;; Org Config
