@@ -71,7 +71,7 @@
   :custom
   (display-line-numbers-grow-only t)
   (display-line-numbers-width-start t)
-  ;(display-line-numbers-type 'relative)
+  (display-line-numbers-type 'relative)
   :hook
   (prog-mode . display-line-numbers-mode)
   (conf-mode . display-line-numbers-mode)
@@ -110,7 +110,6 @@
   (doom-themes-treemacs-theme "doom-colors")
   :config
   (load-theme 'doom-old-hope t)
-
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Treemacs theme
@@ -187,10 +186,8 @@
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-
   ;; Click to add cursor
   (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
-
   ;; Line editing
   (global-set-key (kbd "C-S-c C-S-a") 'mc/edit-beginnings-of-lines)
   (global-set-key (kbd "C-S-c C-S-e") 'mc/edit-ends-of-lines))
