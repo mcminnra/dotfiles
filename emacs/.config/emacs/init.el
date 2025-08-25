@@ -52,8 +52,8 @@
 (setq backup-directory-alist `(("." . "~/.saves")))          ; Set backupdir
 (setq create-lockfiles nil)                                  ; Turn off .# lock files
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
-(setq split-width-threshold 80)                              ; lower the threshold to automatically split vertically
-(setq split-height-threshold nil)                            ; --^
+;(setq split-width-threshold 80)                              ; lower the threshold to automatically split vertically
+;(setq split-height-threshold nil)                            ; --^
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 (add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
 
