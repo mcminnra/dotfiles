@@ -1,4 +1,5 @@
 return {
+  -- Theme
   {
     "tiagovla/tokyodark.nvim",
     opts = {
@@ -21,39 +22,7 @@ return {
       }
     end
   },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    branch = 'master',
-    lazy = false,
-    build = ":TSUpdate",
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        -- enable syntax highlighting
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false
-        },
-        -- enable indentation
-        indent = {
-          enable = true
-        },
-        -- enable autotagging (w/ nvim-ts-autotag plugin)
-        autotag = {
-          enable = true
-        },
-        -- ensure these language parsers are installed
-        ensure_installed = {"json", "javascript", "typescript", "tsx", "yaml", "html", "css", "markdown",
-          "markdown_inline", "svelte", "bash", "lua", "dockerfile", "gitignore"},
-        -- auto install above language parsers
-        auto_install = true
-      }
-    end
-  },
-  {
-    "lukas-reineke/headlines.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    config = true,
-  },
+  -- Productivity
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -117,6 +86,40 @@ return {
       vim.keymap.set('n', '<leader>tl', ':NvimTreeFindFile<CR>')
     end,
   },
+  -- Programming
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = 'master',
+    lazy = false,
+    build = ":TSUpdate",
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        -- enable syntax highlighting
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false
+        },
+        -- enable indentation
+        indent = {
+          enable = true
+        },
+        -- enable autotagging (w/ nvim-ts-autotag plugin)
+        autotag = {
+          enable = true
+        },
+        -- ensure these language parsers are installed
+        ensure_installed = {"json", "javascript", "typescript", "tsx", "yaml", "html", "css", "markdown",
+          "markdown_inline", "svelte", "bash", "lua", "dockerfile", "gitignore"},
+        -- auto install above language parsers
+        auto_install = true
+      }
+    end
+  },
+  {
+    "lukas-reineke/headlines.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = true,
+  },
   {
     "mason-org/mason-lspconfig.nvim",
     opts = {},
@@ -132,6 +135,37 @@ return {
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
     end
+  },
+  { "hrsh7th/cmp-nvim-lsp" },
+  {
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp"
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        sources = {
+          { name = "nvim_lsp" }
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        }),
+        snippet = {
+          expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+          end,
+        }
+      })
+    end,
   },
   {
     "lewis6991/gitsigns.nvim",
