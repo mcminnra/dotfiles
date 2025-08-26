@@ -541,14 +541,15 @@
   (other-window 1))
 (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
 
-(defun open-org-layout ()
+(defun my/open-org-layout ()
   (interactive)
   (pop-to-buffer (find-file "~/org/notes/project-tasks.org"))
   (org-agenda-list)
   (org-agenda-day-view)
+  (evil-window-move-far-right)
   (treemacs-add-and-display-current-project-exclusively)
   (other-window 1))
-(global-set-key (kbd "C-x 9") 'open-org-layout)
+(global-set-key (kbd "C-x 9") 'my/open-org-layout)
 
 (defun install-all-treesit-grammars ()
   "Install all tree-sitter grammars defined in treesit-language-source-alist."
