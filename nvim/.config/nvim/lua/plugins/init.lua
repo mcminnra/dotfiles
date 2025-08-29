@@ -169,6 +169,43 @@ return {
     end,
 
   },
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      require("bufferline").setup({
+        options = {
+          mode = "buffers", -- set to "tabs" to only show tabpages instead
+          offsets = {
+            {
+              filetype = "NvimTree",
+              text = "File Explorer",
+              text_align = "center",
+              separator = true
+            }
+          },
+          tab_size = 21,
+          diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
+          diagnostics_update_in_insert = false,
+          diagnostics_indicator = function(count)
+            return "("..count..")"
+          end,
+        }
+      })
+    end,
+    keys = {
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+      { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+      { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
+      { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
+      { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
+      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+    },
+  },
   -- Programming
   {
     "nvim-treesitter/nvim-treesitter",
@@ -217,7 +254,6 @@ return {
     dependencies = "nvim-treesitter/nvim-treesitter",
     config = true,
   },
-  { "neovim/nvim-lspconfig" },
   {
     "mason-org/mason-lspconfig.nvim",
     opts = {},
@@ -228,7 +264,7 @@ return {
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup()
-
+      vim.diagnostic.config({ virtual_text = true })
       vim.keymap.set("n", "<space>d", vim.diagnostic.open_float)
       vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
       vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
