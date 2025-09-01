@@ -359,17 +359,17 @@
   (setq org-tags-column 0)
   (setq org-special-ctrl-a/e t)
   (setq org-todo-keywords
-	'(
-	  ;; Tasks
-	  (sequence "TODO(t)" "BLOCKED(b)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
-	  ;; Project
+        '(
+          ;; Tasks
+          (sequence "TODO(t)" "BLOCKED(b)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
+          ;; Project
           (sequence "PROJECT(p)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
-	  ;; Experience
+          ;; Experience
           (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)" "ARCHIVED(a)")
-	  ;; Learning
-	  (sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
+          ;; Learning
+          (sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
   (setq org-todo-keyword-faces
-	'(("TODO" . (:foreground "#30acec" :weight bold))
+        '(("TODO" . (:foreground "#30acec" :weight bold))
           ("WAITING" . (:foreground "#339989" :weight bold))
           ("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
           ("REVIEW" . (:foreground "#f7b801" :weight bold))
@@ -378,8 +378,8 @@
           ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
           ;; Project
           ("PROJECT" . (:foreground "white" :background "#5C3E84" :weight bold))
-	  ("FEATURE" . (:foreground "#686EE2" :weight bold))
-	  ("BUG" . (:foreground "#F35C6E" :weight bold))
+          ("FEATURE" . (:foreground "#686EE2" :weight bold))
+          ("BUG" . (:foreground "#F35C6E" :weight bold))
           ;; Experience
           ("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
           ("ONE" . (:foreground "red" :weight bold))
@@ -395,17 +395,17 @@
           ("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
   (setq org-enable-priority-commands t
 	org-highest-priority ?A
-	org-default-priority ?D
+	org-default-priority ?G
 	org-lowest-priority ?G)
   ; Using WoW quality colors because F it - https://warcraft.wiki.gg/wiki/Quality
   (setq org-priority-faces
-	'((?A . (:foreground "#e6cc80"))
-	  (?B . (:foreground "#ff8000"))
-	  (?C . (:foreground "#a335ee"))
-	  (?D . (:foreground "#0070dd"))
+        '((?A . (:foreground "#e6cc80"))
+          (?B . (:foreground "#ff8000"))
+          (?C . (:foreground "#a335ee"))
+          (?D . (:foreground "#0070dd"))
           (?E . (:foreground "#1eff00"))
-	  (?F . (:foreground "#ffffff"))
-	  (?G . (:foreground "#9d9d9d"))))
+          (?F . (:foreground "#ffffff"))
+          (?G . (:foreground "#9d9d9d"))))
   ;; agenda
   (setq org-agenda-files (directory-files-recursively "~/org/notes/" "\\.org$"))
   (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
