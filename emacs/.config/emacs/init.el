@@ -342,22 +342,24 @@
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-count)
   :bind (("C-c c" . org-capture)
-	 ("C-c a" . org-agenda)
-	 ("C-c l" . org-store-link))
+         ("C-c a" . org-agenda)
+         ("C-c l" . org-store-link))
   :config
   (add-to-list 'org-modules 'org-habit t)
 
-  ;; Make the document title a bit bigger
+  ;; General Org config
+  (setq org-ellipsis " ▼ ")                                 ; Change icon for folding
+  (setq org-log-done t)                                     ; Record when done
+  (setq org-log-into-drawer "LOGBOOK")                      ; Put log state into a seperate section instead of just in headline body 
+  (setq org-enforce-todo-dependencies t)                    ; Can't mark done if children aren't marked done
+  (setq org-archive-location "~/org/archive/%s_archive::")  ; Set archive location and format
+  (setq org-tags-column 0)                                  ; Put tags immediately after headline
+  (setq org-special-ctrl-a/e t)                             ; Have ctrl-a/e work better with org headlines
+
+  ;; But make the document title a bit bigger
   (set-face-attribute 'org-document-title nil :font "SauceCodePro NFM" :weight 'bold :height 1.5)
 
-  (setq org-log-done t)
-  (setq org-ellipsis " ▼ ")
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-archive-location "~/org/archive/%s_archive::")
-  (setq org-deadline-warning-days 90)
-  (setq org-enforce-todo-dependencies t)
-  (setq org-tags-column 0)
-  (setq org-special-ctrl-a/e t)
+  ;; Set todo keywords and faces
   (setq org-todo-keywords
         '(
           ;; Tasks
@@ -393,12 +395,13 @@
           ("IN-NPML" . (:foreground "white" :background "purple" :weight bold))
           ("IN-REPO" . (:foreground "white" :background "#7cb518" :weight bold))
           ("WITH-NOTES" . (:foreground "white" :background "#a47e1b" :weight bold))))
+
+  ;; Org priority and faces
   (setq org-enable-priority-commands t
-	org-highest-priority ?A
-	org-default-priority ?G
-	org-lowest-priority ?G)
-  ; Using WoW quality colors because F it - https://warcraft.wiki.gg/wiki/Quality
-  (setq org-priority-faces
+        org-highest-priority ?A
+        org-default-priority ?G
+        org-lowest-priority ?G)
+  (setq org-priority-faces  ; Using WoW quality colors because F it - https://warcraft.wiki.gg/wiki/Quality
         '((?A . (:foreground "#e6cc80"))
           (?B . (:foreground "#ff8000"))
           (?C . (:foreground "#a335ee"))
@@ -406,65 +409,73 @@
           (?E . (:foreground "#1eff00"))
           (?F . (:foreground "#ffffff"))
           (?G . (:foreground "#9d9d9d"))))
-  ;; agenda
-  (setq org-agenda-files (directory-files-recursively "~/org/notes/" "\\.org$"))
-  (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
+
+  ;; Set todo warning and faces
+  (setq org-deadline-warning-days 90)
   (setq org-agenda-deadline-faces
-	'((0.92 . org-warning)
-          (0.84 . org-upcoming-deadline)
-          (0.0 . default)))
+        '((0.98 . org-imminent-deadline)          ; Overdue or due tomorrow
+          (0.66 . org-upcoming-deadline)          ; Due within 30 days 
+          (0.0 . org-upcoming-distant-deadline))) ; everything else
+
+  ;; agenda
+  (setq org-agenda-files (directory-files-recursively "~/org/notes/" "\\.org$"))  ; Recursively find all files
+  (setq org-agenda-dim-blocked-tasks nil)  ; If a tasks has sub-tasks, it gets dimmed, which I dislike
+  (setq org-agenda-start-on-weekday nil)  ; Start weekday on Monday
+  (setq org-agenda-remove-tags t)  ; hide tags in agenda
+
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-24:c%?-24t%s")
+          (todo . " %i %-24:c")
+          (tags . " %i %-24:c")
+          (search . " %i %-24:c")))
+
   (setq org-agenda-sorting-strategy
-	'((agenda habit-up scheduled-up deadline-up time-up todo-state-down priority-down category-keep)
+        '((agenda habit-up scheduled-up deadline-up time-up todo-state-down priority-down category-keep)
           (todo priority-down category-keep todo-state-down)
           (tags priority-down category-keep)
           (search category-keep)))
-  (setq org-agenda-start-on-weekday nil)
-  (setq org-refile-use-outline-path 'file)
-  (setq org-refile-targets
-	`((,(directory-files-recursively "~/org/notes/" "^[a-zA-Z0-9_-]*.org$") :maxlevel . 5)))
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-agenda-prefix-format
-	'((agenda . " %i %-24:c%?-24t%s")
-	  (todo . " %i %-24:c")
-	  (tags . " %i %-24:c")
-	  (search . " %i %-24:c")))
-  (setq org-agenda-remove-tags t)
+
+  (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+  (setq org-outline-path-complete-in-steps nil)  ; Refile in single go
+  (setq org-refile-use-outline-path 'file)  ; Show full path starting with file
+
   ;; habit
   (setq org-habit-show-all-today t)
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
   (setq org-habit-graph-column 65)
+
   ;; functions
   (defun org-cycle-agenda-files ()
     "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
     (interactive)
     (let* ((fs (org-agenda-files t))
-	   (files (append fs (list (car fs))))
-	   (tcf (if buffer-file-name (file-truename buffer-file-name)))
-	   file)
+           (files (append fs (list (car fs))))
+           (tcf (if buffer-file-name (file-truename buffer-file-name)))
+           file)
       (unless files (user-error "No agenda files"))
       (catch 'exit
-	(while (setq file (pop files))
-	  (if (equal (file-truename file) tcf)
-	      (when (car files)
-		(find-file (car files))
-		(throw 'exit t))))
-	(find-file (car fs)))
+             (while (setq file (pop files))
+                    (if (equal (file-truename file) tcf)
+                      (when (car files)
+                        (find-file (car files))
+                        (throw 'exit t))))
+             (find-file (car fs)))
       (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
 
   (defun org-habit-streak-percentage ()
     (point-min)
     (while (not (eobp))
-      (when (get-text-property (point) 'org-habit-p)
-        (let (
-	      (count (count-matches
-                      (char-to-string org-habit-completed-glyph)
-                      (line-beginning-position) (line-end-position))))
-          (end-of-line)
-          (insert (concat (number-to-string
-			   (/ (round (* 10 (* 100 (/ (float count) (+ org-habit-following-days org-habit-preceding-days)))))10.0)
-			   ) "%" ))))
-      (forward-line 1)))
+           (when (get-text-property (point) 'org-habit-p)
+             (let (
+                   (count (count-matches
+                            (char-to-string org-habit-completed-glyph)
+                            (line-beginning-position) (line-end-position))))
+               (end-of-line)
+               (insert (concat (number-to-string
+                                 (/ (round (* 10 (* 100 (/ (float count) (+ org-habit-following-days org-habit-preceding-days)))))10.0)
+                                 ) "%" ))))
+           (forward-line 1)))
   (add-hook 'org-agenda-finalize-hook 'org-habit-streak-percentage))
 
 (use-package org-edna
