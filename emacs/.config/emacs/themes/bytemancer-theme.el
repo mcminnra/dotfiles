@@ -37,7 +37,7 @@
       (cyan "#38A89D")
       (purple "#A485DD")
       (purple_dim "#281B27")
-      (grey "#586068")
+      (grey "#4A5057")
     )
 
 
@@ -117,7 +117,7 @@
    `(line-number-current-line ((t (:background ,mantle :foreground ,purple :weight bold))))
 
    ;; Org mode
-   `(org-document-title ((t (:foreground ,red))))
+   `(org-document-title ((t (:foreground ,orange))))
    `(org-document-info-keyword ((t (:foreground ,grey))))
    `(org-ellipsis ((t (:foreground ,grey))))
    `(org-list-dst ((t (:foreground ,fg))))
@@ -134,7 +134,7 @@
    `(org-date ((t (:foreground ,yellow))))
    `(org-scheduled ((t (:foreground ,fg))))
    `(org-scheduled-today ((t (:foreground ,fg))))
-   `(org-imminent-deadline ((t (:foreground ,yellow :weight bold :width expanded))))
+   `(org-imminent-deadline ((t (:foreground ,red))))
    `(org-upcoming-deadline ((t (:foreground ,yellow))))
    `(org-upcoming-distant-deadline ((t (:foreground ,yellow))))
    `(org-done ((t (:foreground ,grey))))
