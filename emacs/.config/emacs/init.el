@@ -100,6 +100,10 @@
   (unless (find-font (font-spec :name "all-the-icons"))
     (all-the-icons-install-fonts t)))
 
+(add-to-list 'custom-theme-load-path 
+               (expand-file-name "themes" user-emacs-directory))
+;(load-theme 'bytemancer t)
+
 (use-package doom-themes
   :ensure t
   :custom
@@ -596,6 +600,42 @@
   (treemacs-add-and-display-current-project-exclusively)
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'my/open-org-layout)
+
+(defun collect-buffer-faces (buffer)
+  "Collect all faces found in BUFFER"
+  (let ((faces nil))
+    (save-excursion
+      (with-current-buffer buffer
+        (goto-char (point-min))
+        (while (< (point) (point-max))
+          (add-to-list 'faces (get-text-property (point) 'face))
+          (goto-char (next-property-change (point) nil (point-max))))))
+    (delete nil faces)))
+
+;;;###autoload
+(defun show-buffer-faces (&optional buffer)
+  "Display faces used in the BUFFER in help window.
+
+  If not specified, or called interactively, BUFFER defaults to `current-buffer'"
+  (interactive)
+  (let* ((buffer (or buffer (current-buffer)))
+         (help-buffer (or (help-buffer) (get-bufer-create "*Help*")))
+         (faces (collect-buffer-faces buffer))
+         (help-buffer-under-preparation t))
+    (help-setup-xref (list #'show-buffer-faces buffer)
+		     (called-interactively-p 'interactive))
+    (with-help-window help-buffer
+      (insert
+       (format "Faces found in buffer %s:\n\n" (buffer-name buffer)))
+
+      (let ((sort-start (point)))
+        (dolist (face faces)
+          (help-insert-xref-button
+           (propertize (format "  %s" face) 'face face)
+           'help-face face)
+          (insert "\n"))
+        (sort-lines t sort-start (point))))))
+
 
 ;;; ----------------------------------------------
 
