@@ -20,19 +20,12 @@
 
 ;; Define color palette
 (let (
+      ;; bg /fg
       (core "#131313")
       (mantle "#191919")
       (crust "#202020")
-      (bg1 "#11121D")
-      (bg2 "#1A1B2A")
-      (bg3 "#212234")
-      (bg4 "#353945")
-      (bg5 "#4A5057")
-      (bg6 "#282C34")
-      (bg_red "#FE6D85")
-      (bg_green "#98C379")
-      (bg_blue "#9FBBF3")
       (fg "#b0b0b0")
+      ;; Colors
       (red "#EE6D85")
       (orange "#F6955B")
       (yellow "#D7A65F")
@@ -45,16 +38,7 @@
       (purple "#A485DD")
       (purple_dim "#281B27")
       (grey "#586068")
-      ;
-      (fg-alt "#b0b0b0")       
-    
-      (diff_red "#773440")
-      (diff_green "#587738")
-      (diff_blue "#2A3A5A")
-      (diff_add "#1E2326")
-      (diff_change "#262B3D")
-      (diff_delete "#281B27")
-      (diff_text "#1C4474"))
+    )
 
 
 ;;       local palette = {
@@ -93,9 +77,9 @@
    ;; Basic faces
    `(default ((t (:background ,mantle :foreground ,fg))))
    `(cursor ((t (:background ,purple))))
-   `(region ((t (:background ,blue_dim))))
-   `(highlight ((t (:background ,diff_text))))
-   `(hl-line ((t (:background ,diff_text))))
+   `(region ((t (:background ,blue))))
+   `(highlight ((t (:background ,blue))))
+   `(hl-line ((t (:background ,blue))))
    `(fringe ((t (:background ,mantle))))
    `(show-paren-match ((t (:background ,purple :foreground ,mantle :weight bold))))
    `(show-paren-mismatch ((t (:background ,red :foreground ,mantle :weight bold))))
@@ -142,15 +126,15 @@
    `(org-level-2 ((t (:foreground ,blue :height 1.0))))
    `(org-level-3 ((t (:foreground ,cyan :height 1.0))))
    `(org-level-4 ((t (:foreground ,green :height 1.0))))
-   `(org-code ((t (:foreground ,yellow :background ,bg1))))
-   `(org-block ((t (:background ,bg1))))
+   `(org-code ((t (:foreground ,yellow :background ,crust))))
+   `(org-block ((t (:background ,crust))))
    `(org-drawer ((t (:foreground ,grey))))
    `(org-special-keyword ((t (:foreground ,grey))))
    `(org-property-value ((t (:foreground ,grey))))
    `(org-date ((t (:foreground ,yellow))))
    `(org-scheduled ((t (:foreground ,fg))))
    `(org-scheduled-today ((t (:foreground ,fg))))
-   `(org-imminent-deadline ((t (:foreground ,orange))))
+   `(org-imminent-deadline ((t (:foreground ,yellow :weight bold :width expanded))))
    `(org-upcoming-deadline ((t (:foreground ,yellow))))
    `(org-upcoming-distant-deadline ((t (:foreground ,yellow))))
    `(org-done ((t (:foreground ,grey))))

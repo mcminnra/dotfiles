@@ -102,7 +102,7 @@
 
 (add-to-list 'custom-theme-load-path 
                (expand-file-name "themes" user-emacs-directory))
-;(load-theme 'bytemancer t)
+(load-theme 'bytemancer t)
 
 (use-package doom-themes
   :ensure t
@@ -113,7 +113,7 @@
   ;; for treemacs users
   (doom-themes-treemacs-theme "doom-colors")
   :config
-  (load-theme 'doom-old-hope t)
+  ;(load-theme 'doom-old-hope t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Treemacs theme
