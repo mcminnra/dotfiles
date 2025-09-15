@@ -484,6 +484,7 @@
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
   (setq org-habit-graph-column 65)
+  (setq org-habit-show-done-always-green t)
 
   ;; functions
   (defun org-cycle-agenda-files ()
