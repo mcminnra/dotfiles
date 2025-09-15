@@ -295,41 +295,77 @@
   :ensure t
   :hook (prog-mode . company-mode))
 
-;; Programming Modes
-;; NOTE: largely just using Neovim for programming these days - turning these off for now
+;; Treesit
+;; tree-sitter sources list
+(setq treesit-language-source-alist
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+        (c "https://github.com/tree-sitter/tree-sitter-c")
+        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+        (rust "https://github.com/tree-sitter/tree-sitter-rust")
+        (lua "https://github.com/Azganoth/tree-sitter-lua")))
 
-;(use-package typescript-mode
-;  :ensure t
-;  :mode "\\.ts\\'"
-;  :config
-;  (setq typescript-indent-level 2))
-;
-;(use-package svelte-mode
-;  :ensure t
-;  :mode "\\.svelte\\'"
-;  :config
-;  (add-to-list 'svelte-basic-html-table '("script" . typescript-mode)))
-;
-;;; Tree-sitter
-;(use-package tree-sitter
-;  :ensure t
-;  :config
-;  (global-tree-sitter-mode)
-;  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-;
-;(use-package tree-sitter-langs
-;  :ensure t
-;  :after tree-sitter
-;  :config
-;  (tree-sitter-require 'python)
-;  (tree-sitter-require 'javascript)
-;  (tree-sitter-require 'typescript)
-;  (tree-sitter-require 'rust)
-;  (tree-sitter-require 'go)
-;  (tree-sitter-require 'c)
-;  (tree-sitter-require 'cpp)
-;  (tree-sitter-require 'svelte)
-;)
+;; Remap major modes to their tree-sitter equivalents
+(setq major-mode-remap-alist
+      '((python-mode . python-ts-mode)
+        (javascript-mode . js-ts-mode)
+        (js-mode . js-ts-mode)
+        (typescript-mode . typescript-ts-mode)
+        (json-mode . json-ts-mode)
+        (css-mode . css-ts-mode)
+        (html-mode . html-ts-mode)
+        (yaml-mode . yaml-ts-mode)
+        (bash-mode . bash-ts-mode)
+        (sh-mode . bash-ts-mode)
+        (c-mode . c-ts-mode)
+        (c++-mode . c++-ts-mode)
+        (cxx-mode . c++-ts-mode)
+        (cc-mode . c++-ts-mode)
+        (rust-mode . rust-ts-mode)
+        (go-mode . go-ts-mode)
+        (dockerfile-mode . dockerfile-ts-mode)
+        (cmake-mode . cmake-ts-mode)
+        (toml-mode . toml-ts-mode)))
+
+;; Auto-mode mappings for file extensions
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . dockerfile-ts-mode))
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
+
+;; Treesit config
+(setq treesit-font-lock-level 4)   ; Most detailed syntax highlighting
+(add-hook 'prog-mode-hook #'hs-minor-mode)  ; Enable tree-sitter based folding
+
+;; Function to install all grammar files
+(defun my/install-tree-sitter-grammars ()
+  "Install all tree-sitter grammars defined in `treesit-language-source-alist'."
+  (interactive)
+  (dolist (lang treesit-language-source-alist)
+    (let ((lang-symbol (car lang)))
+      (unless (treesit-language-available-p lang-symbol)
+        (message "Installing %s grammar..." lang-symbol)
+        (treesit-install-language-grammar lang-symbol)))))
+(add-hook 'prog-mode-hook 'my/install-tree-sitter-grammars)  ; Install on prog-modes
+
+;; Make comments italic
+(custom-set-faces
+ '(font-lock-comment-face ((t (:slant italic))))
+ '(font-lock-comment-delimiter-face ((t (:slant italic)))))
 
 ;;; ===============================================
 ;;; Org Config
@@ -561,13 +597,6 @@
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'my/open-org-layout)
 
-(defun install-all-treesit-grammars ()
-  "Install all tree-sitter grammars defined in treesit-language-source-alist."
-  (interactive)
-  (dolist (lang (mapcar #'car treesit-language-source-alist))
-    (unless (treesit-language-available-p lang)
-      (message "Installing %s grammar..." lang)
-      (treesit-install-language-grammar lang))))
 ;;; ----------------------------------------------
 
 (custom-set-variables

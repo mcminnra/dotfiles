@@ -1,6 +1,6 @@
 ;;; early-init.el
 
-;; Turn off package soe straight works correctly
+;; Turn off package so straight works correctly
 (setq package-enable-at-startup nil)
 
 ;; When native-compiling, emacs has trouble finding gcc. Give it some help.
