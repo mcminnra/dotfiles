@@ -23,7 +23,7 @@
       ;; bg /fg
       (core "#131313")
       (mantle "#191919")
-      (crust "#202020")
+      (crust "#1A1B2A")
       (fg "#b0b0b0")
       ;; Colors
       (red "#EE6D85")
@@ -40,6 +40,7 @@
       (purple "#A485DD")
       (purple_dim "#281B27")
       (grey "#4A5057")
+      (white "#e0e2ea")
     )
 
 
@@ -79,9 +80,9 @@
    ;; Basic faces
    `(default ((t (:background ,mantle :foreground ,fg))))
    `(cursor ((t (:background ,purple))))
-   `(region ((t (:background ,blue :foreground ,mantle))))
-   `(highlight ((t (:background ,blue :foreground ,mantle))))
-   `(hl-line ((t (:background ,blue))))
+   `(region ((t (:background ,crust))))
+   `(highlight ((t (:background ,crust))))
+   `(hl-line ((t (:background ,crust))))
    `(fringe ((t (:background ,mantle))))
    `(show-paren-match ((t (:background ,purple :foreground ,mantle :weight bold))))
    `(show-paren-mismatch ((t (:background ,red :foreground ,mantle :weight bold))))
@@ -92,11 +93,15 @@
    `(font-lock-builtin-face ((t (:foreground ,purple))))
    `(font-lock-comment-face ((t (:foreground ,grey :slant italic))))
    `(font-lock-constant-face ((t (:foreground ,orange))))
-   `(font-lock-function-name-face ((t (:foreground ,purple :weight bold))))
-   `(font-lock-keyword-face ((t (:foreground ,purple :weight bold))))
+   `(font-lock-number-face ((t (:foreground ,purple))))
+   `(font-lock-function-name-face ((t (:foreground ,green))))
+   `(font-lock-keyword-face ((t (:foreground ,red))))
+   `(font-lock-operator-face ((t (:foreground ,red))))
    `(font-lock-string-face ((t (:foreground ,yellow))))
-   `(font-lock-type-face ((t (:foreground ,orange))))
-   `(font-lock-variable-name-face ((t (:foreground ,fg))))
+   `(font-lock-type-face ((t (:foreground ,blue :slant italic))))
+   `(font-lock-variable-name-face ((t (:foreground ,white))))
+   `(font-lock-variable-use-face ((t (:foreground ,white))))
+   `(font-lock-property-use-face ((t (:foreground ,white))))
    `(font-lock-warning-face ((t (:foreground ,red :weight bold))))
 
    ;; Solaire
@@ -114,7 +119,7 @@
    ;; Minibuffer
    `(minibuffer-prompt ((t (:foreground ,purple :weight bold))))
 
-   ;; Line numbers (if using display-line-numbers-mode)
+   ;; Line numbers
    `(line-number ((t (:background ,mantle :foreground ,grey))))
    `(line-number-current-line ((t (:background ,mantle :foreground ,purple :weight bold))))
 
@@ -153,7 +158,7 @@
    `(org-agenda-structure ((t (:foreground ,blue))))
    `(org-habit-ready-face ((t (:background ,bg_green :foreground ,green))))
    `(org-habit-overdue-face ((t (:background ,bg_red :foreground ,red))))
-   `(org-habit-clear-future-face ((t (:background ,crust :foreground ,core))))
+   `(org-habit-clear-future-face ((t (:background ,mantle :foreground ,core))))
    `(org-habit-clear-face ((t (:background ,bg_green :foreground ,green))))
    `(org-habit-alert-future-face ((t (:background ,bg_red :foreground ,red))))
    `(org-habit-alert-face ((t (:background ,bg_blue :foreground ,blue))))

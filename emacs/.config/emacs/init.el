@@ -46,6 +46,7 @@
 (tool-bar-mode -1)                                           ; No toolbar
 (menu-bar-mode -1)                                           ; No menu bar
 (setq inhibit-startup-screen t)                              ; No start screen
+(global-hl-line-mode 1)                                      ; highlight active line
 (toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
 (setq visible-bell t)                                        ; Make bell visible
@@ -298,6 +299,38 @@
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode))
+
+;; diff-hl
+
+(use-package diff-hl
+  :ensure t
+  :hook
+  ;; Enable diff-hl for programming modes
+  ((prog-mode . diff-hl-mode)
+   (vc-dir-mode . diff-hl-dir-mode)
+   ;; Enable margin mode for terminal Emacs
+   (diff-hl-mode . diff-hl-margin-mode))
+  :config
+  ;; Enable diff-hl globally
+  (global-diff-hl-mode 1)
+  
+  ;; Refresh diff-hl when magit operations complete
+  (with-eval-after-load 'magit
+    (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  
+  ;; Use margin instead of fringe in terminal
+  (unless (display-graphic-p)
+    (diff-hl-margin-mode 1))
+  
+  :bind
+  ;; Navigate between hunks
+  ("C-c v n" . diff-hl-next-hunk)
+  ("C-c v p" . diff-hl-previous-hunk)
+  ;; Show diff of current hunk
+  ("C-c v s" . diff-hl-show-hunk)
+  ;; Revert current hunk
+  ("C-c v r" . diff-hl-revert-hunk))
 
 ;; Treesit
 ;; tree-sitter sources list
