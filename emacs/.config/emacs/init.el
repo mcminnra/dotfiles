@@ -34,7 +34,7 @@
   (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))
 
 ;; Set default-directory
-(cond 
+(cond
  ((eq `windows-nt system-type)
   (progn
     (setq default-directory (substitute-env-vars "$HOME/")))) ; Windows weird
@@ -101,7 +101,7 @@
   (unless (find-font (font-spec :name "all-the-icons"))
     (all-the-icons-install-fonts t)))
 
-(add-to-list 'custom-theme-load-path 
+(add-to-list 'custom-theme-load-path
                (expand-file-name "themes" user-emacs-directory))
 (load-theme 'bytemancer t)
 
@@ -148,7 +148,7 @@
 ;;; ===============================================
 ;;; Productivity
 ;;; ===============================================
-;; Projectile 
+;; Projectile
 (use-package projectile
   :ensure t
   :init
@@ -250,7 +250,7 @@
   :config
   (progn
     ; Prevent other windows using treemacs window
-    (setq treemacs-is-never-other-window t)
+    (setq treemacs-is-never-other-window nil)
     (setq treemacs-position 'left) 
     (setq treemacs-width 35)
     ; Make treemacs automatically follow the file you are viewing
@@ -348,8 +348,12 @@
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq lsp-ui-sideline-enable t
-        lsp-ui-sideline-show-hover t
-        lsp-ui-doc-enable nil))
+	lsp-ui-sideline-show-hover t
+	lsp-ui-doc-enable nil
+	lsp-ui-sideline-show-diagnostics t     ; Show warnings/errors in sideline
+	lsp-ui-sideline-show-code-actions t
+	lsp-ui-sideline-delay 0.25)    ; Show code actions in sideline
+  )
 
 (use-package company-lsp
   :ensure t
