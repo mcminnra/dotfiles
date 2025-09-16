@@ -84,10 +84,15 @@
    `(highlight ((t (:background ,crust))))
    `(hl-line ((t (:background ,crust))))
    `(fringe ((t (:background ,mantle))))
+   `(match ((t (:background ,blue))))
+   `(link ((t (:foreground ,cyan :underline ,cyan))))
    `(show-paren-match ((t (:background ,purple :foreground ,mantle :weight bold))))
    `(show-paren-mismatch ((t (:background ,red :foreground ,mantle :weight bold))))
    `(window-divider ((t (:background nil :foreground ,mantle))))
    `(vertical-border ((t (:background nil :foreground ,mantle))))
+   `(error ((t (:foreground ,red :weight bold))))
+   `(warning ((t (:foreground ,orange :weight bold))))
+   `(success ((t (:foreground ,green :weight bold))))
 
    ;; Font lock faces (syntax highlighting)
    `(font-lock-builtin-face ((t (:foreground ,purple))))
@@ -98,6 +103,7 @@
    `(font-lock-keyword-face ((t (:foreground ,red))))
    `(font-lock-operator-face ((t (:foreground ,red))))
    `(font-lock-string-face ((t (:foreground ,yellow))))
+   `(font-lock-doc-face ((t (:foreground ,yellow))))
    `(font-lock-type-face ((t (:foreground ,blue :slant italic))))
    `(font-lock-variable-name-face ((t (:foreground ,white))))
    `(font-lock-variable-use-face ((t (:foreground ,white))))
@@ -113,8 +119,10 @@
    `(solaire-header-line-face ((t (:background ,core :foreground ,fg))))
 
    ;; Mode line
-   `(mode-line ((t (:background ,crust :foreground ,fg :box (:line-width 1 :color ,crust)))))
-   `(mode-line-inactive ((t (:background ,core :foreground ,grey :box (:line-width 1 :color ,core)))))
+   `(mode-line ((t (:background ,mantle :foreground ,fg :box (:line-width 1 :color ,crust)))))
+   `(mode-line-inactive ((t (:background ,core :foreground ,fg))))
+   `(mode-line-active ((t (:background ,crust :foreground ,fg))))
+   `(mode-line-highlight ((t (:background ,purple :foreground ,fg))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((t (:foreground ,purple :weight bold))))
@@ -122,6 +130,22 @@
    ;; Line numbers
    `(line-number ((t (:background ,mantle :foreground ,grey))))
    `(line-number-current-line ((t (:background ,mantle :foreground ,purple :weight bold))))
+
+   ;; Rainbow Delimiters
+   `(rainbow-delimiters-base-error-face ((t (:foreground ,red))))
+   `(rainbow-delimiters-base-face ((t (:foreground ,fg)))) 
+   `(rainbow-delimiters-depth-1-face ((t (:foreground ,purple))))        
+   `(rainbow-delimiters-depth-2-face ((t (:foreground ,cyan))))        
+   `(rainbow-delimiters-depth-3-face ((t (:foreground ,blue))))        
+   `(rainbow-delimiters-depth-4-face ((t (:foreground ,purple))))        
+   `(rainbow-delimiters-depth-5-face ((t (:foreground ,cyan))))        
+   `(rainbow-delimiters-depth-6-face ((t (:foreground ,blue))))       
+   `(rainbow-delimiters-depth-7-face ((t (:foreground ,purple))))        
+   `(rainbow-delimiters-depth-8-face ((t (:foreground ,cyan))))       
+   `(rainbow-delimiters-depth-9-face ((t (:foreground ,blue))))         
+   `(rainbow-delimiters-mismatched-face ((t (:weight bold))))     
+   `(rainbow-delimiters-unmatched-face ((t (:weight bold))))       
+
 
    ;; Org mode
    `(org-document-title ((t (:foreground ,orange))))
@@ -138,30 +162,36 @@
    `(org-level-7 ((t (:foreground ,purple :height 1.0))))
    `(org-level-8 ((t (:foreground ,blue :height 1.0))))
    `(org-level-9 ((t (:foreground ,green :height 1.0))))
-   `(org-link ((t (:foreground ,cyan :underline ,cyan))))
    `(org-tag ((t (:foreground ,grey :slant italic))))
+   `(org-verbatim ((t (:foreground ,red :slant italic))))
    `(org-code ((t (:foreground ,yellow :background ,crust))))
    `(org-block ((t (:background ,crust))))
    `(org-drawer ((t (:foreground ,grey))))
    `(org-special-keyword ((t (:foreground ,grey))))
    `(org-property-value ((t (:foreground ,grey))))
+   `(org-done ((t (:foreground ,grey))))
+   `(org-headline-done ((t (:foreground ,grey))))
+   `(org-table ((t (:foreground ,blue))))
+   `(org-table-row ((t (:foreground ,cyan))))
+   ; Date-related
    `(org-date ((t (:foreground ,yellow))))
+   `(org-time-grid ((t (:foreground ,yellow))))
    `(org-scheduled ((t (:foreground ,fg))))
    `(org-scheduled-today ((t (:foreground ,fg))))
    `(org-scheduled-previously ((t (:foreground ,orange))))
    `(org-imminent-deadline ((t (:foreground ,red))))
    `(org-upcoming-deadline ((t (:foreground ,yellow))))
    `(org-upcoming-distant-deadline ((t (:foreground ,yellow))))
-   `(org-done ((t (:foreground ,grey))))
-   `(org-headline-done ((t (:foreground ,grey))))
+   ; Agenda
    `(org-agenda-done ((t (:foreground ,grey))))
    `(org-agenda-structure ((t (:foreground ,blue))))
-   `(org-habit-ready-face ((t (:background ,bg_green :foreground ,green))))
-   `(org-habit-overdue-face ((t (:background ,bg_red :foreground ,red))))
-   `(org-habit-clear-future-face ((t (:background ,mantle :foreground ,core))))
-   `(org-habit-clear-face ((t (:background ,bg_green :foreground ,green))))
-   `(org-habit-alert-future-face ((t (:background ,bg_red :foreground ,red))))
-   `(org-habit-alert-face ((t (:background ,bg_blue :foreground ,blue))))
+   ; Habit
+   `(org-habit-ready-face ((t (:background ,bg_green :foreground ,fg))))
+   `(org-habit-overdue-face ((t (:background ,bg_red :foreground ,fg))))
+   `(org-habit-clear-future-face ((t (:background ,mantle :foreground ,fg))))
+   `(org-habit-clear-face ((t (:background ,bg_green :foreground ,fg))))
+   `(org-habit-alert-future-face ((t (:background ,bg_red :foreground ,fg))))
+   `(org-habit-alert-face ((t (:background ,bg_blue :foreground ,fg))))
 
 
   ))
