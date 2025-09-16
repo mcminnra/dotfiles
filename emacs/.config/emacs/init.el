@@ -285,23 +285,90 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; eat (Emulate A Termial)
+;; eat (Emulate A Terminal)
 (use-package eat
   :ensure t
   :config
   (setq eat-kill-buffer-on-exit t)
   (setq eat-enable-mouse t)
   :bind
-  ("C-c e" . eat)
-  ("C-c E" . eat-other-window))
+  ("C-c RET" . eat))
 
 ;; Company
 (use-package company
   :ensure t
-  :hook (prog-mode . company-mode))
+  :hook (after-init . global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 1))
+
+;; Flycheck
+(use-package flycheck
+  :ensure t
+  :hook (after-init . global-flycheck-mode)
+  :bind (("C-c e n" . flycheck-next-error)
+         ("C-c e p" . flycheck-previous-error)
+         ("C-c e l" . flycheck-list-errors)))
+
+;; LSP Mode
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (((python-ts-mode
+          js-ts-mode
+          typescript-ts-mode
+          rust-ts-mode
+          go-ts-mode
+          c-ts-mode
+          c++-ts-mode) . lsp-deferred)
+          (lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp lsp-deferred)
+  :config
+  (setq lsp-prefer-flymake nil)  ; Use flycheck instead of flymake
+  (setq lsp-auto-guess-root t)
+  (setq lsp-enable-suggest-server-download t)
+
+  ;; Register ruff LSP server
+  (lsp-register-client
+   (make-lsp-client 
+    :new-connection (lsp-stdio-connection '("ruff" "server" "--preview"))
+    :activation-fn (lsp-activate-on "python")
+    :server-id 'ruff
+    :add-on? t
+    :priority -1)))
+
+(use-package lsp-pyright
+  :ensure t
+  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+  :hook (python-mode . (lambda () (lsp))))  ; or lsp-deferred
+
+(use-package lsp-ui
+  :ensure t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-sideline-enable t
+        lsp-ui-sideline-show-hover t
+        lsp-ui-doc-enable nil))
+
+(use-package company-lsp
+  :ensure t
+  :after (company lsp-mode)
+  :config
+  (push 'company-lsp company-backends))
+
+(use-package helm-lsp
+  :ensure t
+  :after (helm lsp-mode)
+  :commands helm-lsp-workspace-symbol)
+
+(use-package lsp-treemacs
+  :ensure t
+  :after (lsp-mode treemacs)
+  :config
+  (lsp-treemacs-sync-mode 1))
 
 ;; diff-hl
-
 (use-package diff-hl
   :ensure t
   :hook
@@ -333,7 +400,6 @@
   ("C-c v r" . diff-hl-revert-hunk))
 
 ;; Treesit
-;; tree-sitter sources list
 (setq treesit-language-source-alist
       '((bash "https://github.com/tree-sitter/tree-sitter-bash")
         (cmake "https://github.com/uyha/tree-sitter-cmake")
@@ -414,9 +480,9 @@
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-count)
-  :bind (("C-c c" . org-capture)
-         ("C-c a" . org-agenda)
-         ("C-c l" . org-store-link))
+  :bind (("C-c o c" . org-capture)
+         ("C-c o a" . org-agenda)
+         ("C-c o l" . org-store-link))
   :config
   (add-to-list 'org-modules 'org-habit t)
 
