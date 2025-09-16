@@ -328,7 +328,8 @@
   (setq lsp-prefer-flymake nil)  ; Use flycheck instead of flymake
   (setq lsp-auto-guess-root t)
   (setq lsp-enable-suggest-server-download t)
-
+ 
+  ;;; Python
   ;; Register ruff LSP server
   (lsp-register-client
    (make-lsp-client 
@@ -351,7 +352,7 @@
 	lsp-ui-sideline-show-hover t
 	lsp-ui-doc-enable nil
 	lsp-ui-sideline-show-diagnostics t     ; Show warnings/errors in sideline
-	lsp-ui-sideline-show-code-actions t
+	lsp-ui-sideline-show-code-actions nil
 	lsp-ui-sideline-delay 0.25)    ; Show code actions in sideline
   )
 
