@@ -329,6 +329,10 @@
   (setq lsp-auto-guess-root t)
   (setq lsp-enable-suggest-server-download t)
  
+  (setq lsp-completion-provider :capf)
+  (setq lsp-completion-show-detail t)
+  (setq lsp-completion-show-kind t)
+  
   ;;; Python
   ;; Register ruff LSP server
   (lsp-register-client
@@ -348,19 +352,14 @@
   :ensure t
   :hook (lsp-mode . lsp-ui-mode)
   :config
-  (setq lsp-ui-sideline-enable t
+  (setq lsp-ui-flycheck-enable t
+        lsp-ui-sideline-enable t
 	lsp-ui-sideline-show-hover t
 	lsp-ui-doc-enable nil
 	lsp-ui-sideline-show-diagnostics t     ; Show warnings/errors in sideline
 	lsp-ui-sideline-show-code-actions nil
 	lsp-ui-sideline-delay 0.25)    ; Show code actions in sideline
   )
-
-(use-package company-lsp
-  :ensure t
-  :after (company lsp-mode)
-  :config
-  (push 'company-lsp company-backends))
 
 (use-package helm-lsp
   :ensure t
