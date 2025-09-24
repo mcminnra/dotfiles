@@ -634,9 +634,9 @@
   :config
   (setq org-super-agenda-groups
 	'(
-	  (:name "Pursuits" :file-path "/notes/project-northstar.org")
-	  (:name "Work Tasks / Projects" :tag "work")
-	  (:name "Personal Tasks / Projects" :tag "personal") 
+	  (:name "Work" :tag "work")
+	  (:name "Personal Focus" :and(:tag "personal" :tag "focus")) 
+	  (:name "Personal" :tag "personal") 
 	  (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))

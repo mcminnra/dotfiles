@@ -24,18 +24,19 @@
       (core "#131313")
       (mantle "#191919")
       (crust "#1A1B2A")
+      (surface "#2b2d45")
       (fg "#b0b0b0")
       ;; Colors
       (red "#EE6D85")
-      (bg_red "#773440")
+      (red_bg "#773440")
       (orange "#F6955B")
       (yellow "#D7A65F")
       (yellow_dim "#ba812e")
       (green "#95C561")
-      (bg_green "#587738")
+      (green_bg "#587738")
       (green_dim "#587738")
       (blue "#7199EE")
-      (bg_blue "#2A3A5A")
+      (blue_bg "#2A3A5A")
       (cyan "#38A89D")
       (purple "#A485DD")
       (purple_dim "#281B27")
@@ -45,7 +46,7 @@
 
 
 ;;       local palette = {
-;;     black = "#06080A",
+;;     black = "",
 ;;     bg0 = "#11121D",
 ;;     bg1 = "#1A1B2A",
 ;;     bg2 = "#212234",
@@ -80,11 +81,11 @@
    ;; Basic faces
    `(default ((t (:background ,mantle :foreground ,fg))))
    `(cursor ((t (:background ,purple))))
-   `(region ((t (:background ,crust))))
-   `(highlight ((t (:background ,crust))))
+   `(region ((t (:background ,surface))))
+   `(highlight ((t (:background ,surface))))
    `(hl-line ((t (:background ,crust))))
    `(fringe ((t (:background ,mantle))))
-   `(match ((t (:background ,blue))))
+   `(match ((t (:background ,surface))))
    `(link ((t (:foreground ,cyan :underline ,cyan))))
    `(show-paren-match ((t (:background ,purple :foreground ,mantle :weight bold))))
    `(show-paren-mismatch ((t (:background ,red :foreground ,mantle :weight bold))))
@@ -146,7 +147,6 @@
    `(rainbow-delimiters-mismatched-face ((t (:weight bold))))     
    `(rainbow-delimiters-unmatched-face ((t (:weight bold))))       
 
-
    ;; Org mode
    `(org-document-title ((t (:foreground ,orange))))
    `(org-document-info-keyword ((t (:foreground ,grey :slant italic))))
@@ -186,12 +186,12 @@
    `(org-agenda-done ((t (:foreground ,grey))))
    `(org-agenda-structure ((t (:foreground ,blue))))
    ; Habit
-   `(org-habit-ready-face ((t (:background ,bg_green :foreground ,fg))))
-   `(org-habit-overdue-face ((t (:background ,bg_red :foreground ,fg))))
+   `(org-habit-ready-face ((t (:background ,green_bg :foreground ,fg))))
+   `(org-habit-overdue-face ((t (:background ,red_bg :foreground ,fg))))
    `(org-habit-clear-future-face ((t (:background ,mantle :foreground ,fg))))
-   `(org-habit-clear-face ((t (:background ,bg_green :foreground ,fg))))
-   `(org-habit-alert-future-face ((t (:background ,bg_red :foreground ,fg))))
-   `(org-habit-alert-face ((t (:background ,bg_blue :foreground ,fg))))
+   `(org-habit-clear-face ((t (:background ,green_bg :foreground ,fg))))
+   `(org-habit-alert-future-face ((t (:background ,red_bg :foreground ,fg))))
+   `(org-habit-alert-face ((t (:background ,blue_bg :foreground ,fg))))
 
 
   ))
