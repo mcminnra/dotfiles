@@ -114,8 +114,10 @@
    ;; Helm
    `(helm-source-header ((t (:background ,crust :foreground ,fg))))
    `(helm-selection ((t (:background ,surface))))
+   `(helm-M-x-key ((t (:foreground ,orange :box (:line-width 1 :color ,orange)))))
+   `(helm-match ((t (:foreground ,yellow))))
+   `(helm-ff-prefix ((t (:background ,yellow :foreground ,mantle))))
    `(helm-ff-directory ((t (:foreground ,red))))
-   `(mode-line ((t (:background ,crust :foreground ,orange :box (:line-width 1 :color ,orange)))))
 
    ;; Solaire
    `(solaire-default-face ((t (:background ,core :foreground ,fg))))
