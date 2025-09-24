@@ -111,6 +111,12 @@
    `(font-lock-property-use-face ((t (:foreground ,white))))
    `(font-lock-warning-face ((t (:foreground ,red :weight bold))))
 
+   ;; Helm
+   `(helm-source-header ((t (:background ,crust :foreground ,fg))))
+   `(helm-selection ((t (:background ,surface))))
+   `(helm-ff-directory ((t (:foreground ,red))))
+   `(mode-line ((t (:background ,crust :foreground ,orange :box (:line-width 1 :color ,orange)))))
+
    ;; Solaire
    `(solaire-default-face ((t (:background ,core :foreground ,fg))))
    `(solaire-fringe-face ((t (:background ,core :foreground ,fg))))
