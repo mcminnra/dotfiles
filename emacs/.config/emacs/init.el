@@ -83,7 +83,7 @@
 (use-package windmove
   :ensure nil  ; windmove is built-in
   :config
-  (windmove-default-keybindings))
+  (windmove-default-keybindings 'meta))
 
 ;; OS-specific settings
 (cond
@@ -522,7 +522,7 @@
   (setq org-archive-location "~/org/archive/%s_archive::")  ; Set archive location and format
   (setq org-tags-column 0)                                  ; Put tags immediately after headline
   (setq org-special-ctrl-a/e t)                             ; Have ctrl-a/e work better with org headlines
-
+  
   ;; But make the document title a bit bigger
   (set-face-attribute 'org-document-title nil :font "SauceCodePro NFM" :weight 'bold :height 1.5)
 
