@@ -203,41 +203,41 @@
   :config
   (global-set-key (kbd "M-o") 'ace-window))
 
-;; Evil mode
-(use-package evil
-  :ensure t
-  :demand t
-  :init
-  (setq evil-want-C-i-jump nil)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  ; Revert to trad emacs keybinds for these
-  (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
-  (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
-  ; Evil mode navigate between visual lines insted of logical
-  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-  ; Make vim use org mode heading cmds in org-mode
-  (evil-define-key 'normal org-mode-map
-    (kbd "]]") 'org-next-visible-heading
-    (kbd "[[") 'org-previous-visible-heading))
+;; ;; Evil mode
+;; (use-package evil
+;;   :ensure t
+;;   :demand t
+;;   :init
+;;   (setq evil-want-C-i-jump nil)
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (evil-mode 1)
+;;   ; Revert to trad emacs keybinds for these
+;;   (define-key evil-motion-state-map (kbd "C-a") 'move-beginning-of-line)
+;;   (define-key evil-motion-state-map (kbd "C-e") 'move-end-of-line)
+;;   ; Evil mode navigate between visual lines insted of logical
+;;   (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+;;   (define-key evil-normal-state-map (kbd "<up>") 'evil-previous-visual-line)
+;;   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+;;   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+;;   ; Make vim use org mode heading cmds in org-mode
+;;   (evil-define-key 'normal org-mode-map
+;;     (kbd "]]") 'org-next-visible-heading
+;;     (kbd "[[") 'org-previous-visible-heading))
 
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (evil-collection-init))
 
-(use-package evil-org
-  :ensure t
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+;; (use-package evil-org
+;;   :ensure t
+;;   :after org
+;;   :hook (org-mode . (lambda () evil-org-mode))
+;;   :config
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
 
 ;; Treemacs
 (use-package treemacs
@@ -273,9 +273,9 @@
   :ensure t
   :after (treemacs projectile))
 
-(use-package treemacs-evil
-  :ensure t
-  :after (treemacs evil))
+;; (use-package treemacs-evil
+;;   :ensure t
+;;   :after (treemacs evil))
 
 ;; ===============================================
 ;; Programming 
