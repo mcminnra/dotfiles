@@ -72,7 +72,7 @@
   :custom
   (display-line-numbers-grow-only t)
   (display-line-numbers-width-start t)
-  (display-line-numbers-type 'relative)
+  (display-line-numbers-type t)
   :hook
   (prog-mode . display-line-numbers-mode)
   (conf-mode . display-line-numbers-mode)
