@@ -82,8 +82,11 @@
 ;; -- Arrow key window movement
 (use-package windmove
   :ensure nil  ; windmove is built-in
-  :config
-  (windmove-default-keybindings 'meta))
+  :bind*
+  (("C-c <left>" . windmove-left)
+   ("C-c <right>" . windmove-right)
+   ("C-c <up>" . windmove-up)
+   ("C-c <down>" . windmove-down)))
 
 ;; OS-specific settings
 (cond
