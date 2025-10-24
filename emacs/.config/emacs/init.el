@@ -507,6 +507,7 @@
 ;; Org
 (use-package org
   :ensure t
+  :demand t
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
