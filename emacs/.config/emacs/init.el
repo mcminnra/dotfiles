@@ -663,7 +663,7 @@
   (setq org-super-agenda-groups
 	'(
 	  (:name "Work" :tag "work")
-	  (:name "Personal Focus" :and(:tag "personal" :tag "focus")) 
+	  (:name "Focus (Project+Media)" :tag "focus")
 	  (:name "Personal" :tag "personal") 
 	  (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
