@@ -1,9 +1,0 @@
-font-family = "SauceCodePro Nerd Font Mono"
-font-size = 10
-theme = arcoiris
-
-# Window
-window-padding-x = 8
-window-padding-y = 8
-window-inherit-font-size = false
-window-decoration = none
