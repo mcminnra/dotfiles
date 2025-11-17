@@ -125,6 +125,17 @@
 ;;   ;; Corrects (and improves) org-mode's native fontification.
 ;;   (doom-themes-org-config))
 
+;; emacs-dashboard
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-center-content t)
+  (setq dashboard-vertically-center-content t)
+  (setq dashboard-items '((recents   . 5)
+                          (projects  . 5)))
+  (dashboard-setup-startup-hook))
+
 ;; Doom modeline
 (use-package doom-modeline
   :ensure t
