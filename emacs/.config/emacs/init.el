@@ -129,11 +129,16 @@
 (use-package dashboard
   :ensure t
   :config
-  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-startup-banner 2)
+  (setq dashboard-banner-logo-title "")
   (setq dashboard-center-content t)
   (setq dashboard-vertically-center-content t)
   (setq dashboard-items '((recents   . 5)
                           (projects  . 5)))
+  (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
+  (setq dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
   (dashboard-setup-startup-hook))
 
 ;; Doom modeline
