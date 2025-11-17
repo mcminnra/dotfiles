@@ -30,8 +30,6 @@
 ;; Fonts
 (when (member "SauceCodePro Nerd Font Mono" (font-family-list))
   (set-face-attribute 'default nil :font "SauceCodePro Nerd Font Mono" :height 100))
-(when (member "SauceCodePro NFM" (font-family-list)) ; Unsure why on some systems it is shortened
-  (set-face-attribute 'default nil :font "SauceCodePro NFM" :height 100))
 
 ;; Set default-directory
 (cond
@@ -99,6 +97,56 @@
    (progn
      (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
      )))
+
+;;; ===============================================
+;;; Theming
+;;; ===============================================
+;; Bytemancer
+(add-to-list 'custom-theme-load-path
+               (expand-file-name "themes" user-emacs-directory))
+(load-theme 'bytemancer t)
+
+(use-package nerd-icons)
+
+;; (use-package doom-themes
+;;   :ensure t
+;;   :custom
+;;   ;; Global settings (defaults)
+;;   (doom-themes-enable-bold t)
+;;   (doom-themes-enable-italic t)
+;;   ;; for treemacs users
+;;   ;;(doom-themes-treemacs-theme "doom-atom")
+;;   :config
+;;   ;(load-theme 'doom-old-hope t)
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+;;   ;; Treemacs theme
+;;   ;;(doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
+
+;; Doom modeline
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
+;; Solaire
+(use-package solaire-mode
+  :ensure t
+  :config
+  (solaire-global-mode +1))
+
+;; visual-line-column
+(use-package visual-fill-column
+  :ensure t
+  :hook ((org-mode . visual-fill-column-mode)
+         (markdown-mode . visual-fill-column-mode))
+  :config
+  (setq-default visual-fill-column-width 120)
+  (setq-default visual-fill-column-center-text t)
+  
+  ;; Optional: Enable visual-line-mode with visual-fill-column
+  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
 
 ;;; ===============================================
 ;;; Core Functionality
@@ -287,23 +335,20 @@
 ;; Treemacs
 (use-package treemacs
   :ensure t
-  :defer t
   ;; :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
-  (progn
-    ; Prevent other windows using treemacs window
-    (setq treemacs-is-never-other-window nil)
-    (setq treemacs-position 'left) 
-    (setq treemacs-width 35)
-    ; Make treemacs automatically follow the file you are viewing
-    (treemacs-follow-mode t)
-    ; Automatically update the tree when files change on disk
-    (treemacs-filewatch-mode t)
-    ; Enable git integration for status highlights
-    (treemacs-git-mode 'deferred))
+  (setq treemacs-is-never-other-window nil)
+  (setq treemacs-position 'left) 
+  (setq treemacs-width 35)
+  (setq treemacs-no-png-images t)
+  
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-git-mode 'deferred)
+  
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
@@ -318,65 +363,15 @@
   :ensure t
   :after (treemacs projectile))
 
+(use-package treemacs-nerd-icons
+  :ensure t
+  :after (treemacs nerd-icons)
+  :config
+  (treemacs-nerd-icons-config))
+
 ;; (use-package treemacs-evil
 ;;   :ensure t
 ;;   :after (treemacs evil))
-
-;;; ===============================================
-;;; Theming
-;;; ===============================================
-;; Bytemancer
-(add-to-list 'custom-theme-load-path
-               (expand-file-name "themes" user-emacs-directory))
-(load-theme 'bytemancer t)
-
-(use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p)
-  :config
-  ;; Install fonts automatically if they're not already installed
-  (unless (find-font (font-spec :name "all-the-icons"))
-    (all-the-icons-install-fonts t)))
-
-(use-package doom-themes
-  :ensure t
-  :custom
-  ;; Global settings (defaults)
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t)
-  ;; for treemacs users
-  (doom-themes-treemacs-theme "doom-colors")
-  :config
-  ;(load-theme 'doom-old-hope t)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Treemacs theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
-;; Doom modeline
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
-
-;; Solaire
-(use-package solaire-mode
-  :ensure t
-  :config
-  (solaire-global-mode +1))
-
-;; visual-line-column
-(use-package visual-fill-column
-  :ensure t
-  :hook ((org-mode . visual-fill-column-mode)
-         (markdown-mode . visual-fill-column-mode))
-  :config
-  (setq-default visual-fill-column-width 120)
-  (setq-default visual-fill-column-center-text t)
-  
-  ;; Optional: Enable visual-line-mode with visual-fill-column
-  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
 
 ;; ===============================================
 ;; Programming 
