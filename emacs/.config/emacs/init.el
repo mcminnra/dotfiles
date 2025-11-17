@@ -379,6 +379,16 @@
   :ensure t
   :after (treemacs projectile))
 
+(defun my/treemacs-projectile-hook ()
+  "Open treemacs and add the current projectile project, keeping focus on the current file."
+  (when (projectile-project-p)
+    (let ((current-window (selected-window)))
+      (treemacs-add-and-display-current-project-exclusively)
+      (select-window current-window))))
+
+;; Hook into projectile's project switch
+(add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-hook)
+
 (use-package treemacs-nerd-icons
   :ensure t
   :after (treemacs nerd-icons)
