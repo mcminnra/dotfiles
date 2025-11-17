@@ -1,6 +1,6 @@
 ;;; init.el -- Emacs Config
 
-(when (version< emacs-version "29") (error "This requires Emacs 29 and above!"))
+(when (version< emacs-version "30") (error "This requires Emacs 30 and above!"))
 
 ;; Load package manager
 (defvar bootstrap-version)
@@ -101,63 +101,109 @@
      )))
 
 ;;; ===============================================
-;;; Theming
+;;; Core Functionality
 ;;; ===============================================
-(use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p)
-  :config
-  ;; Install fonts automatically if they're not already installed
-  (unless (find-font (font-spec :name "all-the-icons"))
-    (all-the-icons-install-fonts t)))
-
-(add-to-list 'custom-theme-load-path
-               (expand-file-name "themes" user-emacs-directory))
-(load-theme 'bytemancer t)
-
-(use-package doom-themes
-  :ensure t
+;; Vertico
+;; Minibuffer completion
+(use-package vertico
   :custom
-  ;; Global settings (defaults)
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t)
-  ;; for treemacs users
-  (doom-themes-treemacs-theme "doom-colors")
-  :config
-  ;(load-theme 'doom-old-hope t)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Treemacs theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+  (vertico-count 20)
+  :init
+  (vertico-mode))
 
-;; Doom modeline
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
+;; Corfu
+;; In-Buffer completions
+(use-package corfu
+  :init
+  (global-corfu-mode))
 
-;; Solaire
-(use-package solaire-mode
-  :ensure t
-  :config
-  (solaire-global-mode +1))
+;; Cape
+;; Completion at point extensions (extends corfu basically)
+(use-package cape
+  :bind ("M-p" . cape-prefix-map)
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
-;; visual-line-column
-(use-package visual-fill-column
-  :ensure t
-  :hook ((org-mode . visual-fill-column-mode)
-         (markdown-mode . visual-fill-column-mode))
-  :config
-  (setq-default visual-fill-column-width 120)
-  (setq-default visual-fill-column-center-text t)
-  
-  ;; Optional: Enable visual-line-mode with visual-fill-column
-  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
+;; Marginalia
+;; Enable rich annotations
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
 
-;;; ===============================================
-;;; Productivity
-;;; ===============================================
+;; Orderless
+;; Better completion method
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil)
+  (completion-pcm-leading-wildcard t))
+
+;; Consult
+;; Better search and navigation commands
+(use-package consult
+  :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g r" . consult-grep-match)
+         ("M-g f" . consult-flycheck)               ;; Alternative: consult-flymake
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-org-heading)            ;; Alternative: consult-outline
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+	 ([remap isearch-forward] . consult-line)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :init
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
+
 ;; Projectile
 (use-package projectile
   :ensure t
@@ -166,25 +212,6 @@
   :config
   (global-set-key (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
-
-;; Helm
-(use-package helm
-  :ensure t
-  :config
-  ; Force helm to search inside of a given window
-  (setq helm-split-window-inside-p t) 
-  ; Keybinds
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-  (global-set-key (kbd "C-x C-f") #'helm-find-files)
-  (global-set-key (kbd "C-s") #'helm-occur)
-  (helm-mode 1))
-
-(use-package helm-projectile
-  :ensure t
-  :after (projectile helm)
-  :init
-  (helm-projectile-on))
 
 ;; which-key
 (use-package which-key
@@ -295,6 +322,62 @@
 ;;   :ensure t
 ;;   :after (treemacs evil))
 
+;;; ===============================================
+;;; Theming
+;;; ===============================================
+;; Bytemancer
+(add-to-list 'custom-theme-load-path
+               (expand-file-name "themes" user-emacs-directory))
+(load-theme 'bytemancer t)
+
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p)
+  :config
+  ;; Install fonts automatically if they're not already installed
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
+(use-package doom-themes
+  :ensure t
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t)
+  ;; for treemacs users
+  (doom-themes-treemacs-theme "doom-colors")
+  :config
+  ;(load-theme 'doom-old-hope t)
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Treemacs theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+
+;; Doom modeline
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
+;; Solaire
+(use-package solaire-mode
+  :ensure t
+  :config
+  (solaire-global-mode +1))
+
+;; visual-line-column
+(use-package visual-fill-column
+  :ensure t
+  :hook ((org-mode . visual-fill-column-mode)
+         (markdown-mode . visual-fill-column-mode))
+  :config
+  (setq-default visual-fill-column-width 120)
+  (setq-default visual-fill-column-center-text t)
+  
+  ;; Optional: Enable visual-line-mode with visual-fill-column
+  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
+
 ;; ===============================================
 ;; Programming 
 ;; ===============================================
@@ -318,14 +401,6 @@
   (setq eat-enable-mouse t)
   :bind
   ("C-c RET" . eat))
-
-;; Company
-(use-package company
-  :ensure t
-  :hook (after-init . global-company-mode)
-  :config
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 1))
 
 ;; Flycheck
 (use-package flycheck
