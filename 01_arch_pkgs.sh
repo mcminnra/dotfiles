@@ -30,6 +30,7 @@ AUR_PKGS=(
     "proton-mail-bin"             # Proton mail
     "proton-pass-bin"             # Proton password manager
     "visual-studio-code-bin"      # IDE
+    "zed"                         # IDE
 )
 
 # Check for yay

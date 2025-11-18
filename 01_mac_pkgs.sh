@@ -31,6 +31,7 @@ CASK_PKGS=(
     "syncthing"                      # P2P file syncing
     "tailscale"                      # Tailscale VPN
     "visual-studio-code"             # IDE
+    "zed"                            # IDE
 )
 
 # Check for homebrew
