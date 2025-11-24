@@ -630,9 +630,9 @@
   (setq org-todo-keywords
         '(
           ;; Tasks
-          (sequence "TODO(t)" "BLOCKED(b)" "WAITING(w)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
+          (sequence "TODO(t)" "BLOCKED(b)" "WAITING(w)" "PLANNED(p)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
           ;; Project
-          (sequence "PROJECT(p)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
+          (sequence "PROJECT(P)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
           ;; Experience
           (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)" "ARCHIVED(a)")
           ;; Learning
@@ -641,6 +641,7 @@
         '(("TODO" . (:foreground "#30acec" :weight bold))
           ("WAITING" . (:foreground "#339989" :weight bold))
           ("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
+	  ("PLANNED" . (:foreground "#a08cd8" :weight bold))
           ("REVIEW" . (:foreground "#f7b801" :weight bold))
           ("BLOCKED" . (:foreground "#f6511d" :weight bold))
           ("DONE" . (:foreground "#6a994e" :weight bold))
@@ -732,18 +733,22 @@
       (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
 
   (defun org-habit-streak-percentage ()
-    (point-min)
+    (goto-char (point-min))
     (while (not (eobp))
-           (when (get-text-property (point) 'org-habit-p)
-             (let (
-                   (count (count-matches
-                            (char-to-string org-habit-completed-glyph)
-                            (line-beginning-position) (line-end-position))))
-               (end-of-line)
-               (insert (concat (number-to-string
-                                 (/ (round (* 10 (* 100 (/ (float count) (+ org-habit-following-days org-habit-preceding-days)))))10.0)
-                                 ) "%" ))))
-           (forward-line 1)))
+      (when (get-text-property (point) 'org-habit-p)
+	(let* ((count (count-matches
+                       (char-to-string org-habit-completed-glyph)
+                       (line-beginning-position) (line-end-position)))
+               (total-days (+ org-habit-following-days org-habit-preceding-days))
+               (percentage (/ (round (* 10 (* 100 (/ (float count) total-days)))) 10.0))
+               (percentage-str (concat " " (number-to-string percentage) "%"))
+               (face (cond
+                      ((>= percentage 66.6) 'success)
+                      ((>= percentage 33.3) 'warning)
+                      (t 'error))))
+          (end-of-line)
+          (insert (propertize percentage-str 'face face))))
+      (forward-line 1)))
   (add-hook 'org-agenda-finalize-hook 'org-habit-streak-percentage))
 
 (use-package org-edna
