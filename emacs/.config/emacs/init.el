@@ -826,18 +826,12 @@
 
 (defun my/open-org-layout ()
   (interactive)
-  (delete-other-windows)
-  ;; Open tasks file (left)
-  (find-file "~/org/notes/project-tasks.org")
-  ;; Split right and open agenda there
-  (split-window-right)
-  (other-window 1)
+  (pop-to-buffer (find-file "~/org/notes/project-tasks.org"))
   (org-agenda-list)
   (org-agenda-day-view)
-  ;; Open treemacs on ~/org/notes (requires .projectile file there)
-  (let ((default-directory "~/org/notes/"))
-    (treemacs-add-and-display-current-project-exclusively))
-  ;; Focus back on tasks
+  (transpose-frame)
+  (balance-windows)
+  (treemacs-add-and-display-current-project-exclusively)
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'my/open-org-layout)
 
