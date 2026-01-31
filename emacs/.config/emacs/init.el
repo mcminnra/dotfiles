@@ -216,35 +216,36 @@
          ("C-c k" . consult-kmacro)
          ("C-c m" . consult-man)
          ("C-c i" . consult-info)
+         ("C-c d u" . my/consult-diff-unsaved-buffers-live)
          ([remap Info-search] . consult-info)
          ;; C-x bindings in `ctl-x-map'
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
-         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ("C-x M-:" . consult-complex-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x t b" . consult-buffer-other-tab)
+         ("C-x r b" . consult-bookmark)
+         ("C-x p b" . consult-project-buffer)
          ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ("M-y" . consult-yank-pop)
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
          ("M-g r" . consult-grep-match)
-         ("M-g f" . consult-flycheck)               ;; Alternative: consult-flymake
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-org-heading)            ;; Alternative: consult-outline
+         ("M-g f" . consult-flycheck)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-org-heading)
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
          ("M-g i" . consult-imenu)
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings in `search-map'
-         ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+         ("M-s d" . consult-find)
          ("M-s c" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
-	 ([remap isearch-forward] . consult-line)
+         ([remap isearch-forward] . consult-line)
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s k" . consult-keep-lines)
@@ -252,21 +253,61 @@
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ("M-e" . consult-isearch-history)
+         ("M-s e" . consult-isearch-history)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
          ;; Minibuffer history
          :map minibuffer-local-map
-         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-
+         ("M-s" . consult-history)
+         ("M-r" . consult-history))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
-
-  ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref))
+        xref-show-definitions-function #'consult-xref)
+  :config
+  (defun my/consult-diff-unsaved-buffers-live ()
+    "Select an unsaved buffer with live DIFF preview, then jump to first change."
+    (interactive)
+    (let* ((unsaved-buffers
+            (cl-remove-if-not
+             (lambda (buf)
+               (and (buffer-file-name buf)
+                    (buffer-modified-p buf)))
+             (buffer-list)))
+           (candidates (mapcar #'buffer-name unsaved-buffers)))
+      (if (null candidates)
+          (message "No unsaved buffers.")
+	(when-let ((buf (consult--read
+			 candidates
+			 :prompt "Diff unsaved buffer: "
+			 :category 'buffer
+			 :require-match t
+			 :state (lambda (action cand)
+                                  (when (and cand (eq action 'preview))
+                                    (diff-buffer-with-file (get-buffer cand))))
+			 :sort nil)))
+          (my/goto-first-diff (get-buffer buf))))))
+
+  (defun my/goto-first-diff (buffer)
+    "Switch to BUFFER and move point to the first line differing from file."
+    (let* ((file (buffer-file-name buffer))
+           (file-lines (with-temp-buffer
+			 (insert-file-contents file)
+			 (split-string (buffer-string) "\n")))
+           (buf-lines (with-current-buffer buffer
+			(split-string (buffer-string) "\n")))
+           (line-num 1))
+      (switch-to-buffer buffer)
+      (catch 'found
+	(while (or file-lines buf-lines)
+          (unless (equal (car file-lines) (car buf-lines))
+            (goto-char (point-min))
+            (forward-line (1- line-num))
+            (throw 'found t))
+          (setq file-lines (cdr file-lines)
+		buf-lines (cdr buf-lines)
+		line-num (1+ line-num)))))))
 
 ;; Projectile
 (use-package projectile

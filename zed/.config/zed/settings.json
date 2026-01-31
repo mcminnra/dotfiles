@@ -20,5 +20,5 @@
     "light": "One Light",
     "dark": "0x96f Theme"
   },
-  "disable_ai": true
+  "disable_ai": false
 }
