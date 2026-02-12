@@ -771,6 +771,7 @@
 
   ;; General Org config
   (setq org-ellipsis " ▼ ")                                 ; Change icon for folding
+  (setq org-todo-repeat-to-state "TODO")                    ; Recurring tasks reset to TODO, not first state in sequence
   (setq org-log-done t)                                     ; Record when done
   (setq org-log-into-drawer "LOGBOOK")                      ; Put log state into a seperate section instead of just in headline body 
   (setq org-enforce-todo-dependencies t)                    ; Can't mark done if children aren't marked done
@@ -785,7 +786,7 @@
   (setq org-todo-keywords
         '(
           ;; Tasks
-          (sequence "TODO(t)" "BLOCKED(b)" "WAITING(w)" "PLANNED(p)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
+          (sequence "WAITING(w)" "DEFERRED(e)" "TODO(t)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
           ;; Project
           (sequence "PROJECT(P)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
           ;; Experience
@@ -793,12 +794,11 @@
           ;; Learning
           (sequence "BACKLOG(L)" "IN-NOTEBOOK(O)" "IN-NPML(N)" "IN-REPO(R)" "WITH-NOTES(W)" "|" "ARCHIVED(A)")))
   (setq org-todo-keyword-faces
-        '(("TODO" . (:foreground "#30acec" :weight bold))
-          ("WAITING" . (:foreground "#339989" :weight bold))
-          ("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
-	  ("PLANNED" . (:foreground "#a08cd8" :weight bold))
+        '(("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
+          ("TODO" . (:foreground "#30acec" :weight bold))
           ("REVIEW" . (:foreground "#f7b801" :weight bold))
-          ("BLOCKED" . (:foreground "#f6511d" :weight bold))
+          ("WAITING" . (:foreground "#339989" :weight bold))
+          ("DEFERRED" . (:foreground "#9d9d9d" :weight bold))
           ("DONE" . (:foreground "#6a994e" :weight bold))
           ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
           ;; Project
