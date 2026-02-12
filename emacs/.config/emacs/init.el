@@ -1,5 +1,8 @@
 ;;; init.el -- Emacs Config
 
+;;; Commentary:
+
+;;; Code:
 (when (version< emacs-version "30") (error "This requires Emacs 30 and above!"))
 
 ;; Load package manager
@@ -40,6 +43,7 @@
   (progn
     (setq default-directory "~/"))))
 
+;; UI
 (scroll-bar-mode -1)                                         ; No scroll bar
 (tool-bar-mode -1)                                           ; No toolbar
 (menu-bar-mode -1)                                           ; No menu bar
@@ -48,13 +52,20 @@
 (toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
 (setq visible-bell t)                                        ; Make bell visible
+(add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
+
+;; Editor behavior
 (setq backup-directory-alist `(("." . "~/.saves")))          ; Set backupdir
 (setq create-lockfiles nil)                                  ; Turn off .# lock files
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
-;(setq split-width-threshold 80)                              ; lower the threshold to automatically split vertically
-;(setq split-height-threshold nil)                            ; --^
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
-(add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
+
+;; Indentation
+(setq-default indent-tabs-mode nil)                          ; Use spaces, not tabs
+(setq-default tab-width 4)                                   ; 4-space indentation
+(setq-default sgml-basic-offset 4)                           ; HTML/SGML indent
+(setq-default css-indent-offset 4)                           ; CSS indent
+(setq-default js-indent-level 4)                             ; JS indent
 
 ;; Less jumpy mouse scroll
 ;; Stolen From: https://github.com/deirn/fedoracfg/blob/deadb8eef399ef563e76f97edfcd9120643d0fc0/config/emacs/init.el#L122
@@ -88,22 +99,22 @@
 
 ;; OS-specific settings
 (cond
-  ((eq `gnu/linux system-type)
-   (progn
-     (set-frame-parameter nil 'alpha-background 98)              ; Transparency
-     (add-to-list 'default-frame-alist '(alpha-background . 98)) ; Transparency
-     ))
-  ((eq `darwin system-type)
-   (progn
-     (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
-     )))
+ ((eq `gnu/linux system-type)
+  (progn
+    (set-frame-parameter nil 'alpha-background 98)              ; Transparency
+    (add-to-list 'default-frame-alist '(alpha-background . 98)) ; Transparency
+    ))
+ ((eq `darwin system-type)
+  (progn
+    (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
+    )))
 
 ;;; ===============================================
 ;;; Theming
 ;;; ===============================================
 ;; Bytemancer
 (add-to-list 'custom-theme-load-path
-               (expand-file-name "themes" user-emacs-directory))
+             (expand-file-name "themes" user-emacs-directory))
 (load-theme 'bytemancer t)
 
 (use-package nerd-icons)
@@ -194,7 +205,7 @@
 ;; Enable rich annotations
 (use-package marginalia
   :bind (:map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
+              ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 
@@ -479,19 +490,29 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook (((python-ts-mode
            js-ts-mode
-	   elisp-ts-mode
            typescript-ts-mode
+           tsx-ts-mode
            rust-ts-mode
            go-ts-mode
            c-ts-mode
-           c++-ts-mode) . lsp)
+           c++-ts-mode
+           bash-ts-mode
+           css-ts-mode
+           html-ts-mode
+           json-ts-mode
+           yaml-ts-mode
+           dockerfile-ts-mode
+           cmake-ts-mode
+           lua-ts-mode
+           svelte-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config
   (setq lsp-prefer-flymake nil)  ; Use flycheck instead of flymake
   (setq lsp-auto-guess-root t)
   (setq lsp-enable-suggest-server-download t)
-  
+  (setq lsp-auto-install-server t)
+
   (setq lsp-completion-provider :capf)
   (setq lsp-completion-show-detail t)
   (setq lsp-completion-show-kind t)
@@ -535,6 +556,20 @@
   :config
   (lsp-treemacs-sync-mode 1))
 
+;; Svelte (requires typescript-mode for <script lang="ts"> block highlighting)
+(use-package typescript-mode
+  :ensure t
+  :defer t
+  :config
+  (setq typescript-indent-level 4))
+
+(use-package svelte-mode
+  :ensure t
+  :after typescript-mode
+  :mode "\\.svelte\\'"
+  :config
+)
+
 ;; diff-hl
 (use-package diff-hl
   :ensure t
@@ -566,72 +601,18 @@
   ;; Revert current hunk
   ("C-c g r" . diff-hl-revert-hunk))
 
-;; Treesit
-(setq treesit-language-source-alist
-      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-        (cmake "https://github.com/uyha/tree-sitter-cmake")
-        (css "https://github.com/tree-sitter/tree-sitter-css")
-        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-        (go "https://github.com/tree-sitter/tree-sitter-go")
-        (html "https://github.com/tree-sitter/tree-sitter-html")
-        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-        (json "https://github.com/tree-sitter/tree-sitter-json")
-        (make "https://github.com/alemuller/tree-sitter-make")
-        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-        (python "https://github.com/tree-sitter/tree-sitter-python")
-        (toml "https://github.com/tree-sitter/tree-sitter-toml")
-        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-        (c "https://github.com/tree-sitter/tree-sitter-c")
-        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-        (rust "https://github.com/tree-sitter/tree-sitter-rust")
-        (lua "https://github.com/Azganoth/tree-sitter-lua")))
-
-;; Remap major modes to their tree-sitter equivalents
-(setq major-mode-remap-alist
-      '((python-mode . python-ts-mode)
-        (javascript-mode . js-ts-mode)
-        (js-mode . js-ts-mode)
-        (typescript-mode . typescript-ts-mode)
-        (json-mode . json-ts-mode)
-        (css-mode . css-ts-mode)
-	(elisp-mode . elisp-ts-mode)
-        (html-mode . html-ts-mode)
-        (yaml-mode . yaml-ts-mode)
-        (bash-mode . bash-ts-mode)
-        (sh-mode . bash-ts-mode)
-        (c-mode . c-ts-mode)
-        (c++-mode . c++-ts-mode)
-        (cxx-mode . c++-ts-mode)
-        (cc-mode . c++-ts-mode)
-        (rust-mode . rust-ts-mode)
-        (go-mode . go-ts-mode)
-        (dockerfile-mode . dockerfile-ts-mode)
-        (cmake-mode . cmake-ts-mode)
-        (toml-mode . toml-ts-mode)))
-
-;; Auto-mode mappings for file extensions
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . dockerfile-ts-mode))
-(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
+;; Treesit-auto (auto-install grammars and remap modes — Mason-like experience)
+(use-package treesit-auto
+  :ensure t
+  :demand t
+  :config
+  (setq treesit-auto-install 'prompt)
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 ;; Treesit config
 (setq treesit-font-lock-level 4)   ; Most detailed syntax highlighting
 (add-hook 'prog-mode-hook #'hs-minor-mode)  ; Enable tree-sitter based folding
-
-;; Function to install all grammar files
-(defun my/install-tree-sitter-grammars ()
-  "Install all tree-sitter grammars defined in `treesit-language-source-alist'."
-  (interactive)
-  (dolist (lang treesit-language-source-alist)
-    (let ((lang-symbol (car lang)))
-      (unless (treesit-language-available-p lang-symbol)
-        (message "Installing %s grammar..." lang-symbol)
-        (treesit-install-language-grammar lang-symbol)))))
-(add-hook 'prog-mode-hook 'my/install-tree-sitter-grammars)  ; Install on prog-modes
 
 ;; Make comments italic
 (custom-set-faces
