@@ -648,12 +648,126 @@
   :mode (("\\.org$" . org-mode))
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
-  :hook (org-agenda-finalize-hook . org-habit-streak-count)
+  :hook (org-agenda-finalize-hook . org-habit-streak-percentage)
   :bind (("C-c o c" . org-capture)
          ("C-c o a" . org-agenda)
-         ("C-c o l" . org-store-link))
+         ("C-c o l" . org-store-link)
+	 ("C-c u" . my/iue-update))
   :config
   (add-to-list 'org-modules 'org-habit t)
+
+  ;; Functions
+  (defun org-cycle-agenda-files ()
+    "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
+    (interactive)
+    (let* ((fs (org-agenda-files t))
+           (files (append fs (list (car fs))))
+           (tcf (if buffer-file-name (file-truename buffer-file-name)))
+           file)
+      (unless files (user-error "No agenda files"))
+      (catch 'exit
+        (while (setq file (pop files))
+          (if (equal (file-truename file) tcf)
+              (when (car files)
+                (find-file (car files))
+                (throw 'exit t))))
+        (find-file (car fs)))
+      (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
+
+  (defun org-habit-streak-percentage ()
+    (goto-char (point-min))
+    (while (not (eobp))
+      (when (get-text-property (point) 'org-habit-p)
+	(let* ((count (count-matches
+                       (char-to-string org-habit-completed-glyph)
+                       (line-beginning-position) (line-end-position)))
+               (total-days (+ org-habit-following-days org-habit-preceding-days))
+               (percentage (/ (round (* 10 (* 100 (/ (float count) total-days)))) 10.0))
+               (percentage-str (concat " " (number-to-string percentage) "%"))
+               (face (cond
+                      ((>= percentage 66.6) 'success)
+                      ((>= percentage 33.3) 'warning)
+                      (t 'error))))
+          (end-of-line)
+          (insert (propertize percentage-str 'face face))))
+      (forward-line 1)))
+
+  ;; IUE prompt - returns formatted [T-IU|E] string
+  (defun my/iue-prompt ()
+    "Prompt for I, U, E scores and return formatted [T-IU|E] string.
+       Importance: 1 (low) to 3 (high)
+       Urgency:    1 (low) to 3 (high)
+       Ease:       1 (hard/long) to 3 (easy/quick)
+     Priority is derived from I+U only. E is for scheduling."
+    (let* ((i (string-to-number (read-string "Importance (1-3): ")))
+           (u (string-to-number (read-string "Urgency (1-3): ")))
+           (e (string-to-number (read-string "Ease (1-3): ")))
+           (total (+ i u)))
+      (format "[%d-%d%d|%d]" total i u e)))
+
+  ;; Sync priority cookie from IUE token
+  (defun my/iue-sync-priority ()
+    "Read [T-IU|E] token on current headline and set org priority accordingly.
+     Priority is based on I+U total (range 2-6)."
+    (save-excursion
+      (beginning-of-line)
+      (when (re-search-forward "\\[\\([0-9]+\\)-[0-9]\\{2\\}|[0-9]\\]" (line-end-position) t)
+	(let* ((total (string-to-number (match-string 1)))
+               (priority (pcase total
+                           (6 ?A) (5 ?B) (4 ?C)
+                           (3 ?D) (2 ?E) (_ ?E))))
+          (org-priority priority)))))
+
+  (defun my/iue-update ()
+    "Prompt for IUE scores, update token on headline, and sync priority."
+    (interactive)
+    (let ((new (my/iue-prompt)))
+      (save-excursion
+	(org-back-to-heading t)
+	;; First remove any existing IUE token (and its trailing space)
+	(when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|[0-9]\\] ?" (line-end-position) t)
+          (replace-match ""))
+	;; Now insert at the right position: after stars, TODO, and priority
+	(beginning-of-line)
+	(if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
+                               (line-end-position) t)
+            (insert new " ")
+          (end-of-line)
+          (insert " " new))))
+    (my/iue-sync-priority))
+  
+  ;; Extract IUE scores from current line
+  (defun my/iue-get-scores ()
+    "Extract IUE scores from current line. Returns (total importance urgency ease).
+     Returns (0 0 0 0) if no token is found, sorting unscored items to the bottom."
+    (save-excursion
+      (beginning-of-line)
+      (if (re-search-forward "\\[\\([0-9]\\)-\\([0-9]\\)\\([0-9]\\)|\\([0-9]\\)\\]"
+                             (line-end-position) t)
+          (list (string-to-number (match-string 1))
+                (string-to-number (match-string 2))
+                (string-to-number (match-string 3))
+                (string-to-number (match-string 4)))
+        '(0 0 0 0))))
+
+  ;; Custom comparison function for agenda sorting
+  (defun my/iue-compare (a b)
+    "Compare two agenda entries by IUE scores.
+     Returns -1 if a < b, +1 if a > b, nil if equal.
+     Sorts by total (I+U), then importance, then urgency, then ease."
+    (let ((sa (get-text-property 0 'txt a))
+          (sb (get-text-property 0 'txt b)))
+      (let ((scores-a (with-temp-buffer
+			(insert sa)
+			(my/iue-get-scores)))
+            (scores-b (with-temp-buffer
+			(insert sb)
+			(my/iue-get-scores))))
+	(cl-loop for val-a in scores-a
+                 for val-b in scores-b
+                 when (> val-a val-b) return +1
+                 when (< val-a val-b) return -1
+                 finally return nil))))
 
   ;; General Org config
   (setq org-ellipsis " ▼ ")                                 ; Change icon for folding
@@ -738,8 +852,10 @@
           (tags . " %i %-24:c")
           (search . " %i %-24:c")))
 
+  ;; Set the custom comparison function
+  (setq org-agenda-cmp-user-defined #'my/iue-compare)
   (setq org-agenda-sorting-strategy
-        '((agenda habit-up scheduled-up deadline-up time-up todo-state-down priority-down category-keep)
+        '((agenda habit-up scheduled-up deadline-up time-up todo-state-down user-defined-down category-keep)
           (todo priority-down category-keep todo-state-down)
           (tags priority-down category-keep)
           (search category-keep)))
@@ -753,44 +869,7 @@
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
   (setq org-habit-graph-column 65)
-  (setq org-habit-show-done-always-green t)
-
-  ;; functions
-  (defun org-cycle-agenda-files ()
-    "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
-    (interactive)
-    (let* ((fs (org-agenda-files t))
-           (files (append fs (list (car fs))))
-           (tcf (if buffer-file-name (file-truename buffer-file-name)))
-           file)
-      (unless files (user-error "No agenda files"))
-      (catch 'exit
-             (while (setq file (pop files))
-                    (if (equal (file-truename file) tcf)
-                      (when (car files)
-                        (find-file (car files))
-                        (throw 'exit t))))
-             (find-file (car fs)))
-      (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
-
-  (defun org-habit-streak-percentage ()
-    (goto-char (point-min))
-    (while (not (eobp))
-      (when (get-text-property (point) 'org-habit-p)
-	(let* ((count (count-matches
-                       (char-to-string org-habit-completed-glyph)
-                       (line-beginning-position) (line-end-position)))
-               (total-days (+ org-habit-following-days org-habit-preceding-days))
-               (percentage (/ (round (* 10 (* 100 (/ (float count) total-days)))) 10.0))
-               (percentage-str (concat " " (number-to-string percentage) "%"))
-               (face (cond
-                      ((>= percentage 66.6) 'success)
-                      ((>= percentage 33.3) 'warning)
-                      (t 'error))))
-          (end-of-line)
-          (insert (propertize percentage-str 'face face))))
-      (forward-line 1)))
-  (add-hook 'org-agenda-finalize-hook 'org-habit-streak-percentage))
+  (setq org-habit-show-done-always-green t))
 
 (use-package org-edna
   :ensure t
