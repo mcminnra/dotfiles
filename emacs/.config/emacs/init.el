@@ -401,55 +401,26 @@
 ;;   (evil-org-agenda-set-keys))
 
 ;; Treemacs
-(use-package treemacs
+;; Dirvish (file tree sidebar)
+(use-package dirvish
   :ensure t
-  ;; :hook (treemacs-mode . (lambda () (treemacs-resize-icons 16)))
   :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  (dirvish-override-dired-mode)
   :config
-  (setq treemacs-is-never-other-window nil)
-  (setq treemacs-position 'left) 
-  (setq treemacs-width 35)
-  (setq treemacs-no-png-images t)
-  
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-git-mode 'deferred)
-  
+  (setq dired-listing-switches "-Al --group-directories-first")
+  (setq dirvish-attributes '(nerd-icons file-size collapse subtree-state vc-state git-msg))
+  (setq dirvish-side-width 35)
+  (setq dirvish-side-follow-mode t)
   :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-c t 1"   . treemacs-delete-other-windows)
-        ("C-c t t"   . treemacs)
-        ("C-c t d"   . treemacs-select-directory)
-        ("C-c t B"   . treemacs-bookmark)
-        ("C-c t C-t" . treemacs-find-file)
-        ("C-c t M-t" . treemacs-find-tag)))
+  (("C-c t t" . dirvish-side)
+   ("C-c t d" . dirvish)
+   :map dirvish-mode-map
+   ("TAB" . dirvish-subtree-toggle)))
 
-(use-package treemacs-projectile
-  :ensure t
-  :after (treemacs projectile))
-
-(defun my/treemacs-projectile-hook ()
-  "Open treemacs and add the current projectile project, keeping focus on the current file."
-  (when (projectile-project-p)
-    (let ((current-window (selected-window)))
-      (treemacs-add-and-display-current-project-exclusively)
-      (select-window current-window))))
-
-;; Hook into projectile's project switch
-(add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-hook)
-
-(use-package treemacs-nerd-icons
-  :ensure t
-  :after (treemacs nerd-icons)
-  :config
-  (treemacs-nerd-icons-config))
-
-;; (use-package treemacs-evil
-;;   :ensure t
-;;   :after (treemacs evil))
+(add-hook 'projectile-after-switch-project-hook
+          (lambda ()
+            (when (projectile-project-p)
+              (dirvish-side))))
 
 ;; ===============================================
 ;; Programming 
@@ -550,11 +521,6 @@
   :after (helm lsp-mode)
   :commands helm-lsp-workspace-symbol)
 
-(use-package lsp-treemacs
-  :ensure t
-  :after (lsp-mode treemacs)
-  :config
-  (lsp-treemacs-sync-mode 1))
 
 ;; Svelte (requires typescript-mode for <script lang="ts"> block highlighting)
 (use-package typescript-mode
@@ -932,7 +898,7 @@
   (org-agenda-day-view)
   (transpose-frame)
   (balance-windows)
-  (treemacs-add-and-display-current-project-exclusively)
+  (dirvish-side)
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'my/open-org-layout)
 
