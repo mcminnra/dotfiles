@@ -97,6 +97,13 @@
    ("C-c <up>" . windmove-up)
    ("C-c <down>" . windmove-down)))
 
+;; avy (visual jump)
+(use-package avy
+  :ensure t
+  :bind
+  (("C-;" . avy-goto-char-timer)
+   ("C-'" . avy-goto-line)))
+
 ;; OS-specific settings
 (cond
  ((eq `gnu/linux system-type)
@@ -410,7 +417,7 @@
   (setq dired-listing-switches "-Al --group-directories-first")
   (setq dirvish-attributes '(nerd-icons file-size collapse subtree-state vc-state git-msg))
   (setq dirvish-side-width 35)
-  (setq dirvish-side-follow-mode t)
+  (dirvish-side-follow-mode 1)
   :bind
   (("C-c t t" . dirvish-side)
    ("C-c t d" . dirvish)
@@ -601,26 +608,10 @@
          ("C-c o l" . org-store-link)
 	 ("C-c u" . my/iue-update))
   :config
+  (define-key org-mode-map (kbd "C-'") nil)  ; Unbind org-cycle-agenda-files; C-' used for avy-goto-line
   (add-to-list 'org-modules 'org-habit t)
 
   ;; Functions
-  (defun org-cycle-agenda-files ()
-    "Cycle through the files in `org-agenda-files'. If the current buffer visits an agenda file, find the next one in the list. If the current buffer does not, find the first agenda file."
-    (interactive)
-    (let* ((fs (org-agenda-files t))
-           (files (append fs (list (car fs))))
-           (tcf (if buffer-file-name (file-truename buffer-file-name)))
-           file)
-      (unless files (user-error "No agenda files"))
-      (catch 'exit
-        (while (setq file (pop files))
-          (if (equal (file-truename file) tcf)
-              (when (car files)
-                (find-file (car files))
-                (throw 'exit t))))
-        (find-file (car fs)))
-      (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
-
   (defun org-habit-streak-percentage ()
     (goto-char (point-min))
     (while (not (eobp))
