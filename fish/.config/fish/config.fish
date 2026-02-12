@@ -37,6 +37,7 @@ alias sg "s -p google"  # https://github.com/zquestz/s
 alias tree "tree -ChD --dirsfirst"
 alias ydl youtube-dl  # https://github.com/ytdl-org/youtube-dl
 alias neofetch fastfetch  #https://github.com/fastfetch-cli/fastfetch
+alias missionctrl "ssh root@missionctrl.tailabc0e6.ts.net"
 
 #== Functions
 function org
