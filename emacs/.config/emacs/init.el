@@ -724,7 +724,7 @@
   (setq org-todo-keywords
         '(
           ;; Tasks
-          (sequence "WAITING(w)" "DEFERRED(e)" "TODO(t)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
+          (sequence "WAITING(w)" "DEFERRED(e)" "TODO(t)" "PLANNED(p)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
           ;; Project
           (sequence "PROJECT(P)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
           ;; Experience
@@ -734,6 +734,7 @@
   (setq org-todo-keyword-faces
         '(("IN-PROGRESS" . (:foreground "#725ac1" :weight bold))
           ("TODO" . (:foreground "#30acec" :weight bold))
+          ("PLANNED" . (:foreground "#a08cd8" :weight bold))
           ("REVIEW" . (:foreground "#f7b801" :weight bold))
           ("WAITING" . (:foreground "#339989" :weight bold))
           ("DEFERRED" . (:foreground "#9d9d9d" :weight bold))
