@@ -1,6 +1,10 @@
-;;; init.el -- Emacs Config
+;;; init.el --- My Emacs configuration -*- lexical-binding: t; -*-
+
+;; Author: Ryder McMinn
+;; Keywords: lisp, config
 
 ;;; Commentary:
+;; This is my personal Emacs configuration, optimized for Gnome/Linux.
 
 ;;; Code:
 (when (version< emacs-version "30") (error "This requires Emacs 30 and above!"))
@@ -234,7 +238,7 @@
          ("C-c k" . consult-kmacro)
          ("C-c m" . consult-man)
          ("C-c i" . consult-info)
-         ("C-c d u" . my/consult-diff-unsaved-buffers-live)
+         ("C-c b u" . my/consult-diff-unsaved-buffers-live)
          ([remap Info-search] . consult-info)
          ;; C-x bindings in `ctl-x-map'
          ("C-x M-:" . consult-complex-command)
@@ -432,7 +436,8 @@
 (add-hook 'projectile-after-switch-project-hook
           (lambda ()
             (when (projectile-project-p)
-              (dirvish-side))))
+              (dirvish-side)
+              (other-window 1))))
 
 ;; ===============================================
 ;; Programming
@@ -462,6 +467,8 @@
 (use-package flycheck
   :ensure t
   :hook (after-init . global-flycheck-mode)
+  :config
+  (which-key-add-key-based-replacements "C-c e" "Errors (Flycheck)")
   :bind (("C-c e n" . flycheck-next-error)
          ("C-c e p" . flycheck-previous-error)
          ("C-c e l" . flycheck-list-errors)))
@@ -491,6 +498,7 @@
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config
+  (which-key-add-key-based-replacements "C-c l" "LSP")
   (setq lsp-prefer-flymake nil)  ; Use flycheck instead of flymake
   (setq lsp-auto-guess-root t)
   (setq lsp-enable-suggest-server-download t)
@@ -533,7 +541,6 @@
   :after (helm lsp-mode)
   :commands helm-lsp-workspace-symbol)
 
-
 ;; Svelte (requires typescript-mode for <script lang="ts"> block highlighting)
 (use-package typescript-mode
   :ensure t
@@ -558,6 +565,7 @@
    ;; Enable margin mode for terminal Emacs
    (diff-hl-mode . diff-hl-margin-mode))
   :config
+  (which-key-add-key-based-replacements "C-c g" "Git Diff")
   ;; Enable diff-hl globally
   (global-diff-hl-mode 1)
 
@@ -608,10 +616,9 @@
   ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-percentage)
-  :bind (("C-c o c" . org-capture)
-         ("C-c o a" . org-agenda)
-         ("C-c o l" . org-store-link)
-	 ("C-c u" . my/iue-update))
+  :bind (("C-c c" . org-capture)
+         ("C-c a a" . org-agenda)
+	     ("C-c u" . my/iue-update))
   :config
   (define-key org-mode-map (kbd "C-'") nil)  ; Unbind org-cycle-agenda-files; C-' used for avy-goto-line
   (add-to-list 'org-modules 'org-habit t)
