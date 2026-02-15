@@ -427,11 +427,26 @@
   (setq dirvish-attributes '(nerd-icons file-size collapse subtree-state vc-state git-msg))
   (setq dirvish-side-width 35)
   (dirvish-side-follow-mode 1)
+
+  (defun my/dirvish-mouse-click (event)
+    "Smart mouse handler: toggle subtree for dirs, open files in other window."
+    (interactive "e")
+    (mouse-set-point event)
+    (when-let ((filename (dired-get-filename nil t)))
+      (if (file-directory-p filename)
+          (dirvish-subtree-toggle)
+        (when-let ((target (get-mru-window nil nil t)))
+          (select-window target)
+          (find-file filename)))))
+
+  (define-key dirvish-mode-map [follow-link] nil)
+
   :bind
   (("C-c t t" . dirvish-side)
    ("C-c t d" . dirvish)
    :map dirvish-mode-map
-   ("TAB" . dirvish-subtree-toggle)))
+   ("TAB" . dirvish-subtree-toggle)
+   ([mouse-1] . my/dirvish-mouse-click)))
 
 (add-hook 'projectile-after-switch-project-hook
           (lambda ()
