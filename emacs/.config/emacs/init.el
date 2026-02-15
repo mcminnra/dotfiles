@@ -178,7 +178,7 @@
   :config
   (setq-default visual-fill-column-width 120)
   (setq-default visual-fill-column-center-text t)
-  
+
   ;; Optional: Enable visual-line-mode with visual-fill-column
   (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
 
@@ -361,7 +361,12 @@
 (use-package ace-window
   :ensure t
   :config
-  (global-set-key (kbd "M-o") 'ace-window))
+  (global-set-key (kbd "M-o") 'ace-window)
+  ;; Make ace-window always respect the no-other-window parameter (e.g. dirvish-side)
+  (defun my/aw-ignore-no-other-window (original-fn window)
+    (or (funcall original-fn window)
+        (window-parameter window 'no-other-window)))
+  (advice-add 'aw-ignored-p :around #'my/aw-ignore-no-other-window))
 
 ;; transpose-frame
 ;; NOTE: in emacs 31+, this is now native - Switch to those when upgrading
@@ -430,7 +435,7 @@
               (dirvish-side))))
 
 ;; ===============================================
-;; Programming 
+;; Programming
 ;; ===============================================
 ;; Rainbow Delimiters
 (use-package rainbow-delimiters
@@ -494,11 +499,11 @@
   (setq lsp-completion-provider :capf)
   (setq lsp-completion-show-detail t)
   (setq lsp-completion-show-kind t)
-  
+
   ;;; Python
   ;; Register ruff LSP server
   (lsp-register-client
-   (make-lsp-client 
+   (make-lsp-client
     :new-connection (lsp-stdio-connection '("ruff" "server" "--preview"))
     :activation-fn (lsp-activate-on "python")
     :server-id 'ruff
@@ -555,16 +560,16 @@
   :config
   ;; Enable diff-hl globally
   (global-diff-hl-mode 1)
-  
+
   ;; Refresh diff-hl when magit operations complete
   (with-eval-after-load 'magit
     (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
     (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-  
+
   ;; Use margin instead of fringe in terminal
   (unless (display-graphic-p)
     (diff-hl-margin-mode 1))
-  
+
   :bind
   ;; Navigate between hunks
   ("C-c g n" . diff-hl-next-hunk)
@@ -673,7 +678,7 @@
           (end-of-line)
           (insert " " new))))
     (my/iue-sync-priority))
-  
+
   ;; Extract IUE scores from current line
   (defun my/iue-get-scores ()
     "Extract IUE scores from current line. Returns (total importance urgency ease).
@@ -711,12 +716,12 @@
   (setq org-ellipsis " ▼ ")                                 ; Change icon for folding
   (setq org-todo-repeat-to-state "TODO")                    ; Recurring tasks reset to TODO, not first state in sequence
   (setq org-log-done t)                                     ; Record when done
-  (setq org-log-into-drawer "LOGBOOK")                      ; Put log state into a seperate section instead of just in headline body 
+  (setq org-log-into-drawer "LOGBOOK")                      ; Put log state into a seperate section instead of just in headline body
   (setq org-enforce-todo-dependencies t)                    ; Can't mark done if children aren't marked done
   (setq org-archive-location "~/org/archive/%s_archive::")  ; Set archive location and format
   (setq org-tags-column 0)                                  ; Put tags immediately after headline
   (setq org-special-ctrl-a/e t)                             ; Have ctrl-a/e work better with org headlines
-  
+
   ;; But make the document title a bit bigger
   (set-face-attribute 'org-document-title nil :font "SauceCodePro NFM" :weight 'bold :height 1.5)
 
@@ -776,7 +781,7 @@
   (setq org-deadline-warning-days 90)
   (setq org-agenda-deadline-faces
         '((0.98 . org-imminent-deadline)          ; Overdue or due tomorrow
-          (0.66 . org-upcoming-deadline)          ; Due within 30 days 
+          (0.66 . org-upcoming-deadline)          ; Due within 30 days
           (0.0 . org-upcoming-distant-deadline))) ; everything else
 
   ;; agenda
@@ -824,7 +829,7 @@
 	'(
 	  (:name "Work" :tag "work")
 	  (:name "Focus (Project+Media)" :tag "focus")
-	  (:name "Personal" :tag "personal") 
+	  (:name "Personal" :tag "personal")
 	  (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))

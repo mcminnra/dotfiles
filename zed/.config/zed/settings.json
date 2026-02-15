@@ -18,7 +18,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "0x96f Theme"
+    "dark": "0x96f Theme",
   },
-  "disable_ai": false
+  "disable_ai": true,
 }
