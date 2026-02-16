@@ -508,7 +508,7 @@
            dockerfile-ts-mode
            cmake-ts-mode
            lua-ts-mode
-           svelte-mode) . lsp)
+           svelte-mode) . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :custom
@@ -534,7 +534,7 @@
 
 (use-package lsp-pyright
   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
-  :hook (python-ts-mode . (lambda () (lsp))))  ; or lsp-deferred
+  :hook (python-ts-mode . (lambda () (lsp-deferred))))  ; or lsp-deferred
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
