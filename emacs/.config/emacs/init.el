@@ -4,29 +4,60 @@
 ;; Keywords: lisp, config
 
 ;;; Commentary:
-;; This is my personal Emacs configuration, optimized for Gnome/Linux.
+;; This is my personal Emacs configuration.
 
 ;;; Code:
 (when (version< emacs-version "30") (error "This requires Emacs 30 and above!"))
 
-;; Load package manager
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+;; Bootstrap elpaca package manager
+(defvar elpaca-installer-version 0.11)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1 :inherit ignore
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
-(setq straight-use-package-by-default t) ; Have use-package also invoke straight.el
+;; Enable use-package integration (always-ensure makes elpaca install all use-package declarations)
+(elpaca elpaca-use-package
+  (elpaca-use-package-mode)
+  (setq use-package-always-ensure t))
+(elpaca-wait)
+
+;; Send auto-generated Customize output to custom.el so it doesn't pollute init.el
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;;; ===============================================
 ;;; General Emacs Settings
@@ -51,22 +82,22 @@
 (scroll-bar-mode -1)                                         ; No scroll bar
 (tool-bar-mode -1)                                           ; No toolbar
 (menu-bar-mode -1)                                           ; No menu bar
-(setq inhibit-startup-screen t)                              ; No start screen
+(setopt inhibit-startup-screen t)                             ; No start screen
 (global-hl-line-mode 1)                                      ; highlight active line
 (toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
-(setq visible-bell t)                                        ; Make bell visible
+(setopt visible-bell t)                                       ; Make bell visible
 (add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
 
 ;; Editor behavior
-(setq backup-directory-alist `(("." . "~/.saves")))          ; Set backupdir
-(setq create-lockfiles nil)                                  ; Turn off .# lock files
+(setopt backup-directory-alist `(("." . "~/.saves")))         ; Set backupdir
+(setopt create-lockfiles nil)                                 ; Turn off .# lock files
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 
 ;; Window management: only side-by-side splits, max 2 main windows + sidebar
-(setq split-height-threshold nil)                              ; Never split top/bottom
-(setq split-width-threshold 80)                                ; Allow side-by-side when wide enough
+(setopt split-height-threshold nil)                             ; Never split top/bottom
+(setopt split-width-threshold 80)                               ; Allow side-by-side when wide enough
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)                          ; Use spaces, not tabs
@@ -77,11 +108,11 @@
 
 ;; Less jumpy mouse scroll
 ;; Stolen From: https://github.com/deirn/fedoracfg/blob/deadb8eef399ef563e76f97edfcd9120643d0fc0/config/emacs/init.el#L122
-(setq scroll-step 1)                      ; Scroll one line at a time
-(setq scroll-margin 2)                    ; Start scrolling when 2 lines from the bottom
-(setq scroll-conservatively 100000)       ; Never re-center automatically
-(setq scroll-preserve-screen-position t)  ; Keep point position when scrolling
-(setq auto-window-vscroll nil)
+(setopt scroll-step 1)                     ; Scroll one line at a time
+(setopt scroll-margin 2)                   ; Start scrolling when 2 lines from the bottom
+(setopt scroll-conservatively 100000)      ; Never re-center automatically
+(setopt scroll-preserve-screen-position t) ; Keep point position when scrolling
+(setopt auto-window-vscroll nil)
 
 ;; Config line numbers
 (use-package display-line-numbers
@@ -107,7 +138,6 @@
 
 ;; avy (visual jump)
 (use-package avy
-  :ensure t
   :bind
   (("C-;" . avy-goto-char-timer)
    ("C-'" . avy-goto-line)))
@@ -134,53 +164,33 @@
 
 (use-package nerd-icons)
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :custom
-;;   ;; Global settings (defaults)
-;;   (doom-themes-enable-bold t)
-;;   (doom-themes-enable-italic t)
-;;   ;; for treemacs users
-;;   ;;(doom-themes-treemacs-theme "doom-atom")
-;;   :config
-;;   ;(load-theme 'doom-old-hope t)
-;;   ;; Enable flashing mode-line on errors
-;;   (doom-themes-visual-bell-config)
-;;   ;; Treemacs theme
-;;   ;;(doom-themes-treemacs-config)
-;;   ;; Corrects (and improves) org-mode's native fontification.
-;;   (doom-themes-org-config))
-
 ;; emacs-dashboard
 (use-package dashboard
-  :ensure t
+  :custom
+  (dashboard-startup-banner 2)
+  (dashboard-banner-logo-title "")
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)
+  (dashboard-items '((recents   . 5)
+                     (projects  . 5)))
+  (dashboard-display-icons-p t)
+  (dashboard-icon-type 'nerd-icons)
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
   :config
-  (setq dashboard-startup-banner 2)
-  (setq dashboard-banner-logo-title "")
-  (setq dashboard-center-content t)
-  (setq dashboard-vertically-center-content t)
-  (setq dashboard-items '((recents   . 5)
-                          (projects  . 5)))
-  (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
-  (setq dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
   (dashboard-setup-startup-hook))
 
 ;; Doom modeline
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1))
 
 ;; Solaire
 (use-package solaire-mode
-  :ensure t
   :config
   (solaire-global-mode +1))
 
 ;; visual-line-column
 (use-package visual-fill-column
-  :ensure t
   :hook ((org-mode . visual-fill-column-mode)
          (markdown-mode . visual-fill-column-mode))
   :config
@@ -304,72 +314,65 @@
            (candidates (mapcar #'buffer-name unsaved-buffers)))
       (if (null candidates)
           (message "No unsaved buffers.")
-	(when-let ((buf (consult--read
-			 candidates
-			 :prompt "Diff unsaved buffer: "
-			 :category 'buffer
-			 :require-match t
-			 :state (lambda (action cand)
+        (when-let ((buf (consult--read
+                         candidates
+                         :prompt "Diff unsaved buffer: "
+                         :category 'buffer
+                         :require-match t
+                         :state (lambda (action cand)
                                   (when (and cand (eq action 'preview))
                                     (diff-buffer-with-file (get-buffer cand))))
-			 :sort nil)))
+                         :sort nil)))
           (my/goto-first-diff (get-buffer buf))))))
 
   (defun my/goto-first-diff (buffer)
     "Switch to BUFFER and move point to the first line differing from file."
     (let* ((file (buffer-file-name buffer))
            (file-lines (with-temp-buffer
-			 (insert-file-contents file)
-			 (split-string (buffer-string) "\n")))
+                         (insert-file-contents file)
+                         (split-string (buffer-string) "\n")))
            (buf-lines (with-current-buffer buffer
-			(split-string (buffer-string) "\n")))
+                        (split-string (buffer-string) "\n")))
            (line-num 1))
       (switch-to-buffer buffer)
       (catch 'found
-	(while (or file-lines buf-lines)
+        (while (or file-lines buf-lines)
           (unless (equal (car file-lines) (car buf-lines))
             (goto-char (point-min))
             (forward-line (1- line-num))
             (throw 'found t))
           (setq file-lines (cdr file-lines)
-		buf-lines (cdr buf-lines)
-		line-num (1+ line-num)))))))
+                buf-lines (cdr buf-lines)
+                line-num (1+ line-num)))))))
 
 ;; Projectile
 (use-package projectile
-  :ensure t
   :init
   (setq projectile-project-search-path '("~/repos"))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
   :config
-  (global-set-key (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
 ;; which-key
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode))
 
 ;; multiple-cursors
 (use-package multiple-cursors
-  :ensure t
-  :config
-  ;; Core multiple-cursors bindings
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-  ;; Click to add cursor
-  (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
-  ;; Line editing
-  (global-set-key (kbd "C-S-c C-S-a") 'mc/edit-beginnings-of-lines)
-  (global-set-key (kbd "C-S-c C-S-e") 'mc/edit-ends-of-lines))
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)
+         ("C-S-c C-S-c" . mc/edit-lines)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)
+         ("C-S-c C-S-a" . mc/edit-beginnings-of-lines)
+         ("C-S-c C-S-e" . mc/edit-ends-of-lines)))
 
 ;; ace-window
 (use-package ace-window
-  :ensure t
+  :bind ("M-o" . ace-window)
   :config
-  (global-set-key (kbd "M-o") 'ace-window)
   ;; Make ace-window always respect the no-other-window parameter (e.g. dirvish-side)
   (defun my/aw-ignore-no-other-window (original-fn window)
     (or (funcall original-fn window)
@@ -379,12 +382,11 @@
 ;; transpose-frame
 ;; NOTE: in emacs 31+, this is now native - Switch to those when upgrading
 (use-package transpose-frame
-  :ensure t
   :bind (("C-x 7 t" . transpose-frame)
          ("C-x 7 f" . flip-frame)
          ("C-x 7 r" . rotate-frame)))
 
-;; ;; Evil mode
+;; Evil mode -- disabled, kept for reference
 ;; (use-package evil
 ;;   :ensure t
 ;;   :demand t
@@ -420,10 +422,8 @@
 ;;   (require 'evil-org-agenda)
 ;;   (evil-org-agenda-set-keys))
 
-;; Treemacs
 ;; Dirvish (file tree sidebar)
 (use-package dirvish
-  :ensure t
   :init
   (dirvish-override-dired-mode)
   :config
@@ -458,33 +458,29 @@
               (dirvish-side)
               (other-window 1))))
 
-;; ===============================================
-;; Programming
-;; ===============================================
+;;; ===============================================
+;;; Programming
+;;; ===============================================
 ;; Rainbow Delimiters
 (use-package rainbow-delimiters
-  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Smartparens
 (use-package smartparens
-  :ensure t
   :hook (prog-mode . smartparens-mode)
   :config
   (require 'smartparens-config))
 
 ;; eat (Emulate A Terminal)
 (use-package eat
-  :ensure t
-  :config
-  (setq eat-kill-buffer-on-exit t)
-  (setq eat-enable-mouse t)
+  :custom
+  (eat-kill-buffer-on-exit t)
+  (eat-enable-mouse t)
   :bind
   ("C-c RET" . eat))
 
 ;; Flycheck
 (use-package flycheck
-  :ensure t
   :hook (after-init . global-flycheck-mode)
   :config
   (which-key-add-key-based-replacements "C-c e" "Errors (Flycheck)")
@@ -494,7 +490,6 @@
 
 ;; LSP Mode
 (use-package lsp-mode
-  :ensure t
   :init
   (setq lsp-keymap-prefix "C-c l")
   :hook (((python-ts-mode
@@ -516,16 +511,16 @@
            svelte-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
+  :custom
+  (lsp-prefer-flymake nil)
+  (lsp-auto-guess-root t)
+  (lsp-enable-suggest-server-download t)
+  (lsp-auto-install-server t)
+  (lsp-completion-provider :capf)
+  (lsp-completion-show-detail t)
+  (lsp-completion-show-kind t)
   :config
   (which-key-add-key-based-replacements "C-c l" "LSP")
-  (setq lsp-prefer-flymake nil)  ; Use flycheck instead of flymake
-  (setq lsp-auto-guess-root t)
-  (setq lsp-enable-suggest-server-download t)
-  (setq lsp-auto-install-server t)
-
-  (setq lsp-completion-provider :capf)
-  (setq lsp-completion-show-detail t)
-  (setq lsp-completion-show-kind t)
 
   ;;; Python
   ;; Register ruff LSP server
@@ -538,45 +533,39 @@
     :priority -1)))
 
 (use-package lsp-pyright
-  :ensure t
   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
   :hook (python-ts-mode . (lambda () (lsp))))  ; or lsp-deferred
 
 (use-package lsp-ui
-  :ensure t
   :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-flycheck-enable t
-        lsp-ui-sideline-enable t
-	lsp-ui-sideline-show-hover t
-	lsp-ui-doc-enable nil
-	lsp-ui-sideline-show-diagnostics t     ; Show warnings/errors in sideline
-	lsp-ui-sideline-show-code-actions nil
-	lsp-ui-sideline-delay 0.25)    ; Show code actions in sideline
-  )
+  :custom
+  (lsp-ui-flycheck-enable t)
+  (lsp-ui-sideline-enable t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-code-actions nil)
+  (lsp-ui-sideline-delay 0.25))
 
-(use-package helm-lsp
-  :ensure t
-  :after (helm lsp-mode)
-  :commands helm-lsp-workspace-symbol)
+(use-package consult-lsp
+  :after (consult lsp-mode)
+  :bind (:map lsp-mode-map
+              ("C-c l s" . consult-lsp-symbols)
+              ("C-c l d" . consult-lsp-diagnostics)
+              ("C-c l f" . consult-lsp-file-symbols)))
 
 ;; Svelte (requires typescript-mode for <script lang="ts"> block highlighting)
 (use-package typescript-mode
-  :ensure t
   :defer t
   :config
   (setq typescript-indent-level 4))
 
 (use-package svelte-mode
-  :ensure t
   :after typescript-mode
-  :mode "\\.svelte\\'"
-  :config
-)
+  :mode "\\.svelte\\'")
 
 ;; diff-hl
 (use-package diff-hl
-  :ensure t
   :hook
   ;; Enable diff-hl for programming modes
   ((prog-mode . diff-hl-mode)
@@ -608,7 +597,6 @@
 
 ;; Treesit-auto (auto-install grammars and remap modes — Mason-like experience)
 (use-package treesit-auto
-  :ensure t
   :demand t
   :config
   (setq treesit-auto-install 'prompt)
@@ -616,7 +604,7 @@
   (global-treesit-auto-mode))
 
 ;; Treesit config
-(setq treesit-font-lock-level 4)   ; Most detailed syntax highlighting
+(setopt treesit-font-lock-level 4)  ; Most detailed syntax highlighting
 (add-hook 'prog-mode-hook #'hs-minor-mode)  ; Enable tree-sitter based folding
 
 ;; Make comments italic
@@ -629,15 +617,13 @@
 ;;; ===============================================
 ;; Org
 (use-package org
-  :ensure t
   :demand t
   :mode (("\\.org$" . org-mode))
-  ;; :ensure org-plus-contrib
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-percentage)
   :bind (("C-c c" . org-capture)
          ("C-c a" . org-agenda)
-	     ("C-c u" . my/iue-update))
+         ("C-c u" . my/iue-update))
   :config
   (define-key org-mode-map (kbd "C-'") nil)  ; Unbind org-cycle-agenda-files; C-' used for avy-goto-line
   (add-to-list 'org-modules 'org-habit t)
@@ -647,7 +633,7 @@
     (goto-char (point-min))
     (while (not (eobp))
       (when (get-text-property (point) 'org-habit-p)
-	(let* ((count (count-matches
+        (let* ((count (count-matches
                        (char-to-string org-habit-completed-glyph)
                        (line-beginning-position) (line-end-position)))
                (total-days (+ org-habit-following-days org-habit-preceding-days))
@@ -681,7 +667,7 @@
     (save-excursion
       (beginning-of-line)
       (when (re-search-forward "\\[\\([0-9]+\\)-[0-9]\\{2\\}|[0-9]\\]" (line-end-position) t)
-	(let* ((total (string-to-number (match-string 1)))
+        (let* ((total (string-to-number (match-string 1)))
                (priority (pcase total
                            (6 ?A) (5 ?B) (4 ?C)
                            (3 ?D) (2 ?E) (_ ?E))))
@@ -692,13 +678,13 @@
     (interactive)
     (let ((new (my/iue-prompt)))
       (save-excursion
-	(org-back-to-heading t)
-	;; First remove any existing IUE token (and its trailing space)
-	(when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|[0-9]\\] ?" (line-end-position) t)
+        (org-back-to-heading t)
+        ;; First remove any existing IUE token (and its trailing space)
+        (when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|[0-9]\\] ?" (line-end-position) t)
           (replace-match ""))
-	;; Now insert at the right position: after stars, TODO, and priority
-	(beginning-of-line)
-	(if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
+        ;; Now insert at the right position: after stars, TODO, and priority
+        (beginning-of-line)
+        (if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
                                (line-end-position) t)
             (insert new " ")
           (end-of-line)
@@ -727,12 +713,12 @@
     (let ((sa (get-text-property 0 'txt a))
           (sb (get-text-property 0 'txt b)))
       (let ((scores-a (with-temp-buffer
-			(insert sa)
-			(my/iue-get-scores)))
+                        (insert sa)
+                        (my/iue-get-scores)))
             (scores-b (with-temp-buffer
-			(insert sb)
-			(my/iue-get-scores))))
-	(cl-loop for val-a in scores-a
+                        (insert sb)
+                        (my/iue-get-scores))))
+        (cl-loop for val-a in scores-a
                  for val-b in scores-b
                  when (> val-a val-b) return +1
                  when (< val-a val-b) return -1
@@ -747,7 +733,6 @@
   (setq org-archive-location "~/org/archive/%s_archive::")  ; Set archive location and format
   (setq org-tags-column 0)                                  ; Put tags immediately after headline
   (setq org-special-ctrl-a/e t)                             ; Have ctrl-a/e work better with org headlines
-
 
   ;; Set todo keywords and faces
   (setq org-todo-keywords
@@ -840,26 +825,22 @@
   (setq org-habit-show-done-always-green t))
 
 (use-package org-edna
-  :ensure t
   :after org
   :config
   (org-edna-mode))
 
 (use-package org-super-agenda
-  :ensure t
   :after org
   :config
   (setq org-super-agenda-groups
-	'(
-	  (:name "Work" :tag "work")
-	  (:name "Focus (Project+Media)" :tag "focus")
-	  (:name "Personal" :tag "personal")
-	  (:name "Next" :anything)))
+        '((:name "Work" :tag "work")
+          (:name "Focus (Project+Media)" :tag "focus")
+          (:name "Personal" :tag "personal")
+          (:name "Next" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
 (use-package org-superstar
-  :ensure t
   :after org
   :hook (org-mode . org-superstar-mode)
   :config
@@ -867,7 +848,6 @@
   (setq org-superstar-headline-bullets-list '("■" "□" "▫" "▫" "▫" "▫")))
 
 (use-package org-roam
-  :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
@@ -924,8 +904,8 @@
 (setq split-window-preferred-function #'my/split-window-sensibly)
 (setq display-buffer-base-action
       '((display-buffer-reuse-window display-buffer-use-some-window)))
-(global-set-key (kbd "C-x 2") #'my/split-right)
-(global-set-key (kbd "C-x 3") #'my/split-right)
+(keymap-global-set "C-x 2" #'my/split-right)
+(keymap-global-set "C-x 3" #'my/split-right)
 
 (defun my/open-org-layout ()
   "Open org layout: dirvish sidebar | tasks file | day agenda."
@@ -939,7 +919,7 @@
   (other-window -1)
   (dirvish-side)
   (other-window 1))
-(global-set-key (kbd "C-x 9") 'my/open-org-layout)
+(keymap-global-set "C-x 9" #'my/open-org-layout)
 
 (defun collect-buffer-faces (buffer)
   "Collect all faces found in BUFFER"
@@ -963,7 +943,7 @@
          (faces (collect-buffer-faces buffer))
          (help-buffer-under-preparation t))
     (help-setup-xref (list #'show-buffer-faces buffer)
-		     (called-interactively-p 'interactive))
+                     (called-interactively-p 'interactive))
     (with-help-window help-buffer
       (insert
        (format "Faces found in buffer %s:\n\n" (buffer-name buffer)))
@@ -976,21 +956,4 @@
           (insert "\n"))
         (sort-lines t sort-start (point))))))
 
-
-;;; ----------------------------------------------
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("0325a6b5eea7e5febae709dab35ec8648908af12cf2d2b569bedc8da0a3a81c1"
-     default))
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;; init.el ends here
