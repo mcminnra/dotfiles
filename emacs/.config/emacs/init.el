@@ -451,6 +451,11 @@
               (dirvish-side)
               (other-window 1))))
 
+;; expand-region
+;; Semantic selection expanding
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
+
 ;;; ===============================================
 ;;; Programming
 ;;; ===============================================
