@@ -748,8 +748,6 @@
   (setq org-tags-column 0)                                  ; Put tags immediately after headline
   (setq org-special-ctrl-a/e t)                             ; Have ctrl-a/e work better with org headlines
 
-  ;; But make the document title a bit bigger
-  (set-face-attribute 'org-document-title nil :font "SauceCodePro NFM" :weight 'bold :height 1.5)
 
   ;; Set todo keywords and faces
   (setq org-todo-keywords
