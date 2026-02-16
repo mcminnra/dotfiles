@@ -84,7 +84,7 @@
    `(highlight ((t (:background ,surface))))
    `(hl-line ((t (:background ,crust))))
    `(fringe ((t (:background ,mantle))))
-   `(match ((t (:background ,surface))))
+   `(match ((t (:background ,surface :foreground ,yellow))))
    `(link ((t (:foreground ,cyan :underline ,cyan))))
    `(show-paren-match ((t (:background ,purple :foreground ,mantle :weight bold))))
    `(show-paren-mismatch ((t (:background ,red :foreground ,mantle :weight bold))))
@@ -121,7 +121,7 @@
    ;; Solaire
    `(solaire-default-face ((t (:background ,core :foreground ,fg))))
    `(solaire-fringe-face ((t (:background ,core :foreground ,fg))))
-   `(solaire-line-number-face ((t (:background ,core :foreground ,fg))))
+   `(solaire-line-number-face ((t (:background ,core :foreground ,grey))))
    `(solaire-mode-line-face ((t (:background ,core :foreground ,fg))))
    `(solaire-mode-line-inactive-face ((t (:background ,core :foreground ,fg))))
    `(solaire-header-line-face ((t (:background ,core :foreground ,fg))))
@@ -130,7 +130,7 @@
    `(mode-line ((t (:background ,mantle :foreground ,fg :box (:line-width 1 :color ,crust)))))
    `(mode-line-inactive ((t (:background ,core :foreground ,fg))))
    `(mode-line-active ((t (:background ,crust :foreground ,fg))))
-   `(mode-line-highlight ((t (:background ,purple :foreground ,fg))))
+   `(mode-line-highlight ((t (:background ,purple :foreground ,mantle))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((t (:foreground ,purple :weight bold))))
@@ -151,8 +151,8 @@
    `(rainbow-delimiters-depth-7-face ((t (:foreground ,purple))))        
    `(rainbow-delimiters-depth-8-face ((t (:foreground ,cyan))))       
    `(rainbow-delimiters-depth-9-face ((t (:foreground ,blue))))         
-   `(rainbow-delimiters-mismatched-face ((t (:weight bold))))     
-   `(rainbow-delimiters-unmatched-face ((t (:weight bold))))       
+   `(rainbow-delimiters-mismatched-face ((t (:foreground ,red :weight bold))))
+   `(rainbow-delimiters-unmatched-face ((t (:foreground ,red :weight bold))))       
 
    ;; Org mode
    `(org-document-title ((t (:foreground ,orange :weight bold :height 1.5))))
