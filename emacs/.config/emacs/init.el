@@ -82,22 +82,23 @@
 (scroll-bar-mode -1)                                         ; No scroll bar
 (tool-bar-mode -1)                                           ; No toolbar
 (menu-bar-mode -1)                                           ; No menu bar
-(setopt inhibit-startup-screen t)                             ; No start screen
+(setopt inhibit-startup-screen t)                            ; No start screen
 (global-hl-line-mode 1)                                      ; highlight active line
 (toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
-(setopt visible-bell t)                                       ; Make bell visible
+(setopt visible-bell t)                                      ; Make bell visible
 (add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
+(setopt pixel-scroll-precision-mode t)                       ; Better scroll
 
 ;; Editor behavior
-(setopt backup-directory-alist `(("." . "~/.saves")))         ; Set backupdir
-(setopt create-lockfiles nil)                                 ; Turn off .# lock files
+(setopt backup-directory-alist `(("." . "~/.saves")))        ; Set backupdir
+(setopt create-lockfiles nil)                                ; Turn off .# lock files
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 
 ;; Window management: only side-by-side splits, max 2 main windows + sidebar
-(setopt split-height-threshold nil)                             ; Never split top/bottom
-(setopt split-width-threshold 80)                               ; Allow side-by-side when wide enough
+(setopt split-height-threshold nil)                          ; Never split top/bottom
+(setopt split-width-threshold 80)                            ; Allow side-by-side when wide enough
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)                          ; Use spaces, not tabs
@@ -105,14 +106,6 @@
 (setq-default sgml-basic-offset 4)                           ; HTML/SGML indent
 (setq-default css-indent-offset 4)                           ; CSS indent
 (setq-default js-indent-level 4)                             ; JS indent
-
-;; Less jumpy mouse scroll
-;; Stolen From: https://github.com/deirn/fedoracfg/blob/deadb8eef399ef563e76f97edfcd9120643d0fc0/config/emacs/init.el#L122
-(setopt scroll-step 1)                     ; Scroll one line at a time
-(setopt scroll-margin 2)                   ; Start scrolling when 2 lines from the bottom
-(setopt scroll-conservatively 100000)      ; Never re-center automatically
-(setopt scroll-preserve-screen-position t) ; Keep point position when scrolling
-(setopt auto-window-vscroll nil)
 
 ;; Config line numbers
 (use-package display-line-numbers
