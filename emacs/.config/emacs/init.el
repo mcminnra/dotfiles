@@ -617,10 +617,11 @@
 ;;; ===============================================
 ;; Org
 (use-package org
+  :ensure nil  ; org is built-in
   :demand t
   :mode (("\\.org$" . org-mode))
   :hook (org-mode . org-indent-mode)
-  :hook (org-agenda-finalize-hook . org-habit-streak-percentage)
+  :hook (org-agenda-finalize . org-habit-streak-percentage)
   :bind (("C-c c" . org-capture)
          ("C-c a" . org-agenda)
          ("C-c u" . my/iue-update))
@@ -638,7 +639,7 @@
                        (line-beginning-position) (line-end-position)))
                (total-days (+ org-habit-following-days org-habit-preceding-days))
                (percentage (/ (round (* 10 (* 100 (/ (float count) total-days)))) 10.0))
-               (percentage-str (concat " " (number-to-string percentage) "%"))
+               (percentage-str (concat " " (number-to-string count) "/" (number-to-string total-days) " " (number-to-string percentage) "%"))
                (face (cond
                       ((>= percentage 66.6) 'success)
                       ((>= percentage 33.3) 'warning)
