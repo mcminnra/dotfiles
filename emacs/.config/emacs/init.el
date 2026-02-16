@@ -64,6 +64,10 @@
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 
+;; Window management: only side-by-side splits, max 2 main windows + sidebar
+(setq split-height-threshold nil)                              ; Never split top/bottom
+(setq split-width-threshold 80)                                ; Allow side-by-side when wide enough
+
 ;; Indentation
 (setq-default indent-tabs-mode nil)                          ; Use spaces, not tabs
 (setq-default tab-width 4)                                   ; 4-space indentation
@@ -632,7 +636,7 @@
   :hook (org-mode . org-indent-mode)
   :hook (org-agenda-finalize-hook . org-habit-streak-percentage)
   :bind (("C-c c" . org-capture)
-         ("C-c a a" . org-agenda)
+         ("C-c a" . org-agenda)
 	     ("C-c u" . my/iue-update))
   :config
   (define-key org-mode-map (kbd "C-'") nil)  ; Unbind org-cycle-agenda-files; C-' used for avy-goto-line
@@ -896,27 +900,45 @@
 ;;; ===============================================
 ;;; Functions
 ;;; ===============================================
-(defun split-and-follow-horizontally ()
-  (interactive)
-  (split-window-below)
-  (balance-windows)
-  (other-window 1))
-(global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+;; Window management
+(defun my/main-window-count ()
+  "Count non-side-panel (main) windows."
+  (length (seq-filter
+           (lambda (w) (not (window-parameter w 'window-side)))
+           (window-list))))
 
-(defun split-and-follow-vertically ()
+(defun my/split-window-sensibly (&optional window)
+  "Only split right, only when <2 main windows. Used internally by `display-buffer'."
+  (let ((window (or window (selected-window))))
+    (when (and (< (my/main-window-count) 2)
+               (window-splittable-p window t))
+      (with-selected-window window
+        (split-window-right)))))
+
+(defun my/split-right ()
+  "Split window right and follow, capped at 2 main windows."
   (interactive)
-  (split-window-right)
-  (balance-windows)
-  (other-window 1))
-(global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+  (if (>= (my/main-window-count) 2)
+      (message "Already at max 2 main windows")
+    (split-window-right)
+    (other-window 1)))
+
+(setq split-window-preferred-function #'my/split-window-sensibly)
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window display-buffer-use-some-window)))
+(global-set-key (kbd "C-x 2") #'my/split-right)
+(global-set-key (kbd "C-x 3") #'my/split-right)
 
 (defun my/open-org-layout ()
+  "Open org layout: dirvish sidebar | tasks file | day agenda."
   (interactive)
-  (pop-to-buffer (find-file "~/org/notes/project-tasks.org"))
+  (delete-other-windows)
+  (find-file "~/org/notes/project-tasks.org")
+  (split-window-right)
+  (other-window 1)
   (org-agenda-list)
   (org-agenda-day-view)
-  (transpose-frame)
-  (balance-windows)
+  (other-window -1)
   (dirvish-side)
   (other-window 1))
 (global-set-key (kbd "C-x 9") 'my/open-org-layout)
