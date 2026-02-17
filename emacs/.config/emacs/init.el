@@ -631,7 +631,12 @@
 (use-package transient)
 (use-package magit
   :after transient
-  :bind ("C-c g g" . magit-status))
+  :bind ("C-c g g" . magit-status)
+  :custom
+  (magit-diff-refine-hunk 'all))
+
+(use-package magit-delta
+  :hook (magit-mode . magit-delta-mode))
 
 ;; diff-hl
 (use-package diff-hl
