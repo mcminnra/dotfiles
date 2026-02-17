@@ -627,6 +627,12 @@
   :after typescript-mode
   :mode "\\.svelte\\'")
 
+;; Magit (Git porcelain)
+(use-package transient)
+(use-package magit
+  :after transient
+  :bind ("C-c g g" . magit-status))
+
 ;; diff-hl
 (use-package diff-hl
   :hook
@@ -636,7 +642,7 @@
    ;; Enable margin mode for terminal Emacs
    (diff-hl-mode . diff-hl-margin-mode))
   :config
-  (which-key-add-key-based-replacements "C-c g" "Git Diff")
+  (which-key-add-key-based-replacements "C-c g" "Git")
   ;; Enable diff-hl globally
   (global-diff-hl-mode 1)
 
