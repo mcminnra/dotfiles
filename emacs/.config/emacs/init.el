@@ -160,6 +160,7 @@
 ;; emacs-dashboard
 (use-package dashboard
   :custom
+  (dashboard-projects-backend 'project-el)
   (dashboard-startup-banner 2)
   (dashboard-banner-logo-title "")
   (dashboard-center-content t)
@@ -260,7 +261,6 @@
          ("C-x 5 b" . consult-buffer-other-frame)
          ("C-x t b" . consult-buffer-other-tab)
          ("C-x r b" . consult-bookmark)
-         ("C-x p b" . consult-project-buffer)
          ;; Other custom bindings
          ("M-y" . consult-yank-pop)
          ;; M-g bindings in `goto-map'
@@ -344,14 +344,52 @@
                 buf-lines (cdr buf-lines)
                 line-num (1+ line-num)))))))
 
-;; Projectile
-(use-package projectile
-  :init
-  (setq projectile-project-search-path '("~/repos"))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
+;; Project.el (built-in project management)
+(use-package project
+  :ensure nil
+  :demand t
+  :after (which-key dirvish)
+  :custom
+  (project-switch-commands
+   '((project-find-file "Find file" ?f)
+     (project-find-dir "Find directory" ?d)
+     (consult-ripgrep "Ripgrep" ?g)
+     (project-eshell "Eshell" ?e)))
+
   :config
-  (projectile-mode +1))
+  (which-key-add-key-based-replacements "C-x p" "Project")
+
+  ;; Auto-discover projects under ~/repos (replaces projectile-project-search-path)
+  (when (file-directory-p "~/repos")
+    (project-remember-projects-under "~/repos" nil))
+
+  ;; Dirvish sidebar at project root
+  (defun my/project-dirvish ()
+    "Open dirvish sidebar at the current project root."
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (dirvish-side)
+      (other-window 1)))
+
+  ;; Support .project marker files for non-VCS directories
+  (defun my/project-try-local (dir)
+    "Detect projects with a .project marker file."
+    (let ((root (locate-dominating-file dir ".project")))
+      (when root
+        (cons 'local root))))
+  (add-to-list 'project-find-functions #'my/project-try-local 'append)
+
+  :bind
+  (("C-x p p" . project-switch-project)
+   ("C-x p f" . project-find-file)
+   ("C-x p b" . consult-project-buffer)
+   ("C-x p g" . consult-ripgrep)
+   ("C-x p d" . project-find-dir)
+   ("C-x p k" . project-kill-buffers)
+   ("C-x p e" . project-eshell)
+   ("C-x p !" . project-shell-command)
+   ("C-x p &" . project-async-shell-command)
+   ("C-x p t" . my/project-dirvish)))
 
 ;; which-key
 (use-package which-key
@@ -451,11 +489,6 @@
    ("TAB" . dirvish-subtree-toggle)
    ([mouse-1] . my/dirvish-mouse-click)))
 
-(add-hook 'projectile-after-switch-project-hook
-          (lambda ()
-            (when (projectile-project-p)
-              (dirvish-side)
-              (other-window 1))))
 
 ;; expand-region
 ;; Semantic selection expanding
