@@ -207,8 +207,14 @@
 ;; Corfu
 ;; In-Buffer completions
 (use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
   :init
-  (global-corfu-mode))
+  (global-corfu-mode)
+  (corfu-popupinfo-mode))
 
 ;; Cape
 ;; Completion at point extensions (extends corfu basically)
@@ -260,7 +266,7 @@
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
          ("M-g r" . consult-grep-match)
-         ("M-g f" . consult-flycheck)
+         ("M-g f" . consult-flymake)
          ("M-g g" . consult-goto-line)
          ("M-g M-g" . consult-goto-line)
          ("M-g o" . consult-org-heading)
@@ -477,14 +483,42 @@
   :bind
   ("C-c RET" . eat))
 
-;; Flycheck
-(use-package flycheck
-  :hook (after-init . global-flycheck-mode)
+;; Flymake (built-in)
+(use-package flymake
+  :ensure nil
+  :hook (prog-mode . flymake-mode)
   :config
-  (which-key-add-key-based-replacements "C-c e" "Errors (Flycheck)")
-  :bind (("C-c e n" . flycheck-next-error)
-         ("C-c e p" . flycheck-previous-error)
-         ("C-c e l" . flycheck-list-errors)))
+  (which-key-add-key-based-replacements "C-c e" "Errors (Flymake)")
+  :bind (("C-c e n" . flymake-goto-next-error)
+         ("C-c e p" . flymake-goto-prev-error)
+         ("C-c e l" . flymake-show-buffer-diagnostics)
+         ("C-c e L" . flymake-show-project-diagnostics)))
+
+
+;; Sideline (unified inline annotations for diagnostics and LSP)
+(use-package sideline
+  :hook (flymake-mode . sideline-mode)
+  :custom
+  (sideline-order-right 'down)
+  (sideline-backends-right '(sideline-eldoc
+                              sideline-flymake
+                              sideline-lsp
+                              (sideline-blame . up))))
+
+(use-package sideline-eldoc
+  :ensure (:host github :repo "ginqi7/sideline-eldoc")
+  :after sideline
+  :custom
+  (sideline-eldoc-hide-minibuffer t))
+
+(use-package sideline-flymake
+  :after sideline)
+
+(use-package sideline-lsp
+  :after sideline)
+
+(use-package sideline-blame
+  :after sideline)
 
 ;; LSP Mode
 (use-package lsp-mode
@@ -510,13 +544,14 @@
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :custom
-  (lsp-prefer-flymake nil)
+  (lsp-prefer-flymake t)
   (lsp-auto-guess-root t)
   (lsp-enable-suggest-server-download t)
   (lsp-auto-install-server t)
   (lsp-completion-provider :capf)
   (lsp-completion-show-detail t)
   (lsp-completion-show-kind t)
+  (lsp-inlay-hint-enable t)
   :config
   (which-key-add-key-based-replacements "C-c l" "LSP")
 
@@ -531,19 +566,16 @@
     :priority -1)))
 
 (use-package lsp-pyright
-  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
-  :hook (python-ts-mode . (lambda () (lsp-deferred))))  ; or lsp-deferred
+  :custom
+  (lsp-pyright-langserver-command "pyright")
+  (lsp-pyright-venv-directory ".venv")
+  :hook (python-ts-mode . (lambda () (lsp-deferred))))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-flycheck-enable t)
-  (lsp-ui-sideline-enable t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil)
-  (lsp-ui-sideline-show-diagnostics t)
-  (lsp-ui-sideline-show-code-actions nil)
-  (lsp-ui-sideline-delay 0.25))
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-doc-enable nil))
 
 (use-package consult-lsp
   :after (consult lsp-mode)
