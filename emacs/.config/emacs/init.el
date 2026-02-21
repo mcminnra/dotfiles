@@ -814,8 +814,8 @@
         '(
           ;; Tasks
           (sequence "WAITING(w)" "DEFERRED(e)" "TODO(t)" "PLANNED(p)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
-          ;; Project
-          (sequence "PROJECT(P)" "FEATURE(f)" "BUG(u)" "IN-PROGRESS(i)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
+          ;; Conventional Commits
+          (sequence "FEAT(f)" "FIX(x)" "REFACTOR(R)" "DOCS(D)" "TEST(T)" "CHORE(H)" "PERF(F)" "CI(I)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
           ;; Experience
           (sequence "EXPERIENCE(E)" "|" "ONE(1)" "TWO(2)" "THREE(3)" "FOUR(4)" "FIVE(5)" "ARCHIVED(a)")
           ;; Learning
@@ -829,10 +829,15 @@
           ("DEFERRED" . (:foreground "#9d9d9d" :weight bold))
           ("DONE" . (:foreground "#6a994e" :weight bold))
           ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
-          ;; Project
-          ("PROJECT" . (:foreground "white" :background "#5C3E84" :weight bold))
-          ("FEATURE" . (:foreground "#686EE2" :weight bold))
-          ("BUG" . (:foreground "#F35C6E" :weight bold))
+          ;; Conventional Commits
+          ("FEAT" . (:foreground "#686EE2" :weight bold))
+          ("FIX" . (:foreground "#F35C6E" :weight bold))
+          ("REFACTOR" . (:foreground "#f7b801" :weight bold))
+          ("DOCS" . (:foreground "#339989" :weight bold))
+          ("TEST" . (:foreground "#a08cd8" :weight bold))
+          ("CHORE" . (:foreground "#9d9d9d" :weight bold))
+          ("PERF" . (:foreground "#ff8000" :weight bold))
+          ("CI" . (:foreground "#30acec" :weight bold))
           ;; Experience
           ("EXPERIENCE" . (:foreground "white" :background "orange" :weight bold))
           ("ONE" . (:foreground "red" :weight bold))
