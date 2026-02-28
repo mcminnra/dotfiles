@@ -921,12 +921,33 @@
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
-(use-package org-superstar
+(use-package org-modern
   :after org
-  :hook (org-mode . org-superstar-mode)
+  :hook (org-mode . org-modern-mode)
   :config
-  (setq org-superstar-leading-bullet " ")
-  (setq org-superstar-headline-bullets-list '("■" "□" "▫" "▫" "▫" "▫")))
+  (setq org-modern-todo-faces
+        '(("IN-PROGRESS" :foreground "#725ac1")
+          ("TODO" :foreground "#30acec")
+          ("PLANNED" :foreground "#a08cd8")
+          ("DELEGATED" :foreground "#e07a5f")
+          ("REVIEW" :foreground "#f7b801")
+          ("WAITING" :foreground "#339989")
+          ("DEFERRED" :foreground "#9d9d9d")
+          ("DONE" :foreground "#6a994e")
+          ("CANCELLED" :foreground "#d64a3b")
+          ("FEAT" :foreground "#686EE2")
+          ("FIX" :foreground "#F35C6E")
+          ("REFACTOR" :foreground "#f7b801")
+          ("DOCS" :foreground "#339989")
+          ("TEST" :foreground "#a08cd8")
+          ("CHORE" :foreground "#9d9d9d")
+          ("PERF" :foreground "#ff8000")
+          ("CI" :foreground "#30acec")))
+  (setq org-modern-priority nil)
+  (setq org-modern-todo nil)
+  (setq org-modern-star '("■" "□" "▫" "▫" "▫" "▫"))
+  (setq org-modern-hide-stars 'leading))
+
 
 (use-package org-roam
   :init
