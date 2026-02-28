@@ -85,7 +85,14 @@
    `(hl-line ((t (:background ,crust))))
    `(fringe ((t (:background ,mantle))))
    `(match ((t (:background ,surface :foreground ,yellow))))
+   `(secondary-selection ((t (:background ,surface))))
+   `(isearch ((t (:background ,yellow_bg :foreground ,yellow :weight bold))))
+   `(isearch-fail ((t (:background ,red_bg :foreground ,red))))
+   `(lazy-highlight ((t (:background ,blue_bg :foreground ,blue))))
    `(link ((t (:foreground ,cyan :underline ,cyan))))
+
+   ;; Completion faces
+   `(completions-annotations ((t (:foreground ,grey :slant italic))))
    `(show-paren-match ((t (:background ,purple :foreground ,mantle :weight bold))))
    `(show-paren-mismatch ((t (:background ,red :foreground ,mantle :weight bold))))
    `(window-divider ((t (:background nil :foreground ,mantle))))
