@@ -813,7 +813,7 @@
   (setq org-todo-keywords
         '(
           ;; Tasks
-          (sequence "WAITING(w)" "DEFERRED(e)" "TODO(t)" "PLANNED(p)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
+          (sequence "WAITING(w)" "DEFERRED(e)" "TODO(t)" "PLANNED(p)" "DELEGATED(g)" "IN-PROGRESS(i)" "REVIEW(r)" "|" "CANCELLED(c)" "DONE(d)")
           ;; Conventional Commits
           (sequence "FEAT(f)" "FIX(x)" "REFACTOR(R)" "DOCS(D)" "TEST(T)" "CHORE(H)" "PERF(F)" "CI(I)" "|" "CANCELLED(c)" "DONE(d)" "ARCHIVED(a)")
           ;; Experience
@@ -826,6 +826,7 @@
           ("PLANNED" . (:foreground "#a08cd8" :weight bold))
           ("REVIEW" . (:foreground "#f7b801" :weight bold))
           ("WAITING" . (:foreground "#339989" :weight bold))
+          ("DELEGATED" . (:foreground "#e07a5f" :weight bold))
           ("DEFERRED" . (:foreground "#9d9d9d" :weight bold))
           ("DONE" . (:foreground "#6a994e" :weight bold))
           ("CANCELLED" . (:foreground "#d64a3b" :weight bold))
