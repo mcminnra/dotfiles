@@ -508,13 +508,25 @@
   :config
   (require 'smartparens-config))
 
-;; eat (Emulate A Terminal)
-(use-package eat
+;; vterm
+(use-package vterm
+  :demand t
   :custom
-  (eat-kill-buffer-on-exit t)
-  (eat-enable-mouse t)
+  (vterm-kill-buffer-on-exit t)
   :bind
-  ("C-c RET" . eat))
+  ("C-c RET" . vterm))
+
+;; Claude Code IDE
+(use-package claude-code-ide
+  :ensure (:host github :repo "manzaltu/claude-code-ide.el")
+  :after vterm
+  :custom
+  (claude-code-ide-terminal-backend 'vterm)
+  (claude-code-ide-diagnostics-backend 'flymake)
+  :bind
+  ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
 
 ;; Flymake (built-in)
 (use-package flymake
