@@ -545,24 +545,13 @@
   :hook (flymake-mode . sideline-mode)
   :custom
   (sideline-order-right 'down)
-  (sideline-backends-right '(sideline-eldoc
-                              sideline-flymake
-                              sideline-lsp
-                              (sideline-blame . up))))
-
-(use-package sideline-eldoc
-  :ensure (:host github :repo "ginqi7/sideline-eldoc")
-  :after sideline
-  :custom
-  (sideline-eldoc-hide-minibuffer t))
+  (sideline-backends-right '(sideline-flymake
+                              sideline-lsp)))
 
 (use-package sideline-flymake
   :after sideline)
 
 (use-package sideline-lsp
-  :after sideline)
-
-(use-package sideline-blame
   :after sideline)
 
 ;; LSP Mode
