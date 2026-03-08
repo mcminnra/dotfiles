@@ -240,11 +240,11 @@
    `(org-agenda-done ((t (:foreground ,grey))))
    `(org-agenda-structure ((t (:foreground ,blue))))
    ; Habit
-   `(org-habit-ready-face ((t (:background ,green :foreground ,fg))))
-   `(org-habit-overdue-face ((t (:background ,red :foreground ,fg))))
+   `(org-habit-ready-face ((t (:background ,green_bg :foreground ,fg))))
+   `(org-habit-overdue-face ((t (:background ,red_bg :foreground ,fg))))
    `(org-habit-clear-future-face ((t (:background ,mantle :foreground ,fg))))
-   `(org-habit-clear-face ((t (:background ,green :foreground ,fg))))
-   `(org-habit-alert-future-face ((t (:background ,red :foreground ,fg))))
+   `(org-habit-clear-face ((t (:background ,green_bg :foreground ,fg))))
+   `(org-habit-alert-future-face ((t (:background ,red_bg :foreground ,fg))))
    `(org-habit-alert-face ((t (:background ,yellow_bg :foreground ,fg))))
 
   ))
