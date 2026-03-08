@@ -16,7 +16,7 @@
 
 
 ;;; Theme definition:
-(deftheme bytemancer "Theme custom tailored to mancing bytes")
+(deftheme bytemancer "Theme custom tailored to mancing bytes.")
 
 ;; Define color palette
 (let (
@@ -149,6 +149,15 @@
    ;; Line numbers
    `(line-number ((t (:background ,mantle :foreground ,grey))))
    `(line-number-current-line ((t (:background ,mantle :foreground ,purple :weight bold))))
+   
+   ;; Diff mode (used by diff-hl-diff-goto-hunk)
+   `(diff-added ((t (:background ,green_bg2))))
+   `(diff-removed ((t (:background ,red_bg2))))
+   `(diff-refine-added ((t (:background ,green_bg))))
+   `(diff-refine-removed ((t (:background ,red_bg))))
+   `(diff-header ((t (:background ,mantle :foreground ,fg))))
+   `(diff-file-header ((t (:background ,mantle :foreground ,fg))))
+   `(diff-hunk-header ((t (:background ,surface :foreground ,fg))))
 
    ;; Ediff
    `(ediff-current-diff-A ((t (:background ,red_bg2))))
@@ -159,6 +168,18 @@
    `(ediff-even-diff-B ((t (:background ,green_bg2))))
    `(ediff-odd-diff-A ((t (:background ,red_bg2))))
    `(ediff-odd-diff-B ((t (:background ,green_bg2))))
+
+   ;; Magit Diff
+   `(magit-diff-added ((t (:background ,green_bg2))))
+   `(magit-diff-added-highlight ((t (:background ,green_bg))))
+   `(magit-diff-removed ((t (:background ,red_bg2))))
+   `(magit-diff-removed-highlight ((t (:background ,red_bg))))
+   `(magit-diff-context ((t (:foreground ,fg))))
+   `(magit-diff-context-highlight ((t (:background ,mantle :foreground ,fg))))
+   `(magit-diff-hunk-heading ((t (:background ,crust :foreground ,fg))))
+   `(magit-diff-hunk-heading-highlight ((t (:background ,surface :foreground ,fg))))
+   `(magit-section-highlight ((t (:background ,crust))))
+
    
    ;; Rainbow Delimiters
    `(rainbow-delimiters-base-error-face ((t (:foreground ,red))))
@@ -219,11 +240,11 @@
    `(org-agenda-done ((t (:foreground ,grey))))
    `(org-agenda-structure ((t (:foreground ,blue))))
    ; Habit
-   `(org-habit-ready-face ((t (:background ,green_bg :foreground ,fg))))
-   `(org-habit-overdue-face ((t (:background ,red_bg :foreground ,fg))))
+   `(org-habit-ready-face ((t (:background ,green :foreground ,fg))))
+   `(org-habit-overdue-face ((t (:background ,red :foreground ,fg))))
    `(org-habit-clear-future-face ((t (:background ,mantle :foreground ,fg))))
-   `(org-habit-clear-face ((t (:background ,green_bg :foreground ,fg))))
-   `(org-habit-alert-future-face ((t (:background ,red_bg :foreground ,fg))))
+   `(org-habit-clear-face ((t (:background ,green :foreground ,fg))))
+   `(org-habit-alert-future-face ((t (:background ,red :foreground ,fg))))
    `(org-habit-alert-face ((t (:background ,yellow_bg :foreground ,fg))))
 
   ))

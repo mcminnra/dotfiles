@@ -210,9 +210,7 @@
 ;; In-Buffer completions
 (use-package corfu
   :custom
-  (corfu-auto t)
-  (corfu-auto-delay 0.2)
-  (corfu-auto-prefix 2)
+  (corfu-auto nil)
   (corfu-cycle t)
   :init
   (global-corfu-mode)
