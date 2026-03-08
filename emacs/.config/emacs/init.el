@@ -651,6 +651,7 @@
   (which-key-add-key-based-replacements "C-c g" "Git")
   ;; Enable diff-hl globally
   (global-diff-hl-mode 1)
+  (diff-hl-flydiff-mode 1)
 
   ;; Refresh diff-hl when magit operations complete
   (with-eval-after-load 'magit
@@ -666,7 +667,8 @@
   ("C-c g n" . diff-hl-next-hunk)
   ("C-c g p" . diff-hl-previous-hunk)
   ;; Show diff of current hunk
-  ("C-c g s" . diff-hl-show-hunk)
+  ("C-c g s" . diff-hl-diff-goto-hunk)
+  ("C-c g S" . diff-hl-show-hunk)
   ;; Revert current hunk
   ("C-c g r" . diff-hl-revert-hunk))
 
