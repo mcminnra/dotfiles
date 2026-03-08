@@ -155,10 +155,10 @@
    `(ediff-current-diff-B ((t (:background ,green_bg2))))
    `(ediff-fine-diff-A ((t (:background ,red_bg))))
    `(ediff-fine-diff-B ((t (:background ,green_bg))))
-   `(ediff-even-diff-A ((t (:background ,crust))))
-   `(ediff-even-diff-B ((t (:background ,crust))))
-   `(ediff-odd-diff-A ((t (:background ,surface))))
-   `(ediff-odd-diff-B ((t (:background ,surface))))
+   `(ediff-even-diff-A ((t (:background ,red_bg))))
+   `(ediff-even-diff-B ((t (:background ,green_bg))))
+   `(ediff-odd-diff-A ((t (:background ,red_bg))))
+   `(ediff-odd-diff-B ((t (:background ,green_bg))))
    
    ;; Rainbow Delimiters
    `(rainbow-delimiters-base-error-face ((t (:foreground ,red))))
