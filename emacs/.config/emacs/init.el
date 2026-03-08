@@ -84,6 +84,7 @@
 (menu-bar-mode -1)                                           ; No menu bar
 (setopt inhibit-startup-screen t)                            ; No start screen
 (global-hl-line-mode 1)                                      ; highlight active line
+(context-menu-mode 1)                                        ; right-click context menus
 (toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
 (setopt visible-bell t)                                      ; Make bell visible
@@ -465,7 +466,7 @@
   (dirvish-override-dired-mode)
   :config
   (setq dired-listing-switches "-Al --group-directories-first")
-  (setq dirvish-attributes '(nerd-icons file-size collapse subtree-state vc-state git-msg))
+  (setq dirvish-attributes '(nerd-icons file-size subtree-state vc-state git-msg))
   (setq dirvish-side-width 35)
   (dirvish-side-follow-mode 1)
 
