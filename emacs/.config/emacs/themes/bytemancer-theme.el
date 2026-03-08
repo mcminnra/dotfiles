@@ -146,20 +146,30 @@
    `(line-number ((t (:background ,mantle :foreground ,grey))))
    `(line-number-current-line ((t (:background ,mantle :foreground ,purple :weight bold))))
 
+   ;; Ediff
+   `(ediff-current-diff-A ((t (:background ,red_bg :foreground ,fg))))
+   `(ediff-current-diff-B ((t (:background ,green_bg :foreground ,fg))))
+   `(ediff-fine-diff-A ((t (:background ,red :foreground ,mantle :weight bold))))
+   `(ediff-fine-diff-B ((t (:background ,green :foreground ,mantle :weight bold))))
+   `(ediff-even-diff-A ((t (:background ,crust))))
+   `(ediff-even-diff-B ((t (:background ,crust))))
+   `(ediff-odd-diff-A ((t (:background ,surface))))
+   `(ediff-odd-diff-B ((t (:background ,surface))))
+   
    ;; Rainbow Delimiters
    `(rainbow-delimiters-base-error-face ((t (:foreground ,red))))
    `(rainbow-delimiters-base-face ((t (:foreground ,fg))))
    `(rainbow-delimiters-depth-1-face ((t (:foreground ,purple))))
    `(rainbow-delimiters-depth-2-face ((t (:foreground ,cyan))))
-   `(rainbow-delimiters-depth-3-face ((t (:foreground ,blue))))        
-   `(rainbow-delimiters-depth-4-face ((t (:foreground ,purple))))        
-   `(rainbow-delimiters-depth-5-face ((t (:foreground ,cyan))))        
-   `(rainbow-delimiters-depth-6-face ((t (:foreground ,blue))))       
-   `(rainbow-delimiters-depth-7-face ((t (:foreground ,purple))))        
-   `(rainbow-delimiters-depth-8-face ((t (:foreground ,cyan))))       
-   `(rainbow-delimiters-depth-9-face ((t (:foreground ,blue))))         
+   `(rainbow-delimiters-depth-3-face ((t (:foreground ,blue))))
+   `(rainbow-delimiters-depth-4-face ((t (:foreground ,purple))))
+   `(rainbow-delimiters-depth-5-face ((t (:foreground ,cyan))))
+   `(rainbow-delimiters-depth-6-face ((t (:foreground ,blue))))
+   `(rainbow-delimiters-depth-7-face ((t (:foreground ,purple))))
+   `(rainbow-delimiters-depth-8-face ((t (:foreground ,cyan))))
+   `(rainbow-delimiters-depth-9-face ((t (:foreground ,blue))))
    `(rainbow-delimiters-mismatched-face ((t (:foreground ,red :weight bold))))
-   `(rainbow-delimiters-unmatched-face ((t (:foreground ,red :weight bold))))       
+   `(rainbow-delimiters-unmatched-face ((t (:foreground ,red :weight bold))))
 
    ;; Org mode
    `(org-document-title ((t (:foreground ,orange :weight bold :height 1.5))))
@@ -211,7 +221,6 @@
    `(org-habit-clear-face ((t (:background ,green_bg :foreground ,fg))))
    `(org-habit-alert-future-face ((t (:background ,red_bg :foreground ,fg))))
    `(org-habit-alert-face ((t (:background ,yellow_bg :foreground ,fg))))
-
 
   ))
 
