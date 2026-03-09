@@ -5,6 +5,7 @@ stow claude -t ~/ --verbose=2
 stow emacs -t ~/ --verbose=2
 stow fish -t ~/ --verbose=2
 stow nvim -t ~/ --verbose=2
+stow tmux -t ~/ --verbose=2
 stow zed -t ~/ --verbose=2
 
 # === Condionally ask for some folders
