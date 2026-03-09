@@ -65,13 +65,12 @@
 (setq user-full-name "Ryder McMinn"
       user-mail-address "rdr@rdrmc.com")
 
-;; Fonts - scale based on display pixel height to handle HiDPI vs standard monitors
+;; Fonts - scale based on physical display size to handle laptop vs external monitor
 (defun my/set-font-size ()
-  "Set font size based on current display. HiDPI displays (e.g. Retina)
-report higher pixel heights, so we use a smaller point size. Standard
-displays like 1440p monitors get a larger point size."
+  "Set font size based on physical display height. Larger displays
+\(e.g. external monitors\) get a larger point size for readability."
   (when (member "SauceCodePro Nerd Font Mono" (font-family-list))
-    (let ((height (if (> (display-pixel-height) 1600) 100 130)))
+    (let ((height (if (> (display-mm-height) 300) 130 100)))
       (set-face-attribute 'default nil
                           :font "SauceCodePro Nerd Font Mono"
                           :height height))))
