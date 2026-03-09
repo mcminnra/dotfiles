@@ -553,6 +553,8 @@
 (use-package sideline-lsp
   :after sideline)
 
+(use-package pyvenv)
+
 ;; LSP Mode
 (use-package lsp-mode
   :init
@@ -589,20 +591,25 @@
   (which-key-add-key-based-replacements "C-c l" "LSP")
 
   ;;; Python
-  ;; Register ruff LSP server
+  ;; Register ruff LSP server (linter/formatter)
   (lsp-register-client
    (make-lsp-client
     :new-connection (lsp-stdio-connection '("ruff" "server" "--preview"))
     :activation-fn (lsp-activate-on "python")
     :server-id 'ruff
     :add-on? t
-    :priority -1)))
+    :priority -1))
 
-(use-package lsp-pyright
-  :custom
-  (lsp-pyright-langserver-command "pyright")
-  (lsp-pyright-venv-directory ".venv")
-  :hook (python-ts-mode . (lambda () (lsp-deferred))))
+  ;; Register ty LSP server (type checker)
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("ty" "server"))
+    :activation-fn (lsp-activate-on "python")
+    :server-id 'ty
+    :priority 1
+    :environment-fn (lambda ()
+                      (when (getenv "VIRTUAL_ENV")
+                        `(("VIRTUAL_ENV" . ,(getenv "VIRTUAL_ENV"))))))))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
