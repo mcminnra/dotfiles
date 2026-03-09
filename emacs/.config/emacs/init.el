@@ -65,9 +65,18 @@
 (setq user-full-name "Ryder McMinn"
       user-mail-address "rdr@rdrmc.com")
 
-;; Fonts
-(when (member "SauceCodePro Nerd Font Mono" (font-family-list))
-  (set-face-attribute 'default nil :font "SauceCodePro Nerd Font Mono" :height 100))
+;; Fonts - scale based on display pixel height to handle HiDPI vs standard monitors
+(defun my/set-font-size ()
+  "Set font size based on current display. HiDPI displays (e.g. Retina)
+report higher pixel heights, so we use a smaller point size. Standard
+displays like 1440p monitors get a larger point size."
+  (when (member "SauceCodePro Nerd Font Mono" (font-family-list))
+    (let ((height (if (> (display-pixel-height) 1600) 100 130)))
+      (set-face-attribute 'default nil
+                          :font "SauceCodePro Nerd Font Mono"
+                          :height height))))
+(add-hook 'window-setup-hook #'my/set-font-size)
+(add-hook 'after-make-frame-functions (lambda (_frame) (my/set-font-size)))
 
 ;; Set default-directory
 (cond
