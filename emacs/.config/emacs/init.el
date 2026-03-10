@@ -221,18 +221,19 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :custom
   (corfu-auto nil)
   (corfu-cycle t)
+  :bind ("C-<tab>" . completion-at-point)
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode))
 
 ;; Cape
-;; Completion at point extensions (extends corfu basically)
+;; Completion at point extensions (fallback backends after LSP)
 (use-package cape
   :bind ("M-p" . cape-prefix-map)
   :init
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block))
+  (add-hook 'completion-at-point-functions #'cape-dabbrev 90)
+  (add-hook 'completion-at-point-functions #'cape-file 90)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block 90))
 
 ;; Marginalia
 ;; Enable rich annotations
@@ -247,9 +248,21 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-overrides '((file (styles partial-completion))
+                                   (lsp-capf (styles orderless basic))))
   (completion-category-defaults nil)
   (completion-pcm-leading-wildcard t))
+
+;; Prescient
+;; Sort completions by frequency and recency
+(use-package prescient
+  :config
+  (prescient-persist-mode))
+
+(use-package corfu-prescient
+  :after (corfu prescient)
+  :config
+  (corfu-prescient-mode))
 
 ;; Consult
 ;; Better search and navigation commands
