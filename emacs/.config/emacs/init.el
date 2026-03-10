@@ -65,7 +65,8 @@
 (setq user-full-name "Ryder McMinn"
       user-mail-address "rdr@rdrmc.com")
 
-;; Fonts - scale based on physical display size to handle laptop vs external monitor
+;; Fonts
+;; -- Scale up darwin when screen is big. They have funky sizing.
 (defun my/set-font-size ()
   "Set font size based on physical display height.
 Larger displays \(e.g. external monitors\) get larger point size for readability."
@@ -111,10 +112,10 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)                          ; Use spaces, not tabs
-(setq-default tab-width 4)                                   ; 4-space indentation
-(setq-default sgml-basic-offset 4)                           ; HTML/SGML indent
-(setq-default css-indent-offset 4)                           ; CSS indent
-(setq-default js-indent-level 4)                             ; JS indent
+(setq-default tab-width 2)                                   ; 4-space indentation
+(setq-default sgml-basic-offset 2)                           ; HTML/SGML indent
+(setq-default css-indent-offset 2)                           ; CSS indent
+(setq-default js-indent-level 2)                             ; JS indent
 
 ;; Config line numbers
 (use-package display-line-numbers
@@ -547,19 +548,19 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
          ("C-c e L" . flymake-show-project-diagnostics)))
 
 
-;; Sideline (unified inline annotations for diagnostics and LSP)
+;; Sideline (unified inline annotations for diagnostics)
 (use-package sideline
   :hook (flymake-mode . sideline-mode)
   :custom
   (sideline-order-right 'down)
-  (sideline-backends-right '(sideline-flymake
-                              sideline-lsp)))
+  (sideline-backends-right '(sideline-flymake)))
 
 (use-package sideline-flymake
   :after sideline)
 
-(use-package sideline-lsp
-  :after sideline)
+;; Hover documentation popup
+(use-package eldoc-box
+  :hook (lsp-mode . eldoc-box-hover-mode))
 
 (use-package pyvenv)
 
@@ -595,6 +596,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (lsp-completion-show-detail t)
   (lsp-completion-show-kind t)
   (lsp-inlay-hint-enable t)
+  (lsp-eldoc-render-all t)
   :config
   (which-key-add-key-based-replacements "C-c l" "LSP")
 
