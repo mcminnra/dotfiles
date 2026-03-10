@@ -133,10 +133,10 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (use-package windmove
   :ensure nil  ; windmove is built-in
   :bind*
-  (("C-c <left>" . windmove-left)
-   ("C-c <right>" . windmove-right)
-   ("C-c <up>" . windmove-up)
-   ("C-c <down>" . windmove-down)))
+  (("M-<left>" . windmove-left)
+   ("M-<right>" . windmove-right)
+   ("M-<up>" . windmove-up)
+   ("M-<down>" . windmove-down)))
 
 ;; avy (visual jump)
 (use-package avy
