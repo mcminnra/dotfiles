@@ -506,6 +506,10 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 ;;; ===============================================
 ;;; Programming
 ;;; ===============================================
+;; Highlight TODO/FIXME/etc in comments
+(use-package hl-todo
+  :hook (prog-mode . hl-todo-mode))
+
 ;; Rainbow Delimiters
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
