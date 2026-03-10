@@ -67,10 +67,10 @@
 
 ;; Fonts - scale based on physical display size to handle laptop vs external monitor
 (defun my/set-font-size ()
-  "Set font size based on physical display height. Larger displays
-\(e.g. external monitors\) get a larger point size for readability."
+  "Set font size based on physical display height.
+Larger displays \(e.g. external monitors\) get larger point size for readability."
   (when (member "SauceCodePro Nerd Font Mono" (font-family-list))
-    (let ((height (if (> (display-mm-height) 300) 130 100)))
+    (let ((height (if (and (> (display-mm-height) 300) (eq system-type `darwin)) 130 100)))
       (set-face-attribute 'default nil
                           :font "SauceCodePro Nerd Font Mono"
                           :height height))))
