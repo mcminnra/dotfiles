@@ -992,16 +992,16 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (org-roam-directory (file-truename "~/org/notes/")) ; Set the directory where your Org-roam files will be stored
   (org-roam-capture-templates
    '(("k" "knowledge" plain "%?"
-      :target (file+head "knowledge-${slug}.org" "#+TITLE: Knowledge - ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :personal:knowledge:\n")
+      :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :knowledge:\n")
       :unarrowed t)
      ("p" "project" plain "%?"
-      :target (file+head "project-${slug}.org" "#+TITLE: Project - ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :personal:project:\n")
+      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :project:\n")
       :unarrowed t)
      ("K" "work-knowledge" plain "%?"
-      :target (file+head "work-knowledge-${slug}.org" "#+TITLE: Work Knowledge - ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:knowledge:\n")
+      :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:knowledge:\n")
       :unarrowed t)
      ("P" "work-project" plain "%?"
-      :target (file+head "work-project-${slug}.org" "#+TITLE: Work Project - ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:project:\n")
+      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :work:project:\n")
       :unarrowed t)
      ))
   :bind
