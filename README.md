@@ -1,6 +1,9 @@
 # Ryder's DOTFILES
 
 Terminal: Alacritty
-Shell: fish for *nix, PowerShell for Windows
+Shell: fish (Unix), PowerShell (Windows)
 Prompt: oh-my-posh
-Editor: VS Code (Settings synced via GitHub) and Emacs
+Editor: Emacs, Zed, VS Code (settings synced via GitHub)
+Multiplexer: tmux
+AI: Claude Code
+Version Control: git

@@ -548,6 +548,8 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :custom
   (claude-code-ide-terminal-backend 'vterm)
   (claude-code-ide-diagnostics-backend 'flymake)
+  (claude-code-ide-use-ide-diff t)
+  (claude-code-ide-enable-mcp-server t)
   :bind
   ("C-c C-'" . claude-code-ide-menu)
   :config
