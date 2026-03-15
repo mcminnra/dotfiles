@@ -925,7 +925,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
           (?G . (:foreground "#9d9d9d"))))
 
   ;; Set todo warning and faces
-  (setq org-deadline-warning-days 90)
+  (setq org-deadline-warning-days 15)
   (setq org-agenda-deadline-faces
         '((0.98 . org-imminent-deadline)          ; Overdue or due tomorrow
           (0.66 . org-upcoming-deadline)          ; Due within 30 days
@@ -971,10 +971,11 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :after org
   :config
   (setq org-super-agenda-groups
-        '((:name "Work" :tag "work")
-          (:name "Focus (Project+Media)" :tag "focus")
-          (:name "Personal" :tag "personal")
-          (:name "Next" :anything)))
+        '((:name "Work" :and (:tag "work" :not (:habit t)))
+          (:name "Focus (Project+Media)" :and (:tag "focus" :not (:habit t)))
+          (:name "Personal" :and (:tag "personal" :not (:habit t)))
+          (:name "Habits" :habit t)
+          (:name "Other" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
@@ -1013,10 +1014,10 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (org-roam-directory (file-truename "~/org/notes/")) ; Set the directory where your Org-roam files will be stored
   (org-roam-capture-templates
    '(("k" "Knowledge" plain "%?"
-      :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :knowledge:\n\n* Backlog\n\n* Overview\n")
+      :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :personal:knowledge:\n\n* Backlog\n\n* Overview\n")
       :unarrowed t)
      ("p" "Project" plain "%?"
-      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :project:\n")
+      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :personal:project:\n")
       :unarrowed t)
      ("K" "Knowledge (work)" plain "%?"
       :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:knowledge:\n\n* Backlog\n\n* Overview\n")
