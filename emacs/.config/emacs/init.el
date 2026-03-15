@@ -760,26 +760,36 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
           (insert (propertize percentage-str 'face face))))
       (forward-line 1)))
 
-  ;; IUE prompt - returns formatted [T-IU|E] string
+  ;; T-shirt sizes → org effort values
+  (defvar my/size-values
+    '(("S" . "0:15") ("M" . "1:00") ("L" . "4:00") ("X" . "8:00"))
+    "Mapping of t-shirt sizes to org effort values.")
+
+  ;; IUS prompt - returns formatted [T-IU|S] string
   (defun my/iue-prompt ()
-    "Prompt for I, U, E scores and return formatted [T-IU|E] string.
+    "Prompt for I, U scores and size, return formatted [T-IU|S] string.
        Importance: 1 (low) to 3 (high)
        Urgency:    1 (low) to 3 (high)
-       Ease:       1 (hard/long) to 3 (easy/quick)
-     Priority is derived from I+U only. E is for scheduling."
+       Size:       S (15m), M (1h), L (4h), X (8h)
+     Priority is derived from I+U only. Size sets Effort property.
+     XL means the task should be broken up — returns nil."
     (let* ((i (string-to-number (read-string "Importance (1-3): ")))
            (u (string-to-number (read-string "Urgency (1-3): ")))
-           (e (string-to-number (read-string "Ease (1-3): ")))
+           (size (upcase (read-string "Size (S/M/L/X/XL): ")))
            (total (+ i u)))
-      (format "[%d-%d%d|%d]" total i u e)))
+      (if (string= size "XL")
+          (progn
+            (message "Task too large — break it into subtasks with [/] cookie")
+            nil)
+        (format "[%d-%d%d|%s]" total i u size))))
 
   ;; Sync priority cookie from IUE token
   (defun my/iue-sync-priority ()
-    "Read [T-IU|E] token on current headline and set org priority accordingly.
+    "Read [T-IU|S] token on current headline and set org priority.
      Priority is based on I+U total (range 2-6)."
     (save-excursion
       (beginning-of-line)
-      (when (re-search-forward "\\[\\([0-9]+\\)-[0-9]\\{2\\}|[0-9]\\]" (line-end-position) t)
+      (when (re-search-forward "\\[\\([0-9]+\\)-[0-9]\\{2\\}|[SMLX]\\]" (line-end-position) t)
         (let* ((total (string-to-number (match-string 1)))
                (priority (pcase total
                            (6 ?A) (5 ?B) (4 ?C)
@@ -787,42 +797,51 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
           (org-priority priority)))))
 
   (defun my/iue-update ()
-    "Prompt for IUE scores, update token on headline, and sync priority."
+    "Prompt for IUS scores, update token on headline, and sync priority.
+     Also sets the Effort property based on t-shirt size."
     (interactive)
     (let ((new (my/iue-prompt)))
-      (save-excursion
-        (org-back-to-heading t)
-        ;; First remove any existing IUE token (and its trailing space)
-        (when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|[0-9]\\] ?" (line-end-position) t)
-          (replace-match ""))
-        ;; Now insert at the right position: after stars, TODO, and priority
-        (beginning-of-line)
-        (if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
-                               (line-end-position) t)
-            (insert new " ")
-          (end-of-line)
-          (insert " " new))))
-    (my/iue-sync-priority))
+      (when new
+        (save-excursion
+          (org-back-to-heading t)
+          ;; First remove any existing IUE/IUS token (and its trailing space)
+          (when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|[SMLX0-9]\\] ?" (line-end-position) t)
+            (replace-match ""))
+          ;; Now insert at the right position: after stars, TODO, and priority
+          (beginning-of-line)
+          (if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
+                                 (line-end-position) t)
+              (insert new " ")
+            (end-of-line)
+            (insert " " new)))
+        ;; Set Effort property from the size letter
+        (when (string-match "|\\([SMLX]\\)\\]" new)
+          (let ((effort (cdr (assoc (match-string 1 new) my/size-values))))
+            (when effort
+              (org-set-property "Effort" effort))))
+        (my/iue-sync-priority))))
 
-  ;; Extract IUE scores from current line
+  ;; Extract IUS scores from current line
   (defun my/iue-get-scores ()
-    "Extract IUE scores from current line. Returns (total importance urgency ease).
+    "Extract IUS scores from current line. Returns (total importance urgency size).
+     Size is mapped: S=1 M=2 L=3 X=4 (smaller = quicker, sorted first as tiebreaker).
      Returns (0 0 0 0) if no token is found, sorting unscored items to the bottom."
     (save-excursion
       (beginning-of-line)
-      (if (re-search-forward "\\[\\([0-9]\\)-\\([0-9]\\)\\([0-9]\\)|\\([0-9]\\)\\]"
+      (if (re-search-forward "\\[\\([0-9]\\)-\\([0-9]\\)\\([0-9]\\)|\\([SMLX]\\)\\]"
                              (line-end-position) t)
           (list (string-to-number (match-string 1))
                 (string-to-number (match-string 2))
                 (string-to-number (match-string 3))
-                (string-to-number (match-string 4)))
+                (pcase (match-string 4)
+                  ("S" 1) ("M" 2) ("L" 3) ("X" 4) (_ 0)))
         '(0 0 0 0))))
 
   ;; Custom comparison function for agenda sorting
   (defun my/iue-compare (a b)
-    "Compare two agenda entries by IUE scores.
+    "Compare two agenda entries by IUS scores.
      Returns -1 if a < b, +1 if a > b, nil if equal.
-     Sorts by total (I+U), then importance, then urgency, then ease."
+     Sorts by total (I+U), then importance, then urgency, then size."
     (let ((sa (get-text-property 0 'txt a))
           (sb (get-text-property 0 'txt b)))
       (let ((scores-a (with-temp-buffer
