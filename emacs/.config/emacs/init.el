@@ -771,17 +771,12 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
        Importance: 1 (low) to 3 (high)
        Urgency:    1 (low) to 3 (high)
        Size:       S (15m), M (1h), L (4h), X (8h)
-     Priority is derived from I+U only. Size sets Effort property.
-     XL means the task should be broken up — returns nil."
+     Priority is derived from I+U only. Size sets Effort property."
     (let* ((i (string-to-number (read-string "Importance (1-3): ")))
            (u (string-to-number (read-string "Urgency (1-3): ")))
-           (size (upcase (read-string "Size (S/M/L/X/XL): ")))
+           (size (upcase (read-string "Size (S/M/L/X): ")))
            (total (+ i u)))
-      (if (string= size "XL")
-          (progn
-            (message "Task too large — break it into subtasks with [/] cookie")
-            nil)
-        (format "[%d-%d%d|%s]" total i u size))))
+      (format "[%d-%d%d|%s]" total i u size)))
 
   ;; Sync priority cookie from IUE token
   (defun my/iue-sync-priority ()
