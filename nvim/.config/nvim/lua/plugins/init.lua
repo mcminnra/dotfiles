@@ -256,16 +256,76 @@ return {
   },
   {
     "mason-org/mason-lspconfig.nvim",
-    opts = {},
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
+      "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
       require("mason").setup()
-      require("mason-lspconfig").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "lua_ls",
+          "ts_ls",
+          "svelte",
+          "html",
+          "cssls",
+          "jsonls",
+          "yamlls",
+          "bashls",
+          "dockerls",
+          "ruff",
+          "gopls",
+          "rust_analyzer",
+        },
+      })
+
+      -- LSP capabilities (completions from nvim-cmp)
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- Keybindings on LSP attach
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local buf = args.buf
+          local opts = { buffer = buf }
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+          vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, opts)
+          vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, opts)
+        end,
+      })
+
+      -- Auto-setup all installed servers with capabilities
+      require("mason-lspconfig").setup_handlers({
+        function(server_name)
+          require("lspconfig")[server_name].setup({
+            capabilities = capabilities,
+          })
+        end,
+        -- Custom: lua_ls with Neovim runtime settings
+        ["lua_ls"] = function()
+          require("lspconfig").lua_ls.setup({
+            capabilities = capabilities,
+            settings = {
+              Lua = {
+                runtime = { version = "LuaJIT" },
+                diagnostics = { globals = { "vim" } },
+                workspace = {
+                  library = vim.api.nvim_get_runtime_file("", true),
+                  checkThirdParty = false,
+                },
+              },
+            },
+          })
+        end,
+      })
+
       vim.diagnostic.config({ virtual_text = true })
-      vim.keymap.set("n", "<space>d", vim.diagnostic.open_float)
+      vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
       vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
       vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
     end,
@@ -288,8 +348,8 @@ return {
         rust = { "rustfmt" },
       },
     },
-    config = function()
-      require("conform").setup({})
+    config = function(_, opts)
+      require("conform").setup(opts)
       vim.api.nvim_create_user_command("ConformFormat", function(args)
         local range = nil
         if args.count ~= -1 then
