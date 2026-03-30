@@ -17,3 +17,31 @@ lines = 40
 [window.padding]
 x=10
 y=10
+
+[colors.primary]
+background = "#131313"
+foreground = "#b0b0b0"
+
+[colors.normal]
+black   = "#131313"
+red     = "#EE6D85"
+green   = "#95C561"
+yellow  = "#D7A65F"
+blue    = "#7199EE"
+magenta = "#A485DD"
+cyan    = "#38A89D"
+white   = "#b0b0b0"
+
+[colors.bright]
+black   = "#4A5057"
+red     = "#EE6D85"
+green   = "#95C561"
+yellow  = "#D7A65F"
+blue    = "#7199EE"
+magenta = "#A485DD"
+cyan    = "#38A89D"
+white   = "#e0e2ea"
+
+[colors.cursor]
+cursor = "#A485DD"
+text   = "#131313"

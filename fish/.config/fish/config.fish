@@ -22,6 +22,9 @@ switch (uname -s)
        echo "Unable to set paths"
 end
 
+# Fix other-writable/sticky dir colors (default is blue-on-green which is unreadable)
+set -x LS_COLORS "di=01;34:ow=01;34:tw=01;34:ln=01;36:ex=01;32"
+
 #== Universal Variables
 set -U EDITOR emacs
 
