@@ -1030,6 +1030,32 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :config
   (org-roam-setup))
 
+
+(use-package org-fc
+  :ensure (:type git :repo "https://git.sr.ht/~l3kn/org-fc"
+                 :files (:defaults "awk" "demo.org"))
+  :demand t
+  :custom
+  (org-fc-directories (list (file-truename "~/org/notes/")))
+  (org-fc-awk-mixed-line-endings t)
+  :bind
+  (("C-c f d" . org-fc-dashboard)
+   ("C-c f r" . org-fc-review-all)
+   ("C-c f t" . org-fc-type-normal-init)
+   ("C-c f c" . org-fc-type-cloze-init))
+  :config
+  ;; Use real find binary — fish aliases find to fd which breaks org-fc
+  (defun org-fc-awk--find (paths)
+    "Generate shell code to search PATHS for org files."
+    (format
+     "%s -L %s -name \".*\" -prune -o -name \"[^.]*.org\" -type f -exec grep -l --null \"^[ \\t]*:%s:\" {} \\+"
+     (executable-find "find")
+     (mapconcat
+      (lambda (path) (shell-quote-argument (expand-file-name path)))
+      paths " ")
+     org-fc-created-property))
+  (require 'org-fc-keymap-hint))
+
 ;;; ===============================================
 ;;; Functions
 ;;; ===============================================
