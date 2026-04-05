@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git commit:*)
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git commit:*), Bash(git push:*)
 description: Create a git commit following conventional commits format
 ---
 
@@ -23,4 +23,4 @@ Stage all changed files and create a single commit with these rules:
 - No "Co-Authored-By" line
 - No AI attribution of any kind
 
-Stage and commit in a single message. No other output.
+Stage, commit, and push in a single flow. No other output.
