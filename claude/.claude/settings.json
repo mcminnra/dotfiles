@@ -4,5 +4,8 @@
       "WebSearch"
     ]
   },
-  "model": "opus"
+  "model": "opus",
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true
+  }
 }
