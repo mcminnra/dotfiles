@@ -485,6 +485,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :init
   (dirvish-override-dired-mode)
   :config
+  (setenv "LC_COLLATE" "C") ; Sort _ prefix files to the top
   (setq dired-listing-switches "-Al --group-directories-first")
   (setq dirvish-attributes '(nerd-icons file-size subtree-state vc-state git-msg))
   (setq dirvish-side-width 35)
@@ -1008,17 +1009,17 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :custom
   (org-roam-directory (file-truename "~/org/notes/")) ; Set the directory where your Org-roam files will be stored
   (org-roam-capture-templates
-   '(("k" "Knowledge" plain "%?"
+   '(("_" "Note" plain "%?"
+      :target (file+head "_${slug}.org" "#+TITLE: ${title}\n#+STARTUP: overview\n#+FILETAGS: :personal:\n")
+      :unarrowed t)
+     ("k" "Knowledge" plain "%?"
       :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :personal:knowledge:\n\n* Backlog\n\n* Overview\n")
       :unarrowed t)
      ("p" "Project" plain "%?"
       :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :personal:project:\n")
       :unarrowed t)
-     ("K" "Knowledge (work)" plain "%?"
-      :target (file+head "knowledge-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: showeverything\n#+FILETAGS: :work:knowledge:\n\n* Backlog\n\n* Overview\n")
-      :unarrowed t)
-     ("P" "Project (work)" plain "%?"
-      :target (file+head "project-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :work:project:\n")
+     ("w" "Work" plain "%?"
+      :target (file+head "work-${slug}.org" "#+TITLE: ${title}\n#+STARTUP: show2levels\n#+FILETAGS: :work:\n")
       :unarrowed t)
      ))
   :bind
@@ -1066,7 +1067,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   "Open org layout: dirvish sidebar | tasks file | day agenda."
   (interactive)
   (delete-other-windows)
-  (find-file "~/org/notes/project-tasks.org")
+  (find-file "~/org/notes/_tasks.org")
   (split-window-right)
   (other-window 1)
   (org-agenda-list)
