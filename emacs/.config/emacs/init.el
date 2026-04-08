@@ -967,10 +967,10 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :after org
   :config
   (setq org-super-agenda-groups
-        '((:name "Work" :and (:tag "work" :not (:habit t)))
-          (:name "Focus (Project+Media)" :and (:tag "focus" :not (:habit t)))
-          (:name "Personal" :and (:tag "personal" :not (:habit t)))
-          (:name "Habits" :habit t)
+        '((:name "Work" :tag "work")
+          (:name "Personal" :tag "personal")
+          (:name "Anchor" :tag "anchor")
+          (:name "Rotation" :tag "rotation")
           (:name "Other" :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
