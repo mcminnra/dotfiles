@@ -16,7 +16,7 @@ keybind = ctrl+a>minus=new_split:down
 # Bytemancer theme
 background = #131313
 foreground = #b0b0b0
-cursor-color = #A485DD
+cursor-color = #b0b0b0
 cursor-text = #131313
 palette = 0=#131313
 palette = 1=#EE6D85
