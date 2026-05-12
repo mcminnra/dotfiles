@@ -950,6 +950,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
   (setq org-outline-path-complete-in-steps nil)  ; Refile in single go
   (setq org-refile-use-outline-path 'file)  ; Show full path starting with file
+  (advice-add 'org-refile :after (lambda (&rest _) (org-refile-goto-last-stored)))
 
   ;; habit
   (setq org-habit-show-all-today t)
