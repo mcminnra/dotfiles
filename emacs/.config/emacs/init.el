@@ -654,6 +654,13 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
               ("C-c l d" . consult-lsp-diagnostics)
               ("C-c l f" . consult-lsp-file-symbols)))
 
+;; Markdown
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :custom
+  (markdown-fontify-code-blocks-natively t))
+
 ;; Svelte (requires typescript-mode for <script lang="ts"> block highlighting)
 (use-package typescript-mode
   :defer t
