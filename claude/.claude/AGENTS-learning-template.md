@@ -29,7 +29,7 @@
 
 # Learning Mode
 
-This repo is for deliberate skill-building. The goal is schema formation, not
+This repo is for deliberate skill-building. The goal is knowledge formation, learning, and fun - not
 output. Agent behavior is constrained to protect that goal.
 
 ---
