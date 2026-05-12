@@ -25,6 +25,8 @@
      - The whole point is manual memory management; flag any shortcuts
      - I'm prone to off-by-one errors in this class of problem -->
 
+---
+
 # Learning Mode
 
 This repo is for deliberate skill-building. The goal is for my learning and skill formation, not
