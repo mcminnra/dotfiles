@@ -59,9 +59,9 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;;; ===============================================
+;;; ====================================================================================================================
 ;;; General Emacs Settings
-;;; ===============================================
+;;; ====================================================================================================================
 (setq user-full-name "Ryder McMinn"
       user-mail-address "rdr@rdrmc.com")
 
@@ -157,9 +157,9 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
     (setq mac-command-modifier 'meta)                        ; Setup cmd key as "alt" on mac
     )))
 
-;;; ===============================================
+;;; ====================================================================================================================
 ;;; Theming
-;;; ===============================================
+;;; ====================================================================================================================
 ;; Bytemancer
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes" user-emacs-directory))
@@ -204,9 +204,9 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   ;; Optional: Enable visual-line-mode with visual-fill-column
   (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
 
-;;; ===============================================
+;;; ====================================================================================================================
 ;;; Core Functionality
-;;; ===============================================
+;;; ====================================================================================================================
 ;; Vertico
 ;; Minibuffer completion
 (use-package vertico
@@ -517,9 +517,9 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 
-;;; ===============================================
+;;; ====================================================================================================================
 ;;; Programming
-;;; ===============================================
+;;; ====================================================================================================================
 ;; Highlight TODO/FIXME/etc in comments
 (use-package hl-todo
   :hook (prog-mode . hl-todo-mode))
@@ -535,6 +535,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (require 'smartparens-config))
 
 ;; vterm
+;; Better term
 (use-package vterm
   :demand t
   :custom
@@ -556,7 +557,8 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :config
   (claude-code-ide-emacs-tools-setup))
 
-;; Monet — lets external Claude Code (in a terminal) connect to Emacs via /ide
+;; Monet
+;; lets external Claude Code (in a terminal) connect to Emacs via /ide
 (use-package monet
   :ensure (:host github :repo "stevemolitor/monet")
   :custom
@@ -763,9 +765,9 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
  '(font-lock-comment-face ((t (:slant italic))))
  '(font-lock-comment-delimiter-face ((t (:slant italic)))))
 
-;;; ===============================================
+;;; ====================================================================================================================
 ;;; Org Config
-;;; ===============================================
+;;; ====================================================================================================================
 ;; Org
 (use-package org
   :ensure nil  ; org is built-in
@@ -1070,9 +1072,9 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :config
   (org-roam-setup))
 
-;;; ===============================================
+;;; ====================================================================================================================
 ;;; Functions
-;;; ===============================================
+;;; ====================================================================================================================
 ;; Window management
 (defun my/main-window-count ()
   "Count non-side-panel (main) windows."
