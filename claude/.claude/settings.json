@@ -15,5 +15,6 @@
   "model": "claude-opus-4-7",
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true
-  }
+  },
+  "effortLevel": "medium"
 }
