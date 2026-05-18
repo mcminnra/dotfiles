@@ -106,9 +106,9 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (global-auto-revert-mode t)                                  ; Auto refresh buffers
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 
-;; Window management: only side-by-side splits, max 2 main windows + sidebar
-(setopt split-height-threshold nil)                          ; Never split top/bottom
-(setopt split-width-threshold 80)                            ; Allow side-by-side when wide enough
+;; Window management: prefer side-by-side, fall back to stacked when out of width
+(setopt split-width-threshold 160)                           ; Side-by-side when >=160 cols (yields ~80-col halves)
+(setopt split-height-threshold 40)                           ; Stacked fallback when >=40 rows available
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)                          ; Use spaces, not tabs
@@ -1076,33 +1076,19 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 ;;; Functions
 ;;; ====================================================================================================================
 ;; Window management
-(defun my/main-window-count ()
-  "Count non-side-panel (main) windows."
-  (length (seq-filter
-           (lambda (w) (not (window-parameter w 'window-side)))
-           (window-list))))
-
 (defun my/split-window-sensibly (&optional window)
-  "Only split right, only when <2 main windows. Used internally by `display-buffer'."
-  (let ((window (or window (selected-window))))
-    (when (and (< (my/main-window-count) 2)
-               (window-splittable-p window t))
-      (with-selected-window window
-        (split-window-right)))))
-
-(defun my/split-right ()
-  "Split window right and follow, capped at 2 main windows."
+  "Like `split-window-sensibly', but prefer side-by-side over stacked."
   (interactive)
-  (if (>= (my/main-window-count) 2)
-      (message "Already at max 2 main windows")
-    (split-window-right)
-    (other-window 1)))
+  (let ((window (or window (selected-window))))
+    (or (and (window-splittable-p window t)
+             (with-selected-window window (split-window-right)))
+        (and (window-splittable-p window)
+             (with-selected-window window (split-window-below))))))
 
 (setq split-window-preferred-function #'my/split-window-sensibly)
 (setq display-buffer-base-action
       '((display-buffer-reuse-window display-buffer-use-some-window)))
-(keymap-global-set "C-x 2" #'my/split-right)
-(keymap-global-set "C-x 3" #'my/split-right)
+(keymap-global-set "C-x \\" #'my/split-window-sensibly)
 
 (defun my/open-org-layout ()
   "Open org layout: dirvish sidebar | tasks file | day agenda."
