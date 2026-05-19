@@ -613,79 +613,59 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 
 ;; Hover documentation popup
 (use-package eldoc-box
-  :hook (lsp-mode . eldoc-box-hover-mode))
+  :hook (eglot-managed-mode . eldoc-box-hover-mode))
 
-(use-package pyvenv)
-
-;; LSP Mode
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (((python-ts-mode
-           js-ts-mode
-           typescript-ts-mode
-           tsx-ts-mode
-           rust-ts-mode
-           go-ts-mode
-           c-ts-mode
-           c++-ts-mode
-           bash-ts-mode
-           css-ts-mode
-           html-ts-mode
-           json-ts-mode
-           yaml-ts-mode
-           dockerfile-ts-mode
-           cmake-ts-mode
-           lua-ts-mode
-           svelte-mode) . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp
+;; Eglot (built-in LSP client)
+(use-package eglot
+  :ensure nil  ; built-in
+  :hook ((python-ts-mode
+          js-ts-mode
+          typescript-ts-mode
+          tsx-ts-mode
+          rust-ts-mode
+          go-ts-mode
+          c-ts-mode
+          c++-ts-mode
+          bash-ts-mode
+          css-ts-mode
+          html-ts-mode
+          json-ts-mode
+          yaml-ts-mode
+          dockerfile-ts-mode
+          cmake-ts-mode
+          lua-ts-mode
+          svelte-mode) . eglot-ensure)
   :custom
-  (lsp-prefer-flymake t)
-  (lsp-auto-guess-root t)
-  (lsp-enable-suggest-server-download t)
-  (lsp-auto-install-server t)
-  (lsp-completion-provider :capf)
-  (lsp-completion-show-detail t)
-  (lsp-completion-show-kind t)
-  (lsp-inlay-hint-enable t)
-  (lsp-eldoc-render-all t)
+  (eglot-autoshutdown t)         ; Kill server when last managed buffer closes
+  (eglot-sync-connect 1)         ; Don't block startup on slow servers
+  (eglot-events-buffer-size 0)   ; Perf: don't log every LSP event
   :config
-  (which-key-add-key-based-replacements "C-c l" "LSP")
+  (which-key-add-key-based-replacements "C-c l" "LSP (eglot)")
+  ;; Modes eglot doesn't cover out of the box
+  (add-to-list 'eglot-server-programs
+               '(html-ts-mode . ("vscode-html-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(svelte-mode . ("svelteserver" "--stdio")))
 
-  ;;; Python
-  ;; Register ruff LSP server (linter/formatter)
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection '("ruff" "server" "--preview"))
-    :activation-fn (lsp-activate-on "python")
-    :server-id 'ruff
-    :add-on? t
-    :priority -1))
+  ;; rust-ts-mode adds its own `rust-ts-flymake' backend (clippy-driver) in
+  ;; its mode body, before prog-mode-hook starts flymake-mode. The backend
+  ;; races eglot's and crashes in its process sentinel ("Can't find state for
+  ;; rust-ts-flymake"). Override the function to a no-op so it never spawns.
+  (defun my/rust-ts-flymake-disabled (report-fn &rest _)
+    "No-op replacement for rust-ts-flymake; eglot provides diagnostics."
+    (funcall report-fn nil))
+  (advice-add 'rust-ts-flymake :override #'my/rust-ts-flymake-disabled)
 
-  ;; Register ty LSP server (type checker)
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection '("ty" "server"))
-    :activation-fn (lsp-activate-on "python")
-    :server-id 'ty
-    :priority 1
-    :environment-fn (lambda ()
-                      (when (getenv "VIRTUAL_ENV")
-                        `(("VIRTUAL_ENV" . ,(getenv "VIRTUAL_ENV"))))))))
+  :bind (:map eglot-mode-map
+              ("C-c l r" . eglot-rename)
+              ("C-c l a" . eglot-code-actions)
+              ("C-c l f" . eglot-format-buffer)
+              ("C-c l d" . eldoc-doc-buffer)))
 
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-sideline-enable nil)
-  (lsp-ui-doc-enable nil))
-
-(use-package consult-lsp
-  :after (consult lsp-mode)
-  :bind (:map lsp-mode-map
-              ("C-c l s" . consult-lsp-symbols)
-              ("C-c l d" . consult-lsp-diagnostics)
-              ("C-c l f" . consult-lsp-file-symbols)))
+(use-package consult-eglot
+  :after (consult eglot)
+  :bind (:map eglot-mode-map
+              ("C-c l s" . consult-eglot-symbols)))
 
 ;; Markdown
 (use-package markdown-mode
