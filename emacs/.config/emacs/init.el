@@ -94,7 +94,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (setopt inhibit-startup-screen t)                            ; No start screen
 (global-hl-line-mode 1)                                      ; highlight active line
 (context-menu-mode 1)                                        ; right-click context menus
-(toggle-frame-maximized)                                     ; Set max window on startup (Mac OSX only?)
+(add-to-list 'default-frame-alist '(fullscreen . maximized)) ; Maximized on startup
 (show-paren-mode 1)                                          ; Make Emacs highlight paired parentheses
 (setopt visible-bell t)                                      ; Make bell visible
 (add-to-list 'default-frame-alist '(undecorated . t))        ; Remove title-bar
