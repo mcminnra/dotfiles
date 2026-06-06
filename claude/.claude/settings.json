@@ -1,5 +1,11 @@
 {
   "permissions": {
+    "defaultMode": "plan",
+    "deny": [
+      "Read(.env*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)"
+    ],
     "allow": [
       "WebSearch",
       "Bash(grep:*)",
@@ -12,9 +18,8 @@
       "Bash(rg:*)"
     ]
   },
-  "model": "claude-opus-4-7",
+  "model": "claude-opus-4-8",
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true
-  },
-  "effortLevel": "medium"
+  }
 }
