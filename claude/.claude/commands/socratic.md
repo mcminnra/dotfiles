@@ -1,5 +1,5 @@
 ---
-name: socratic-dialogue
+name: socratic
 description: Use structured Socratic dialogue to collaboratively reason through complex decisions, architectures, strategies, and ambiguous problems. Focus on uncovering assumptions, constraints, tradeoffs, edge cases, and failure modes before converging on a recommendation.
 ---
 
