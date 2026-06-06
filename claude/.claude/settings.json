@@ -1,25 +1,42 @@
 {
+  "outputStyle": "Explanatory",
+  "includeCoAuthoredBy": false,
+  "autoUpdatesChannel": "stable",
+  "model": "claude-opus-4-8",
   "permissions": {
     "defaultMode": "plan",
     "deny": [
-      "Read(.env*)",
+      "Read(**/.env*)",
       "Read(**/*.pem)",
-      "Read(**/*.key)"
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/id_rsa*)",
+      "Read(**/id_ed25519*)",
+      "Read(**/.ssh/**)",
+      "Read(**/.aws/**)",
+      "Read(**/secrets/**)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)"
     ],
     "allow": [
       "WebSearch",
       "Bash(grep:*)",
+      "Bash(rg:*)",
       "Bash(find:*)",
-      "Bash(cat:*)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(wc:*)",
       "Bash(ls:*)",
-      "Bash(rg:*)"
+      "Bash(wc:*)"
     ]
   },
-  "model": "claude-opus-4-8",
   "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   }
 }
