@@ -977,7 +977,14 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (setq org-habit-following-days 1)
   (setq org-habit-preceding-days 29)
   (setq org-habit-graph-column 65)
-  (setq org-habit-show-done-always-green t))
+  (setq org-habit-show-done-always-green t)
+
+  ;; babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((gnuplot . t)
+     (emacs-lisp . t)))
+  (setq org-confirm-babel-evaluate nil))
 
 (use-package org-edna
   :after org
