@@ -3,7 +3,6 @@
   "includeCoAuthoredBy": false,
   "autoUpdatesChannel": "stable",
   "permissions": {
-    "defaultMode": "plan",
     "deny": [
       "Read(**/.env*)",
       "Read(**/*.pem)",
