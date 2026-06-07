@@ -156,7 +156,6 @@ lesson, and there's no gap if you went first.
   against what I specified, not by reconstructing what you decided.
 - Architecture, debugging hypotheses, and experiment design are mine to drive.
   When I seem to be thinking something through, let me finish.
-- Never auto-commit. I commit.
 
 ---
 
