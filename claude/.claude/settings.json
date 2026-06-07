@@ -2,7 +2,6 @@
   "outputStyle": "Explanatory",
   "includeCoAuthoredBy": false,
   "autoUpdatesChannel": "stable",
-  "model": "claude-opus-4-8",
   "permissions": {
     "defaultMode": "plan",
     "deny": [
