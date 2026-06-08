@@ -47,5 +47,5 @@ fi
 printf '%s\n%s\n' "$LATEST_HASH" $(( OFFER_COUNT + 1 )) > "$STATE_FILE"
 
 cat <<'HOOK_JSON'
-{"hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"[learning-opportunities] A new git commit was just made. Consider whether this is a good moment to offer a learning exercise. If the committed work involved new files, schema changes, architectural decisions, refactors, or unfamiliar patterns, ask the user (one short sentence) if they'd like a 10-15 minute exercise using /learning-opportunities. Do not start the exercise until they confirm. If they decline, no more offers this session."}}
+{"continue":true,"systemMessage":"[learning-opportunities] A new git commit was just made. Consider whether this is a good moment to offer a learning exercise. If the committed work involved new files, schema changes, architectural decisions, refactors, or unfamiliar patterns, ask the user (one short sentence) if they'd like a 10-15 minute exercise using /learning-opportunities. Do not start the exercise until they confirm. If they decline, no more offers this session."}
 HOOK_JSON
