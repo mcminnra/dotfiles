@@ -12,14 +12,14 @@
       "Read(**/id_ed25519*)",
       "Read(**/.ssh/**)",
       "Read(**/.aws/**)",
-      "Read(**/secrets/**)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Read(**/secrets/**)"
     ],
     "ask": [
       "Bash(rm:*)",
       "Bash(git reset:*)",
-      "Bash(git clean:*)"
+      "Bash(git clean:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "allow": [
       "WebSearch",
@@ -28,6 +28,18 @@
       "Bash(find:*)",
       "Bash(ls:*)",
       "Bash(wc:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/post-stop.sh"
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
