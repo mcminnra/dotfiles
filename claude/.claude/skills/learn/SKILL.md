@@ -1,9 +1,16 @@
 ---
-name: learning-opportunities
-description: Facilitates deliberate skill development during AI-assisted coding. Offers interactive learning exercises after architectural work (new files, schema changes, refactors). Use when completing features, making design decisions, or when user asks to understand code better.
+name: learn
+description: Interactive learning exercise. Starts a skill-building exercise on the given topic, or infers one from context.
+argument-hint: "[topic]"
+when_to_use: >
+  Use when the user says things like "help me understand X", "let's learn X", "I want to
+  understand how X works", "walk me through X", "explain X to me", "teach me X",
+  "I don't understand X", "how does X work?", "can you quiz me on X", "let's do a learning
+  exercise", or after completing a feature/refactor where the user asked "why" questions
+  during development.
 ---
 
-# Learning Opportunities
+# Learn
 
 > Invocation argument: $ARGUMENTS
 
@@ -12,23 +19,21 @@ description: Facilitates deliberate skill development during AI-assisted coding.
 Build genuine expertise while using AI coding tools — not just ship code. These exercises
 counteract the "AI productivity trap" where high velocity can mask missing understanding.
 
-## When to offer exercises
+When adapting these techniques or making judgment calls, consult [principles.md](./resources/principles.md) for the underlying learning science.
 
-Offer an optional 10-15 minute exercise after:
-- Creating new files or modules
-- Database schema changes
-- Architectural decisions or refactors
-- Implementing unfamiliar patterns
-- Any work where the user asked "why" questions during development
+## Entry flow
 
-**Always ask before starting**: "Would you like to do a quick learning exercise on [topic]? About 10-15 minutes."
+1. **Determine topic**
+   - If `$ARGUMENTS` is provided → use it as the topic
+   - Else → check conversation context for a clear topic signal (recent code discussed,
+     recent task completed)
+   - Else → ask: "What topic do you want to explore?"
 
-## When not to offer
+2. **Rank exercise types**
+   Rank all exercise types by relevance to the topic. For each, write one line explaining
+   why it fits. Present the full ranked list and ask the user to pick.
 
-- User declined an exercise offer this session
-- User has already completed 2 exercises this session
-
-One short sentence is enough. Don't repeat offers.
+3. **Begin the chosen exercise immediately.**
 
 ## Core principle: Pause for input
 
@@ -45,7 +50,7 @@ After the pause point, do not generate:
 
 Allowed after the question:
 - Content-free reassurance: "(Take your best guess — wrong predictions are useful data.)"
-- An escape hatch: "(Or we can skip this one.)"
+- An escape hatch: "(Or say `skip` to move on.)"
 
 Pause points follow this pattern:
 1. Pose a specific question or task
@@ -58,7 +63,7 @@ Use explicit markers:
 
 > **Your turn:** What do you think happens when [specific scenario]?
 >
-> (Take your best guess — wrong predictions are useful data.)
+> (Take your best guess — wrong predictions are useful data. Or say `skip` to move on.)
 
 Wait for their response before continuing.
 
@@ -99,13 +104,15 @@ Wait for their response before continuing.
 2. Wait for their explanation
 3. Offer targeted feedback: what they nailed, what to refine
 
-### Retrieval check-in (for returning sessions)
+### Recall drill
 
-At the start of a new session on an ongoing project:
-
-1. **Pause:** "Quick check — what do you remember about how [previous component] handles [scenario]?"
-2. Wait for response
-3. Fill gaps or confirm, then proceed
+1. Read `MEMORY.md` in the current project's memory directory
+   (`~/.claude/projects/<project-slug>/memory/MEMORY.md`). Find a concept, pattern, or
+   decision the user has previously worked on that's relevant to the current topic.
+2. **If memory is sparse or empty**: ask — "What concept do you want to recall-test?"
+3. **Pause:** "Without looking it up — what do you remember about how [concept] works?"
+4. Wait for response
+5. Fill gaps, correct errors, confirm what they got right
 
 ## Techniques to weave in
 
@@ -152,8 +159,6 @@ than hinting at the answer.
 
 ## Facilitation guidelines
 
-- **Ask if they want to engage** before starting any exercise
 - **Adjust difficulty dynamically**: if they're nailing predictions, increase complexity
-- **Offer escape hatches**: "Want to keep going or pause here?"
 - **Keep exercises to 10-15 minutes** unless they want to go deeper
 - **Be direct about errors**: when they're wrong, say so clearly, then explore why

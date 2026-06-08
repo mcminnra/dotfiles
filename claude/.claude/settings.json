@@ -30,19 +30,7 @@
       "Bash(wc:*)"
     ]
   },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/post-stop.sh"
-          }
-        ]
-      }
-    ]
-  },
-  "enabledPlugins": {
+"enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
