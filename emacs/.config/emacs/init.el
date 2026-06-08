@@ -611,10 +611,6 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (use-package sideline-flymake
   :after sideline)
 
-;; Hover documentation popup
-(use-package eldoc-box
-  :hook (eglot-managed-mode . eldoc-box-hover-mode))
-
 ;; Eglot (built-in LSP client)
 (use-package eglot
   :ensure nil  ; built-in
