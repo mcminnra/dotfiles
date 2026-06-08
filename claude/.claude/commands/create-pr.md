@@ -17,9 +17,12 @@ Create a pull request from the current branch to `main`.
 - Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `style`, `test`
 - Infer the type, scope, and description from the commits and diff
 
+**PR body format:** A flat bullet list — one sentence per bullet, no headers, no sections.
+Each bullet starts with a conventional prefix: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `style:`, or `test:`.
+Derive the bullets from the commits and diff — one bullet per logical change.
+
 **Hard rules:**
 - No AI attribution of any kind
 - Use `gh pr create` with `--base main`
-- Leave the body empty (`--body ""`)
 
 Create the PR and output the URL. No other output.
