@@ -1,7 +1,6 @@
 ---
 name: learning-opportunities
 description: Facilitates deliberate skill development during AI-assisted coding. Offers interactive learning exercises after architectural work (new files, schema changes, refactors). Use when completing features, making design decisions, or when user asks to understand code better.
-argument-hint: "[orient]"
 ---
 
 # Learning Opportunities
@@ -158,18 +157,3 @@ than hinting at the answer.
 - **Offer escape hatches**: "Want to keep going or pause here?"
 - **Keep exercises to 10-15 minutes** unless they want to go deeper
 - **Be direct about errors**: when they're wrong, say so clearly, then explore why
-
-## Orientation mode
-
-If invoked as `/learning-opportunities orient`, run a guided repo orientation exercise.
-
-Look for `orientation.md` at these locations in order:
-1. `.claude/skills/learning-opportunities/resources/orientation.md` (project level)
-2. `~/.claude/skills/learning-opportunities/resources/orientation.md` (user level)
-
-If not found, tell the user:
-> "No orientation file found. Generate one with the `orient` skill first."
-
-If found, read it and run through the **Suggested exercise sequence** it contains,
-applying all standard skill techniques. Give a one-sentence summary of what it covers
-and ask if they want to proceed before starting.
