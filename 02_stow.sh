@@ -13,6 +13,7 @@ stow zed -t ~/ --verbose=2
 read -p "Work or Personal? (w/p): " answer
 if [[ "$answer" =~ ^[Ww]$ ]]; then
     # Keep work claude stuff out of git
+    :
 else
     stow claude-personal -t ~/ --verbose=2
 fi
