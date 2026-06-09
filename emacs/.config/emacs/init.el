@@ -991,11 +991,11 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :after org
   :config
   (setq org-super-agenda-groups
-        '((:name "Work" :tag "work")
-          (:name "Personal" :tag "personal")
-          (:name "Anchor" :tag "anchor")
-          (:name "Rotation" :tag "rotation")
-          (:name "Other" :anything)))
+        '((:name "Work" :tag "work" :order 1)
+          (:name "Anchor" :tag "anchor" :order 3)
+          (:name "Rotation" :tag "rotation" :order 4)
+          (:name "Personal" :tag "personal" :order 2)
+          (:name "Other" :order 5 :anything)))
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode))
 
