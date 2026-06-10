@@ -209,43 +209,34 @@ return {
   -- Programming
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        -- enable syntax highlighting
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-        -- enable indentation
-        indent = {
-          enable = true,
-        },
-        -- enable autotagging (w/ nvim-ts-autotag plugin)
-        autotag = {
-          enable = true,
-        },
-        -- ensure these language parsers are installed
-        ensure_installed = {
-          "json",
-          "javascript",
-          "typescript",
-          "tsx",
-          "yaml",
-          "html",
-          "css",
-          "markdown",
-          "markdown_inline",
-          "svelte",
-          "bash",
-          "lua",
-          "dockerfile",
-          "gitignore",
-        },
-        -- auto install above language parsers
-        auto_install = true,
+      require("nvim-treesitter").install({
+        "json",
+        "javascript",
+        "typescript",
+        "tsx",
+        "yaml",
+        "html",
+        "css",
+        "markdown",
+        "markdown_inline",
+        "svelte",
+        "bash",
+        "lua",
+        "dockerfile",
+        "gitignore",
+      })
+
+      -- main branch has no highlight/indent toggles; enable per-buffer natively
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          if pcall(vim.treesitter.start, args.buf) then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
       })
     end,
   },
@@ -259,10 +250,30 @@ return {
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
-      "hrsh7th/cmp-nvim-lsp",
+      "saghen/blink.cmp",
     },
     config = function()
       require("mason").setup()
+
+      -- Global defaults for all servers (nvim 0.11+ native LSP config)
+      vim.lsp.config("*", {
+        capabilities = require("blink.cmp").get_lsp_capabilities(),
+      })
+
+      vim.lsp.config("lua_ls", {
+        settings = {
+          Lua = {
+            runtime = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim" } },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+          },
+        },
+      })
+
+      -- v2 auto-enables installed servers via vim.lsp.enable()
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
@@ -280,9 +291,6 @@ return {
         },
       })
 
-      -- LSP capabilities (completions from nvim-cmp)
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
       -- Keybindings on LSP attach
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
@@ -296,31 +304,6 @@ return {
           vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
           vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, opts)
-        end,
-      })
-
-      -- Auto-setup all installed servers with capabilities
-      require("mason-lspconfig").setup_handlers({
-        function(server_name)
-          require("lspconfig")[server_name].setup({
-            capabilities = capabilities,
-          })
-        end,
-        -- Custom: lua_ls with Neovim runtime settings
-        ["lua_ls"] = function()
-          require("lspconfig").lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                runtime = { version = "LuaJIT" },
-                diagnostics = { globals = { "vim" } },
-                workspace = {
-                  library = vim.api.nvim_get_runtime_file("", true),
-                  checkThirdParty = false,
-                },
-              },
-            },
-          })
         end,
       })
 
@@ -402,36 +385,16 @@ return {
     },
   },
   {
-    "L3MON4D3/LuaSnip",
-    -- follow latest release.
-    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-    -- install jsregexp (optional!).
-    build = "make install_jsregexp",
+    "saghen/blink.cmp",
+    version = "1.*", -- use prebuilt rust fuzzy matcher binary
+    opts = {
+      -- "enter" preset: <CR> accept, <C-space> open menu, <C-e> hide, <C-b>/<C-f> scroll docs
+      keymap = { preset = "enter" },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+      },
+    },
   },
-  {
-    "hrsh7th/nvim-cmp",
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup({
-        sources = {
-          { name = "nvim_lsp" },
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        }),
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-      })
-    end,
-  },
-  { "hrsh7th/cmp-nvim-lsp" },
   {
     "lewis6991/gitsigns.nvim",
     config = function()
@@ -454,5 +417,45 @@ return {
   {
     'numToStr/Comment.nvim',
     opts = {}
+  },
+  -- AI
+  {
+    "coder/claudecode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    config = true,
+    cmd = {
+      "ClaudeCode",
+      "ClaudeCodeFocus",
+      "ClaudeCodeSelectModel",
+      "ClaudeCodeAdd",
+      "ClaudeCodeSend",
+      "ClaudeCodeTreeAdd",
+      "ClaudeCodeStatus",
+      "ClaudeCodeStart",
+      "ClaudeCodeStop",
+      "ClaudeCodeOpen",
+      "ClaudeCodeClose",
+      "ClaudeCodeDiffAccept",
+      "ClaudeCodeDiffDeny",
+      "ClaudeCodeCloseAllDiffs",
+    },
+    keys = {
+      { "<leader>a", nil, desc = "AI/Claude Code" },
+      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+      {
+        "<leader>as",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw", "snacks_picker_list" },
+      },
+      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    },
   },
 }
