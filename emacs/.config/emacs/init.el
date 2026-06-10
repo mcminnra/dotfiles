@@ -172,12 +172,13 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (use-package dashboard
   :custom
   (dashboard-projects-backend 'project-el)
-  (dashboard-startup-banner 2)
+  (dashboard-startup-banner (expand-file-name "img/leo.jpg" user-emacs-directory))
+  (dashboard-image-banner-max-height 150)
   (dashboard-banner-logo-title "")
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
-  (dashboard-items '((recents   . 5)
-                     (projects  . 5)))
+  (dashboard-items '((recents  . 7)
+                     (projects . 7)))
   (dashboard-display-icons-p t)
   (dashboard-icon-type 'nerd-icons)
   (dashboard-set-heading-icons t)
