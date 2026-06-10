@@ -734,7 +734,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 
 ;; Treesit config
 (setopt treesit-font-lock-level 4)  ; Most detailed syntax highlighting
-(add-hook 'prog-mode-hook #'hs-minor-mode)  ; Enable tree-sitter based folding
+(add-hook 'prog-mode-hook #'hs-minor-mode)  ; Enable code folding (hideshow; regex-based, not tree-sitter)
 
 ;; Make comments italic
 (custom-set-faces
