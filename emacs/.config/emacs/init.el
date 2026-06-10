@@ -365,6 +365,18 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
                 buf-lines (cdr buf-lines)
                 line-num (1+ line-num)))))))
 
+;; Embark
+;; Act on minibuffer candidates and things at point
+(use-package embark
+  :bind (("C-." . embark-act)
+         ("C-h B" . embark-bindings))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
 ;; Project.el (built-in project management)
 (use-package project
   :ensure nil
@@ -516,6 +528,27 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 ;; Semantic selection expanding
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
+
+;; Popper
+;; Corral popup buffers (terminals, logs, help) into a dismissable bottom window
+(use-package popper
+  :bind (("C-`" . popper-toggle)
+         ("M-`" . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :init
+  ;; Match plain *vterm* by name, not vterm-mode, so claude-code-ide's managed
+  ;; vterm side window is left alone.
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "\\*Warnings\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          "\\*Flymake diagnostics.*\\*"
+          help-mode
+          compilation-mode
+          "\\*vterm\\*"))
+  (popper-mode +1)
+  (popper-echo-mode +1))
 
 ;;; ====================================================================================================================
 ;;; Programming
@@ -670,6 +703,21 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :after (consult eglot)
   :bind (:map eglot-mode-map
               ("C-c l s" . consult-eglot-symbols)))
+
+;; Breadcrumb
+;; Imenu/project path in the header line
+(use-package breadcrumb
+  :config
+  (breadcrumb-mode))
+
+;; Apheleia
+;; Async format-on-save (prettier/gofmt/rustfmt defaults; ruff for python)
+(use-package apheleia
+  :config
+  ;; Match nvim conform setup: import sorting + ruff formatting for python
+  (setf (alist-get 'python-mode apheleia-mode-alist) '(ruff-isort ruff)
+        (alist-get 'python-ts-mode apheleia-mode-alist) '(ruff-isort ruff))
+  (apheleia-global-mode +1))
 
 ;; Markdown
 (use-package markdown-mode
@@ -1113,7 +1161,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   If not specified, or called interactively, BUFFER defaults to `current-buffer'"
   (interactive)
   (let* ((buffer (or buffer (current-buffer)))
-         (help-buffer (or (help-buffer) (get-bufer-create "*Help*")))
+         (help-buffer (or (help-buffer) (get-buffer-create "*Help*")))
          (faces (collect-buffer-faces buffer))
          (help-buffer-under-preparation t))
     (help-setup-xref (list #'show-buffer-faces buffer)
