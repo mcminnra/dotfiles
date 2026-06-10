@@ -48,6 +48,16 @@ function org
     cd "$HOME/org"
 end
 
+# Fish syntax highlight colors (bytemancer palette, hex bypasses terminal ANSI slots)
+set -g fish_color_command        7199EE  # blue  — valid command
+set -g fish_color_error          EE6D85  # red   — unknown command / error
+set -g fish_color_param          b0b0b0  # fg    — arguments
+set -g fish_color_quote          D7A65F  # yellow — strings
+set -g fish_color_comment        4A5057  # grey  — comments
+set -g fish_color_operator       A485DD  # magenta — operators
+set -g fish_color_redirection    38A89D  # cyan  — redirects
+set -g fish_color_end            b0b0b0  # fg    — semicolons/pipes
+
 # oh-my-posh prompt init
 oh-my-posh init fish --config ~/repos/dotfiles/oh-my-posh/omp.json | source
 

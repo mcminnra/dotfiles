@@ -537,8 +537,6 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
          ("M-`" . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :init
-  ;; Match plain *vterm* by name, not vterm-mode, so claude-code-ide's managed
-  ;; vterm side window is left alone.
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "\\*Warnings\\*"
@@ -546,8 +544,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
           "\\*Async Shell Command\\*"
           "\\*Flymake diagnostics.*\\*"
           help-mode
-          compilation-mode
-          "\\*vterm\\*"))
+          compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
 
@@ -568,21 +565,21 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   :config
   (require 'smartparens-config))
 
-;; vterm
-;; Better term
-(use-package vterm
+;; Ghostel
+;; Ghostty-backed terminal emulator via libghostty-vt native module
+(use-package ghostel
+  :ensure (:host github :repo "dakra/ghostel"
+                 :files (:defaults "etc" "src" "vendor" "build.zig" "build.zig.zon" "symbols.map"))
   :demand t
-  :custom
-  (vterm-kill-buffer-on-exit t)
   :bind
-  ("C-c RET" . vterm))
+  ("C-c RET" . ghostel))
 
 ;; Claude Code IDE
 (use-package claude-code-ide
   :ensure (:host github :repo "manzaltu/claude-code-ide.el")
-  :after vterm
+  :after ghostel
   :custom
-  (claude-code-ide-terminal-backend 'vterm)
+  (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-diagnostics-backend 'flymake)
   (claude-code-ide-use-ide-diff t)
   (claude-code-ide-enable-mcp-server t)
