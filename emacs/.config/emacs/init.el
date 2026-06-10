@@ -599,29 +599,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
   (monet-prefix-key "C-c C-\"")
   :hook (elpaca-after-init . monet-mode)
   :config
-  (which-key-add-key-based-replacements "C-c C-\"" "Monet (external Claude)")
-
-  ;; Idempotency tracker: monet otherwise keys duplicates as project<2>.
-  (defvar my/monet-active-projects nil
-    "Alist of (project-root . t) for projects with a running monet server.")
-
-  (defun my/monet-auto-start-for-project (&rest _)
-    "Start a monet server for the current project if one isn't already running."
-    (when-let* ((proj (project-current))
-                (root (project-root proj)))
-      (unless (assoc root my/monet-active-projects)
-        (monet-start-server)
-        (push (cons root t) my/monet-active-projects))))
-
-  (defun my/monet-forget-project-on-stop (&rest _)
-    "Drop the current project from `my/monet-active-projects` after stop."
-    (when-let* ((proj (project-current))
-                (root (project-root proj)))
-      (setq my/monet-active-projects
-            (assoc-delete-all root my/monet-active-projects))))
-
-  (advice-add 'project-switch-project :after #'my/monet-auto-start-for-project)
-  (advice-add 'monet-stop-server :after #'my/monet-forget-project-on-stop))
+  (which-key-add-key-based-replacements "C-c C-\"" "Monet (external Claude)"))
 
 ;; Flymake (built-in)
 (use-package flymake
