@@ -652,6 +652,14 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
     (funcall report-fn nil))
   (advice-add 'rust-ts-flymake :override #'my/rust-ts-flymake-disabled)
 
+  ;; eglot--warn logs connect failures (missing server binary, etc.) below the
+  ;; display threshold, so `eglot-ensure' failures are invisible. Re-emit at
+  ;; :error so the *Warnings* buffer actually pops.
+  (defun my/eglot-warn-loudly (format &rest args)
+    "Re-emit eglot warnings at :error level so they are displayed."
+    (display-warning 'eglot (apply #'format format args) :error))
+  (advice-add 'eglot--warn :after #'my/eglot-warn-loudly)
+
   :bind (:map eglot-mode-map
               ("C-c l r" . eglot-rename)
               ("C-c l a" . eglot-code-actions)
