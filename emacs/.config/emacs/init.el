@@ -68,11 +68,11 @@
 
 ;; Fonts
 (defun my/set-font-size (&optional _frame)
-  "Set font to 11pt on all displays."
+  "Set font size: 11pt on macOS, 10pt on Linux (GTK/Wayland uses 96dpi reference)."
   (when (member "SauceCodePro Nerd Font Mono" (font-family-list))
     (set-face-attribute 'default nil
                         :font "SauceCodePro Nerd Font Mono"
-                        :height 110)))
+                        :height (if (eq system-type 'darwin) 110 100))))
 (add-hook 'window-setup-hook #'my/set-font-size)
 (add-hook 'after-make-frame-functions #'my/set-font-size)
 
