@@ -108,7 +108,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 (add-hook 'text-mode-hook #'visual-line-mode)                ; Turn on visual mode for text
 
 ;; Window management: prefer side-by-side, fall back to stacked when out of width
-(setopt split-width-threshold 160)                           ; Side-by-side when >=160 cols (yields ~80-col halves)
+(setopt split-width-threshold 120)                           ; Split right when >=120 cols wide
 (setopt split-height-threshold 40)                           ; Stacked fallback when >=40 rows available
 
 ;; Indentation
@@ -1103,7 +1103,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 
 (setq split-window-preferred-function #'my/split-window-sensibly)
 (setq display-buffer-base-action
-      '((display-buffer-reuse-window display-buffer-use-some-window)))
+      '((display-buffer-reuse-window display-buffer-pop-up-window)))
 (keymap-global-set "C-x \\" #'my/split-window-sensibly)
 
 (defun my/open-org-layout ()
