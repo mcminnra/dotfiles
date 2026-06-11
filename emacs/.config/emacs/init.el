@@ -1103,7 +1103,7 @@ Larger displays \(e.g. external monitors\) get larger point size for readability
 
 (setq split-window-preferred-function #'my/split-window-sensibly)
 (setq display-buffer-base-action
-      '((display-buffer-reuse-window display-buffer-pop-up-window)))
+      '((display-buffer-reuse-window display-buffer-use-some-window)))
 (keymap-global-set "C-x \\" #'my/split-window-sensibly)
 
 (defun my/open-org-layout ()
