@@ -67,17 +67,14 @@
       user-mail-address "rdr@rdrmc.com")
 
 ;; Fonts
-;; -- Scale up darwin when screen is big. They have funky sizing.
-(defun my/set-font-size ()
-  "Set font size based on physical display height.
-Larger displays \(e.g. external monitors\) get larger point size for readability."
+(defun my/set-font-size (&optional _frame)
+  "Set font to 11pt on all displays."
   (when (member "SauceCodePro Nerd Font Mono" (font-family-list))
-    (let ((height (if (and (> (display-mm-height) 300) (eq system-type `darwin)) 130 100)))
-      (set-face-attribute 'default nil
-                          :font "SauceCodePro Nerd Font Mono"
-                          :height height))))
+    (set-face-attribute 'default nil
+                        :font "SauceCodePro Nerd Font Mono"
+                        :height 110)))
 (add-hook 'window-setup-hook #'my/set-font-size)
-(add-hook 'after-make-frame-functions (lambda (_frame) (my/set-font-size)))
+(add-hook 'after-make-frame-functions #'my/set-font-size)
 
 ;; Set default-directory
 (cond
