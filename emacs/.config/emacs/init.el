@@ -592,6 +592,9 @@
   :ensure (:host github :repo "stevemolitor/monet")
   :custom
   (monet-prefix-key "C-c C-\"")
+  (monet-diff-tool 'monet-ediff-tool)
+  (monet-diff-cleanup-tool 'monet-ediff-cleanup-tool)
+  (monet-ediff-split-window-direction 'horizontal)
   :hook (elpaca-after-init . monet-mode)
   :config
   (which-key-add-key-based-replacements "C-c C-\"" "Monet (external Claude)"))
@@ -710,13 +713,22 @@
   :after typescript-mode
   :mode "\\.svelte\\'")
 
+;; Ediff (built-in)
+(use-package ediff
+  :ensure nil
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-grab-mouse nil)
+  (ediff-no-emacs-help-in-control-buffer t))
+
 ;; Magit (Git porcelain)
 (use-package transient)
 (use-package magit
   :after transient
   :bind ("C-c g g" . magit-status)
   :custom
-  (magit-diff-refine-hunk 'all))
+  (magit-diff-refine-hunk 'all)
+  (magit-ediff-dwim-show-on-hunks t))
 
 (use-package magit-delta
   :hook (magit-mode . magit-delta-mode))
