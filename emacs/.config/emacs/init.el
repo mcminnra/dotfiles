@@ -370,7 +370,10 @@
   :bind (("C-." . embark-act)
          ("C-h B" . embark-bindings))
   :init
-  (setq prefix-help-command #'embark-prefix-help-command))
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  (add-to-list 'context-menu-functions #'embark-context-menu)
+  (add-to-list 'context-menu-functions #'context-menu-ffap))
 
 (use-package embark-consult
   :after (embark consult)
