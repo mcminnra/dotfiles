@@ -825,26 +825,28 @@
 
   (defun my/org-agenda-effort-sum ()
     "Display total effort for today's scheduled items in the header line."
-    (let ((total 0)
-          (today (org-today))
-          (seen  (make-hash-table :test 'equal)))
-      (save-excursion
-        (goto-char (point-min))
-        (while (not (eobp))
-          (when-let ((marker (org-get-at-bol 'org-hd-marker)))
-            (let ((key (cons (marker-buffer marker) (marker-position marker))))
-              (unless (gethash key seen)
-                (puthash key t seen)
-                (when (or (get-text-property (point) 'org-habit-p)
-                          (org-with-point-at marker
-                            (when-let ((scheduled (org-get-scheduled-time (point))))
-                              (= (time-to-days scheduled) today))))
-                  (when-let ((effort (org-entry-get marker "Effort")))
-                    (cl-incf total (org-duration-to-minutes effort)))))))
-          (forward-line)))
-      (setq header-line-format
-            (format " Scheduled effort today: %s"
-                    (my/iue-format-effort total)))))
+    (let ((today (org-today)))
+      (if (not (text-property-any (point-min) (point-max) 'day today))
+          (setq header-line-format " Scheduled effort today: -")
+        (let ((total 0)
+              (seen  (make-hash-table :test 'equal)))
+          (save-excursion
+            (goto-char (point-min))
+            (while (not (eobp))
+              (when-let ((marker (org-get-at-bol 'org-hd-marker)))
+                (let ((key (cons (marker-buffer marker) (marker-position marker))))
+                  (unless (gethash key seen)
+                    (puthash key t seen)
+                    (when (or (get-text-property (point) 'org-habit-p)
+                              (org-with-point-at marker
+                                (when-let ((scheduled (org-get-scheduled-time (point))))
+                                  (= (time-to-days scheduled) today))))
+                      (when-let ((effort (org-entry-get marker "Effort")))
+                        (cl-incf total (org-duration-to-minutes effort)))))))
+              (forward-line)))
+          (setq header-line-format
+                (format " Scheduled effort today: %s"
+                        (my/iue-format-effort total)))))))
   (add-hook 'org-agenda-finalize-hook #'my/org-agenda-effort-sum)
 
   (defun my/org-agenda-effort-debug ()
@@ -852,41 +854,49 @@
     (interactive)
     (unless (eq major-mode 'org-agenda-mode)
       (user-error "Run this from the org agenda buffer"))
-    (let ((today (org-today))
-          (seen  (make-hash-table :test 'equal))
-          (lines '())
-          (total 0))
-      (save-excursion
-        (goto-char (point-min))
-        (while (not (eobp))
-          (when-let ((marker (org-get-at-bol 'org-hd-marker)))
-            (let ((key (cons (marker-buffer marker) (marker-position marker))))
-              (unless (gethash key seen)
-                (puthash key t seen)
-                (let* ((habit-p (get-text-property (point) 'org-habit-p))
-                       (counts-p (or habit-p
-                                     (org-with-point-at marker
-                                       (when-let ((scheduled (org-get-scheduled-time (point))))
-                                         (= (time-to-days scheduled) today)))))
-                       (effort   (org-entry-get marker "Effort"))
-                       (heading  (org-with-point-at marker (org-get-heading t t t t))))
-                  (when counts-p
-                    (if effort
-                        (let ((mins (org-duration-to-minutes effort)))
-                          (cl-incf total mins)
-                          (push (format "  [%5s] %s%s"
-                                        effort heading
-                                        (if habit-p " (habit)" ""))
-                                lines))
-                      (push (format "  [  --] %s%s (no effort set)"
-                                    heading (if habit-p " (habit)" ""))
-                            lines)))))))
-          (forward-line)))
+    (let* ((today         (org-today))
+           (today-visible (text-property-any (point-min) (point-max) 'day today))
+           (seen          (make-hash-table :test 'equal))
+           (lines         '())
+           (total         0))
+      (when today-visible
+        (save-excursion
+          (goto-char (point-min))
+          (while (not (eobp))
+            (when-let ((marker (org-get-at-bol 'org-hd-marker)))
+              (let ((key (cons (marker-buffer marker) (marker-position marker))))
+                (unless (gethash key seen)
+                  (puthash key t seen)
+                  (let* ((habit-p (get-text-property (point) 'org-habit-p))
+                         (counts-p (or habit-p
+                                       (org-with-point-at marker
+                                         (when-let ((scheduled (org-get-scheduled-time (point))))
+                                           (= (time-to-days scheduled) today)))))
+                         (effort   (org-entry-get marker "Effort"))
+                         (heading  (org-with-point-at marker (org-get-heading t t t t))))
+                    (when counts-p
+                      (if effort
+                          (let ((mins (org-duration-to-minutes effort)))
+                            (cl-incf total mins)
+                            (push (format "  %6s  [%5s]  %s%s"
+                                          (my/iue-format-effort total)
+                                          effort
+                                          heading
+                                          (if habit-p " (habit)" ""))
+                                  lines))
+                        (push (format "  %6s  [   --]  %s%s (no effort set)"
+                                      (my/iue-format-effort total)
+                                      heading
+                                      (if habit-p " (habit)" ""))
+                              lines)))))))
+            (forward-line))))
       (with-current-buffer (get-buffer-create "*effort-debug*")
         (erase-buffer)
         (insert (format "Effort sum debug — today %s\n\n" (format-time-string "%Y-%m-%d")))
-        (dolist (l (nreverse lines)) (insert l "\n"))
-        (insert (format "\nTOTAL: %s\n" (my/iue-format-effort total)))
+        (if (not today-visible)
+            (insert "Not viewing current day\n")
+          (dolist (l (nreverse lines)) (insert l "\n"))
+          (insert (format "\nTOTAL: %s\n" (my/iue-format-effort total))))
         (display-buffer (current-buffer)))))
 
   (defun my/iue-parse-effort (str)
