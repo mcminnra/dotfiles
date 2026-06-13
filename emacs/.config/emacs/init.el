@@ -822,23 +822,75 @@
           (insert (propertize percentage-str 'face face))))
       (forward-line 1)))
 
-  ;; T-shirt sizes → org effort values
-  (defvar my/size-values
-    '(("S" . "0:15") ("M" . "1:00") ("L" . "4:00") ("X" . "8:00"))
-    "Mapping of t-shirt sizes to org effort values.")
+  (defun my/org-agenda-effort-sum ()
+    "Display total effort for today's scheduled items in the header line."
+    (let ((total 0)
+          (today (org-today))
+          (seen  (make-hash-table :test 'equal)))
+      (save-excursion
+        (goto-char (point-min))
+        (while (not (eobp))
+          (when-let ((marker (org-get-at-bol 'org-hd-marker)))
+            (let ((key (cons (marker-buffer marker) (marker-position marker))))
+              (unless (gethash key seen)
+                (puthash key t seen)
+                (when (org-with-point-at marker
+                        (when-let ((scheduled (org-get-scheduled-time (point))))
+                          (= (time-to-days scheduled) today)))
+                  (when-let ((effort (org-entry-get marker "Effort")))
+                    (cl-incf total (org-duration-to-minutes effort)))))))
+          (forward-line)))
+      (setq header-line-format
+            (format " Scheduled effort today: %s"
+                    (my/iue-format-effort total)))))
+  (add-hook 'org-agenda-finalize-hook #'my/org-agenda-effort-sum)
 
-  ;; IUS prompt - returns formatted [T-IU|S] string
+  (defun my/iue-parse-effort (str)
+    "Parse effort STR to org H:MM format, or nil if unrecognized.
+     Accepts H:MM (1:00) or verbose format (2h, 1h15m, 15m)."
+    (cond
+     ((string-match "^\\([0-9]+\\):\\([0-9]+\\)$" str)
+      (format "%d:%02d"
+              (string-to-number (match-string 1 str))
+              (string-to-number (match-string 2 str))))
+     ((string-match "[0-9]+[hm]" str)
+      (let ((h (if (string-match "\\([0-9]+\\)h" str)
+                   (string-to-number (match-string 1 str)) 0))
+            (m (if (string-match "\\([0-9]+\\)m\\b" str)
+                   (string-to-number (match-string 1 str)) 0)))
+        (format "%d:%02d" h m)))
+     (t nil)))
+
+  (defun my/iue-format-effort (mins)
+    "Format MINS as a verbose duration string: 2h, 1h30m, 15m, 0m."
+    (let* ((m (truncate mins))
+           (h (/ m 60))
+           (r (% m 60)))
+      (cond ((and (= h 0) (= r 0)) "0m")
+            ((= h 0)  (format "%dm" r))
+            ((= r 0)  (format "%dh" h))
+            (t        (format "%dh%dm" h r)))))
+
+  ;; IUS prompt - returns formatted [T-IU|effort] string
   (defun my/iue-prompt ()
-    "Prompt for I, U scores and size, return formatted [T-IU|S] string.
+    "Prompt for I, U scores and effort, return formatted [T-IU|effort] string.
        Importance: 1 (low) to 3 (high)
        Urgency:    1 (low) to 3 (high)
-       Size:       S (15m), M (1h), L (4h), X (8h)
-     Priority is derived from I+U only. Size sets Effort property."
+       Effort:     any org duration string e.g. 1:00, 0:15, 30
+     Priority is derived from I+U only. Effort sets Effort property."
     (let* ((i (string-to-number (read-string "Importance (1-3): ")))
            (u (string-to-number (read-string "Urgency (1-3): ")))
-           (size (upcase (read-string "Size (S/M/L/X): ")))
+           (effort (let (result)
+                     (while (not result)
+                       (let ((input (read-string "Effort (e.g. 1:00, 30m, 2h): ")))
+                         (let ((org-str (my/iue-parse-effort input)))
+                           (if org-str
+                               (setq result (my/iue-format-effort
+                                              (org-duration-to-minutes org-str)))
+                             (message "Invalid effort, try again (e.g. 1:00, 1h30m, 15m)")))))
+                     result))
            (total (+ i u)))
-      (format "[%d-%d%d|%s]" total i u size)))
+      (format "[%d-%d%d|%s]" total i u effort)))
 
   ;; Sync priority cookie from IUE token
   (defun my/iue-sync-priority ()
@@ -846,7 +898,7 @@
      Priority is based on I+U total (range 2-6)."
     (save-excursion
       (beginning-of-line)
-      (when (re-search-forward "\\[\\([0-9]+\\)-[0-9]\\{2\\}|[SMLX]\\]" (line-end-position) t)
+      (when (re-search-forward "\\[\\([0-9]+\\)-[0-9]\\{2\\}|\\(?:[0-9]+h\\(?:[0-9]+m\\)?\\|[0-9]+m\\)\\]" (line-end-position) t)
         (let* ((total (string-to-number (match-string 1)))
                (priority (pcase total
                            (6 ?A) (5 ?B) (4 ?C)
@@ -855,28 +907,33 @@
 
   (defun my/iue-update ()
     "Prompt for IUS scores, update token on headline, and sync priority.
-     Also sets the Effort property based on t-shirt size."
+     Works from both org buffers and the org agenda."
     (interactive)
-    (let ((new (my/iue-prompt)))
+    (let* ((agenda-p (eq major-mode 'org-agenda-mode))
+           (marker   (when agenda-p
+                       (or (org-get-at-bol 'org-hd-marker)
+                           (user-error "No org heading at point"))))
+           (new (my/iue-prompt)))
       (when new
-        (save-excursion
-          (org-back-to-heading t)
-          ;; First remove any existing IUE/IUS token (and its trailing space)
-          (when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|[SMLX0-9]\\] ?" (line-end-position) t)
-            (replace-match ""))
-          ;; Now insert at the right position: after stars, TODO, and priority
-          (beginning-of-line)
-          (if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
-                                 (line-end-position) t)
-              (insert new " ")
-            (end-of-line)
-            (insert " " new)))
-        ;; Set Effort property from the size letter
-        (when (string-match "|\\([SMLX]\\)\\]" new)
-          (let ((effort (cdr (assoc (match-string 1 new) my/size-values))))
-            (when effort
-              (org-set-property "Effort" effort))))
-        (my/iue-sync-priority))))
+        (cl-flet ((do-update ()
+                    (org-back-to-heading t)
+                    (when (re-search-forward "\\[[0-9]+-[0-9]\\{2\\}|\\(?:[0-9]+h\\(?:[0-9]+m\\)?\\|[0-9]+m\\)\\] ?" (line-end-position) t)
+                      (replace-match ""))
+                    (beginning-of-line)
+                    (if (re-search-forward "^\\*+ \\(?:TODO\\|DONE\\|[A-Z-]+\\)? ?\\(?:\\[#[A-G]\\]\\)? ?"
+                                           (line-end-position) t)
+                        (insert new " ")
+                      (end-of-line)
+                      (insert " " new))
+                    (when (string-match "|\\([0-9]+h\\(?:[0-9]+m\\)?\\|[0-9]+m\\)\\]" new)
+                      (org-set-property "Effort"
+                        (my/iue-parse-effort (match-string 1 new))))
+                    (my/iue-sync-priority)))
+          (if marker
+              (org-with-point-at marker (do-update))
+            (save-excursion (do-update)))
+          (when agenda-p
+            (org-agenda-redo))))))
 
   ;; Extract IUS scores from current line
   (defun my/iue-get-scores ()
@@ -885,13 +942,12 @@
      Returns (0 0 0 0) if no token is found, sorting unscored items to the bottom."
     (save-excursion
       (beginning-of-line)
-      (if (re-search-forward "\\[\\([0-9]\\)-\\([0-9]\\)\\([0-9]\\)|\\([SMLX]\\)\\]"
+      (if (re-search-forward "\\[\\([0-9]\\)-\\([0-9]\\)\\([0-9]\\)|\\([0-9]+h\\(?:[0-9]+m\\)?\\|[0-9]+m\\)\\]"
                              (line-end-position) t)
           (list (string-to-number (match-string 1))
                 (string-to-number (match-string 2))
                 (string-to-number (match-string 3))
-                (pcase (match-string 4)
-                  ("S" 1) ("M" 2) ("L" 3) ("X" 4) (_ 0)))
+                (org-duration-to-minutes (my/iue-parse-effort (match-string 4))))
         '(0 0 0 0))))
 
   ;; Custom comparison function for agenda sorting
