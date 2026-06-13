@@ -827,7 +827,7 @@
     "Display total effort for today's scheduled items in the header line."
     (let ((today (org-today)))
       (if (not (text-property-any (point-min) (point-max) 'day today))
-          (setq header-line-format " Scheduled effort today: -")
+          (setq header-line-format " Effort: -")
         (let ((total 0)
               (seen  (make-hash-table :test 'equal)))
           (save-excursion
@@ -837,15 +837,17 @@
                 (let ((key (cons (marker-buffer marker) (marker-position marker))))
                   (unless (gethash key seen)
                     (puthash key t seen)
-                    (when (or (get-text-property (point) 'org-habit-p)
-                              (org-with-point-at marker
-                                (when-let ((scheduled (org-get-scheduled-time (point))))
-                                  (= (time-to-days scheduled) today))))
+                    (when (let ((habit-p (get-text-property (point) 'org-habit-p)))
+                            (org-with-point-at marker
+                              (when-let ((scheduled (org-get-scheduled-time (point))))
+                                (let ((sched-day (time-to-days scheduled)))
+                                  (or (= sched-day today)
+                                      (and habit-p (< sched-day today)))))))
                       (when-let ((effort (org-entry-get marker "Effort")))
                         (cl-incf total (org-duration-to-minutes effort)))))))
               (forward-line)))
           (setq header-line-format
-                (format " Scheduled effort today: %s"
+                (format " Effort: %s"
                         (my/iue-format-effort total)))))))
   (add-hook 'org-agenda-finalize-hook #'my/org-agenda-effort-sum)
 
@@ -867,11 +869,12 @@
               (let ((key (cons (marker-buffer marker) (marker-position marker))))
                 (unless (gethash key seen)
                   (puthash key t seen)
-                  (let* ((habit-p (get-text-property (point) 'org-habit-p))
-                         (counts-p (or habit-p
-                                       (org-with-point-at marker
-                                         (when-let ((scheduled (org-get-scheduled-time (point))))
-                                           (= (time-to-days scheduled) today)))))
+                  (let* ((habit-p  (get-text-property (point) 'org-habit-p))
+                         (counts-p (org-with-point-at marker
+                                     (when-let ((scheduled (org-get-scheduled-time (point))))
+                                       (let ((sched-day (time-to-days scheduled)))
+                                         (or (= sched-day today)
+                                             (and habit-p (< sched-day today)))))))
                          (effort   (org-entry-get marker "Effort"))
                          (heading  (org-with-point-at marker (org-get-heading t t t t))))
                     (when counts-p
