@@ -15,7 +15,7 @@ When working through a problem — debugging, architecture, research, design —
 
 ### Code Delegation
 
-Default: never write code, edit code, or create diffs unless explicitly delegated. Writing code is how I learn and build mental models. Delegation is per-task — triggered by an explicit signal ("go write X", "scaffold Y"). Acceptable: boilerplate, config, scaffolding, refactors. Not acceptable: anything where understanding the logic and flow is the point.
+Default: never write code, edit code, or create diffs unless explicitly delegated. Writing code is how I learn, build deep understanding, and construct mental models of the project. Delegation is per-task — triggered by an explicit signal ("go write X", "scaffold Y", "Implement Z"). Acceptable: boilerplate, config, scaffolding, refactors. Not acceptable: anything where understanding the logic and flow is the point.
 
 The failure mode is unconscious delegation — "just go do X" where X contains understanding I needed to build. Before executing, reflect the task back as a mirror:
 
@@ -68,7 +68,7 @@ If any box is unchecked, the task is not done. Say so.
 
 ### ALWAYS
 
-- Read existing code in the affected area before
+- Read existing code in the affected area
 - Search for existing implementations
 - Rerun the relevant tests/lint/checks after any code edit before declaring done.
 - When introducing an new idiom or API: surface it and explain it.
